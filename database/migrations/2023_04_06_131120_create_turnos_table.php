@@ -16,12 +16,9 @@ return new class extends Migration
             $table->date('fecha_turno');
             $table->time('hora_turno');
             $table->timestamps();
-
             //relacion con cancha
-
             $table->integer('id_cancha');
             $table->foreign('id_cancha')->references('id')->on('canchas')->onUpdate('cascade')->onDelete('cascade');
-            
         });
     }
 

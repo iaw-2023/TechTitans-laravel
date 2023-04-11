@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::create('canchas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre',50)->nullable()->change();
-            $table->float('valor_cancha')->nullable()->change();
+            $table->string('nombre',50)->nullable();
+            $table->float('valor_cancha')->nullable();
             $table->boolean('techo');
             $table->integer('cant_jugadores')->nullable();
+            $table->string('superficie')->nullable();
             $table->timestamps();
-
-
             //relacion con categoria
-
             $table->integer('id_categoria');
             $table->foreign('id_categoria')->references('id')->on('categorias')->onUpdate('cascade')->onDelete('cascade');
         });
