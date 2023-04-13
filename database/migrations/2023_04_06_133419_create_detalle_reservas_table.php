@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('detallereservas', function (Blueprint $table) {
+        Schema::create('detalle_reservas', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->float('precio');
@@ -25,7 +25,6 @@ return new class extends Migration
 
              $table->integer('id_turno');
              $table->foreign('id_turno')->references('id')->on('turnos')->onUpdate('cascade')->onDelete('cascade');
- 
         });
     }
 
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('detallereservas');
+        Schema::dropIfExists('detalle_reservas');
     }
 };
