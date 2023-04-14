@@ -15,14 +15,10 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->float('precio');
-
              //relacion con reservas
-
              $table->integer('id_reserva');
              $table->foreign('id_reserva')->references('id')->on('reservas')->onUpdate('cascade')->onDelete('cascade');
-
              //relacion con turnos
-
              $table->integer('id_turno');
              $table->foreign('id_turno')->references('id')->on('turnos')->onUpdate('cascade')->onDelete('cascade');
         });

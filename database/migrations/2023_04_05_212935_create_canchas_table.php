@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('canchas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre',50)->nullable();
-            $table->float('valor_cancha')->nullable();
+            $table->float('precio')->nullable();
             $table->boolean('techo');
             $table->integer('cant_jugadores')->nullable();
             $table->string('superficie')->nullable();

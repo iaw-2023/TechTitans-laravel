@@ -19,6 +19,7 @@ return new class extends Migration
             //relacion con cancha
             $table->integer('id_cancha');
             $table->foreign('id_cancha')->references('id')->on('canchas')->onUpdate('cascade')->onDelete('cascade');
+            UNIQUE('fecha_turno','hora_turno','id_cancha');
         });
     }
 
