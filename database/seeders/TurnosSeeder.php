@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class TurnosSeeder extends Seeder
 {
@@ -13,203 +14,22 @@ class TurnosSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = [ 
-            //cancha 1 de futbol 
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '18:00:00',
-             'id_cancha' => 1
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '19:00:00',
-             'id_cancha' => 1
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '20:00:00',
-             'id_cancha' => 1
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '21:00:00',
-             'id_cancha' => 1
-            ], 
-            //cancha 2 de futbol
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '18:00:00',
-             'id_cancha' => 2
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '19:00:00',
-             'id_cancha' => 2
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '20:00:00',
-             'id_cancha' => 2
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '21:00:00',
-             'id_cancha' => 2
-            ],
-            //cancha 3 de futbol
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '18:00:00',
-             'id_cancha' => 3
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '19:00:00',
-             'id_cancha' => 3
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '20:00:00',
-             'id_cancha' => 3
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '21:00:00',
-             'id_cancha' => 3
-            ], 
-            //cancha 1 de tenis 
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '18:00:00',
-             'id_cancha' => 4
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '19:00:00',
-             'id_cancha' => 4
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '20:00:00',
-             'id_cancha' => 4
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '21:00:00',
-             'id_cancha' => 4
-            ], 
-            //cancha 2 de tenis 
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '18:00:00',
-             'id_cancha' => 5
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '19:00:00',
-             'id_cancha' => 5
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '20:00:00',
-             'id_cancha' => 5
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '21:00:00',
-             'id_cancha' => 5
-            ], 
-            //cancha de basquet
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '18:00:00',
-             'id_cancha' => 6
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '19:00:00',
-             'id_cancha' => 6
-            ],
-            //cancha 1 de padell 
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '18:00:00',
-             'id_cancha' => 7
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '19:00:00',
-             'id_cancha' => 7
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '20:00:00',
-             'id_cancha' => 7
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '21:00:00',
-             'id_cancha' => 7
-            ], 
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '22:00:00',
-             'id_cancha' => 8
-            ],
-            //cancha 2 de padell 
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '18:00:00',
-             'id_cancha' => 8
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '19:00:00',
-             'id_cancha' => 8
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '20:00:00',
-             'id_cancha' => 8
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '21:00:00',
-             'id_cancha' => 8
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '22:00:00',
-             'id_cancha' => 8
-            ],
-            //cancha 3 de padell 
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '18:00:00',
-             'id_cancha' => 9
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '19:00:00',
-             'id_cancha' => 9
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '20:00:00',
-             'id_cancha' => 9
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '21:00:00',
-             'id_cancha' => 9
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '22:00:00',
-             'id_cancha' => 9
-            ],
-            //cancha 4 de padell 
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '18:00:00',
-             'id_cancha' => 10
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '19:00:00',
-             'id_cancha' => 10
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '20:00:00',
-             'id_cancha' => 10
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '21:00:00',
-             'id_cancha' => 10
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '22:00:00',
-             'id_cancha' => 10
-            ],
-            //cancha de handball
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '20:00:00',
-             'id_cancha' => 11
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '21:00:00',
-             'id_cancha' => 11
-            ], 
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '22:00:00',
-             'id_cancha' => 11
-            ],
-            ['fecha_turno' => '2023/4/11',
-             'hora_turno' => '23:00:00',
-             'id_cancha' => 11
-            ]
-        ];
-        DB::table('turnos')->insert($data);
+        // Definir las fechas de inicio y fin del rango de fechas
+        $fecha_inicio = Carbon::parse('2023-05-01');
+        $fecha_fin = Carbon::parse('2023-05-31');
+
+        // Generar los turnos para cada día en el rango de fechas
+        for ($fecha = $fecha_inicio; $fecha <= $fecha_fin; $fecha->addDay()) {
+            // Generar los turnos para cada hora
+            for ($hora = Carbon::parse('18:00:00'); $hora <= Carbon::parse('20:00:00'); $hora->addHours(1)) {
+                for ($cancha = 1; $cancha <= 11; $cancha++) {
+                    DB::table('turnos')->insert([
+                      'fecha_turno' => $fecha,
+                      'hora_turno' => $hora,
+                      'id_cancha' => $cancha
+                    ]);
+                }
+            }
+        }     
     }
 }

@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             CategoriasSeeder::class,
             CanchasSeeder::class,
             TurnosSeeder::class,
+            ReservaSeeder::class,
+            DetalleReservaSeeder::class,
         ]);
     }
 }

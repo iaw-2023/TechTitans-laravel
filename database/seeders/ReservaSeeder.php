@@ -20,7 +20,7 @@ class ReservaSeeder extends Seeder
             ],
             ['fecha_reserva' => '2023/4/2',
              'hora_reserva' => '15:50:00',
-             'email_cliente' => 'gonzalo@gmail.com'
+             'email_cliente' => 'raul@gmail.com'
             ], 
             ['fecha_reserva' => '2023/4/2',
              'hora_reserva' => '15:00:00',
@@ -53,26 +53,8 @@ class ReservaSeeder extends Seeder
             ['fecha_reserva' => '2023/4/5',
              'hora_reserva' => '19:11:00',
              'email_cliente' => 'cristian@gmail.com'
-            ],
-            ['fecha_reserva' => '2023/4/5',
-             'hora_reserva' => '20:19:00',
-             'email_cliente' => 'micaela@gmail.com'
-            ],
-            ['fecha_reserva' => '2023/4/6',
-             'hora_reserva' => '23:00:00',
-             'email_cliente' => 'cristina@gmail.com'
-            ],
-            ['fecha_reserva' => '2023/4/7',
-             'hora_reserva' => '22:00:00',
-             'email_cliente' => 'valentina@gmail.com'
             ]
         ];
-        DB::table('detallereservas')->insert($data);
+        DB::table('reservas')->insert($data);
     }
 }
-
-/*
-            'fecha_turno' => '2023/4/11',
-             'hora_turno' => '18:00:00',
-             'id_cancha' => 1
-*/

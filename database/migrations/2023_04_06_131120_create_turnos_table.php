@@ -16,10 +16,11 @@ return new class extends Migration
             $table->date('fecha_turno');
             $table->time('hora_turno');
             $table->timestamps();
-            //relacion con cancha
             $table->integer('id_cancha');
+            //relacion con cancha
             $table->foreign('id_cancha')->references('id')->on('canchas')->onUpdate('cascade')->onDelete('cascade');
-            UNIQUE('fecha_turno','hora_turno','id_cancha');
+            // Restricción única en las columnas "fecha_turno", "hora_turno" y "id_cancha"
+            $table->unique(['fecha_turno', 'hora_turno', 'id_cancha']);
         });
     }
 
