@@ -1,4 +1,5 @@
-Introducción
+Introducción:
+
 En el proyecto inicial tienen que describir qué es lo que quieren realizar y explicar cuál es la temática del mismo. Además deberán entregar un diagrama entidad-relación junto con el código necesario para crear la BD y llenarla utilizando el framework Laravel.
 Lo que se realizará es una aplicación web para la reserva de turnos en un predio de canchas. El predio puede disponer de varias canchas (asociada a una categoría c/u), cada cancha tendrá su propia franja horaria en las que el usuario podrá reservar no sólo un turno, sino que varios al mismo tiempo. Una vez reservado los turnos el usuario debería obtener un detalle de su reserva con el monto a pagar, fecha y horario.
 
