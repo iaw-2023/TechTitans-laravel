@@ -20,7 +20,8 @@ return new class extends Migration
              $table->foreign('id_reserva')->references('id')->on('reservas')->onUpdate('cascade')->onDelete('cascade');
              //relacion con turnos
              $table->integer('id_turno');
-             $table->foreign('id_turno')->references('id')->on('turnos')->onUpdate('cascade')->onDelete('cascade');
+             $table->foreign('id_turno')->references('id')->on('turnos')->onUpdate('cascade')->onDelete('restrict');
+            $table->boolean('cancelado')->default(false);
         });
     }
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->integer('id_cancha');
             //relacion con cancha
-            $table->foreign('id_cancha')->references('id')->on('canchas')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_cancha')->references('id')->on('canchas')->onUpdate('cascade')->onDelete('restrict');
             // Restricción única en las columnas "fecha_turno", "hora_turno" y "id_cancha"
             $table->unique(['fecha_turno', 'hora_turno', 'id_cancha']);
         });

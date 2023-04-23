@@ -21,7 +21,8 @@ return new class extends Migration
             $table->timestamps();
             //relacion con categoria
             $table->integer('id_categoria');
-            $table->foreign('id_categoria')->references('id')->on('categorias')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_categoria')->references('id')->on('categorias')->onUpdate('cascade')->onDelete('restrict');
+            $table->boolean('activo')->default(true);
         });
     }
 
