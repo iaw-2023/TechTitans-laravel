@@ -10,7 +10,7 @@
     <label for="" class="form-label">Nombre</label>
     <input id="nombre" name="nombre" type="text" class="form-control" value="{{$categoria->nombre}}">    
   </div>
-  <a href="/articulos" class="btn btn-secondary">Cancelar</a>
+  <a href="/categorias" class="btn btn-secondary">Cancelar</a>
   <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
 

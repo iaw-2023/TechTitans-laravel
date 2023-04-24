@@ -18,3 +18,5 @@ Route::get('/', function () {
 });
 
 Route::resource('categorias', 'App\Http\Controllers\CategoriaController');
+
+Route::resource('canchas', 'App\Http\Controllers\CanchaController');
