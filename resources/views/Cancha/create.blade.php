@@ -14,8 +14,11 @@
     <input id="precio" name="precio" type="text" class="form-control" tabindex="2">    
   </div>
   <div class="mb-3">
-    <label for="" class="form-label">Techo</label>
-    <input id="techo" name="techo" type="text" class="form-control" tabindex="3">    
+    <label for="techo" class="form-label">Techo</label>
+    <select id="techo" name="techo" class="form-select" tabindex="3">
+        <option value="si">Si</option>
+        <option value="no">No</option>
+    </select>
   </div>
   <div class="mb-3">
     <label for="" class="form-label">Cant. Jugadores</label>
@@ -30,8 +33,11 @@
     <input id="id_categoria" name="id_categoria" type="text" class="form-control" tabindex="6">    
   </div>
   <div class="mb-3">
-    <label for="" class="form-label">Activo</label>
-    <input id="activo" name="activo" type="text" class="form-control" tabindex="7">    
+    <label for="activo" class="form-label">Activo</label>
+    <select id="activo" name="activo" class="form-select" tabindex="7">
+        <option value="si">Si</option>
+        <option value="no">No</option>
+    </select>
   </div>
   <a href="/canchas" class="btn btn-secondary" tabindex="9">Cancelar</a>
   <button type="submit" class="btn btn-primary" tabindex="8">Guardar</button>

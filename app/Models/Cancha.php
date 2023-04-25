@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Cancha extends Model
 {
     use HasFactory;
+
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class, 'id_categoria');
+    }
 }

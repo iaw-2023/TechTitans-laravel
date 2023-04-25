@@ -15,8 +15,11 @@
     <input id="precio" name="precio" type="text" class="form-control" value="{{$cancha->precio}}">    
   </div>
   <div class="mb-3">
-    <label for="" class="form-label">Techo</label>
-    <input id="techo" name="techo" type="text" class="form-control" value="{{$cancha->techo}}">    
+    <label for="techo" class="form-label">Techo</label>
+    <select id="techo" name="techo" class="form-select">
+        <option value="1" {{ $cancha->techo ? 'selected' : '' }}>Si</option>
+        <option value="0" {{ $cancha->techo ? '' : 'selected' }}>No</option>
+    </select>
   </div>
   <div class="mb-3">
     <label for="" class="form-label">Cant. Jugadores</label>
@@ -31,9 +34,13 @@
     <input id="id_categoria" name="id_categoria" type="text" class="form-control" value="{{$cancha->id_categoria}}">    
   </div>
   <div class="mb-3">
-    <label for="" class="form-label">Activo</label>
-    <input id="activo" name="activo" type="text" class="form-control" value="{{$cancha->activo}}">    
-  </div>
+    <label for="activo" class="form-label">Activo</label>
+    <select id="activo" name="activo" class="form-select">
+        <option value="1" {{ $cancha->activo ? 'selected' : '' }}>Si</option>
+        <option value="0" {{ $cancha->activo ? '' : 'selected' }}>No</option>
+    </select>
+</div>
+
   <a href="/canchas" class="btn btn-secondary">Cancelar</a>
   <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
