@@ -21,7 +21,7 @@
         @foreach ($turnos as $turno)
         <tr>
             <td>{{$turno->id}}</td>
-            <td>{{$turno->id_cancha}}</td>
+            <td>{{$turno->cancha}}</td>
             <td>{{$turno->fecha_turno}}</td>
             <td>{{$turno->hora_turno}}</td>
             <td>
@@ -48,7 +48,13 @@
             "lengthMenu": [
                 [10, 25, 50, -1],
                 [10, 25, 50, "All"]
-            ]
+            ],
+            columnDefs: [
+            {
+                targets: 2,
+                render: DataTable.render.date(),
+            },
+        ],
         });
     });
 </script>
