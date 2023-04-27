@@ -1,13 +1,13 @@
 @extends('layouts.plantillabase');
 
 @section('contenido')
-<h2>EDITAR CATEGORIA</h2>
+<h2 style= "color:#ffffff;">EDITAR CATEGORIA</h2>
 
 <form action="/categorias/{{$categoria->id}}" method="POST">
     @csrf    
     @method('PUT')
   <div class="mb-3">
-    <label for="" class="form-label">Nombre</label>
+    <label style= "color:#ffffff;" for="" class="form-label">Nombre</label>
     <input id="nombre" name="nombre" type="text" class="form-control" value="{{$categoria->nombre}}">    
   </div>
   <a href="/categorias" class="btn btn-secondary">Cancelar</a>

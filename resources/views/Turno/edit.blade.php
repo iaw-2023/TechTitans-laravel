@@ -1,7 +1,7 @@
 @extends('layouts.plantillabase');
 
 @section('contenido')
-<h2>EDITAR TURNO</h2>
+<h2 style= "color:#ffffff;">EDITAR TURNO</h2>
 
 <form action="/turnos/{{$turno->id}}" method="POST">
     @csrf    

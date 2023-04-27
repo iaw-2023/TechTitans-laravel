@@ -5,7 +5,7 @@
 @endsection
 
 @section('contenido')
-<a href= "categorias/create" class="btn btn-primary">Crear</a>
+<a style= "color:#ffffff;" href= "categorias/create" class="btn btn-primary">Crear</a>
 
 <table id = categorias class="table table-dark table-striped mt-4">
     <thead>
