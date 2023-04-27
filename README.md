@@ -8,18 +8,7 @@ Lo que se realizará es una aplicación web para la reserva de turnos en un pred
 
 
 - Respecto al [Proyecto Framework PHP - Laravel] deben describir brevemente:
-    - qué entidades se podrán actualizar
-Cancha
-Turno 
-Categoría
-    - qué reportes se podrán generar o visualizar
-Cuantos turnos se reservaron en un rango de fechas, según la cancha.
-    - qué entidades se podrán obtener por API
-Turnos
-Cancha
-Categoría
-Se podrán obtener aplicando filtros
-    - qué entidades se podrán modificar por API
-Turnos
-Cancha
-Categoria
+    - qué entidades se podrán actualizar: Cancha, Turno, Categoría.
+    - qué reportes se podrán generar o visualizar: cuantos turnos se reservaron en un rango de fechas, según la cancha.
+    - qué entidades se podrán obtener por API: Turnos, Cancha, Categoría, Se podrán obtener aplicando filtros.
+    - qué entidades se podrán modificar por API: Turnos, Cancha, Categoria
