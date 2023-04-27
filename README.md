@@ -23,15 +23,3 @@ Se podrán obtener aplicando filtros
 Turnos
 Cancha
 Categoria
-
-- Respecto al [Proyecto Javascript - React/Vue] , deben describir:
-    - qué información podrá ver el usuario,
-Turnos disponibles de cada cancha, su valor, tipo de superficie y si tiene techo o no.
-Reservas realizadas
-    - qué acciones podrá realizar, ya sea la primera vez que ingrese a la aplicación como futuros accesos a la misma
-Podrá reservar uno o más turnos, modificar y cancelar turnos
-
-
-- Deben entregar el en repositorio de Laravel creado a partir del template provisto para tal fin:
-    - Las migration necesarias para crear la base de datos en PostgreSQL o MySQL
-    - Los seeders para llenar la base de datos completa con datos de prueba, incluyendo elementos para todas las entidades
