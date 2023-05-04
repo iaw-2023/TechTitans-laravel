@@ -5,18 +5,10 @@
 @endsection
 
 @section('contenido')
-<a href= "turnos/create" class="btn btn-primary">Crear</a>
+<a href= "turnos/create" class="btn btn-primary">Crear turno</a>
 
-<div class="mb-3">
-    <form method="POST" action="{{ route('turnos.index') }}">
-      @csrf
-      <label style="color: #ffffff;" for="fecha" class="form-label">Filtrar por fecha:</label>
-      <input style="width : 150px; heigth : 10px"  type="date" id="fecha" name="fecha" class="form-control">
-      <button style="color: #ffffff;" type="submit" class="btn btn-primary">Filtrar</button>
-    </form>
-  </div>
-
-<table id="turnos" class="table table-dark table-striped mt-4">
+<div class="text-white">
+<table id="turnos" class="table table-dark table-hover mt-4">
     <thead>
         <tr>
             <th scope="col">ID</th>
@@ -48,12 +40,10 @@
         @endforeach
     </tbody>
 </table>
+</div>
 @endsection
 
 @section('js')
-<style>
-  
-</style>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>

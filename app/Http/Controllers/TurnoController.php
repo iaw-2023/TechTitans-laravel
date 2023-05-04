@@ -2,20 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 use App\Models\Turno;
+use App\Models\Cancha;
 
 class TurnoController extends Controller
 {
+    protected $filtroCategoria;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $turnos = $categorias = Categoria::all();
         $turnos = Turno::all();
-        return view('turno.index')->with('turnos', $turnos);
-    }
-
+        return view('turno.index')->with('turnos', $turnos)->with('categorias', $categorias);
+    }    
+    
     /**
      * Show the form for creating a new resource.
      */

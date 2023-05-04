@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             TurnosSeeder::class,
             ReservaSeeder::class,
             DetalleReservaSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

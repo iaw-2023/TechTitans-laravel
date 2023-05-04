@@ -9,10 +9,9 @@
   </head>
   <body style="background-color:#161919">
     
-    <h1 class= "bg-primary text-white text-center">Gestion de los datos</h1>
-
-    <div class= "container">
-        @yield('contenido')
+    @include('layouts.navbar')
+    <div class="container">
+      @yield('contenido')
     </div>
 
     @yield('js')
