@@ -14,7 +14,12 @@ class CategoriaController extends Controller
     {
         $categorias = Categoria::all();
         return view('categoria.index')->with('categorias', $categorias);
+    }
 
+    public function indexApi()
+    {
+        $categorias = Categoria::all();
+        return response()->json($categorias);
     }
 
     /**

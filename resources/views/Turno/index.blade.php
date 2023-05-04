@@ -11,7 +11,6 @@
 <table id="turnos" class="table table-dark table-hover mt-4">
     <thead>
         <tr>
-            <th scope="col">ID</th>
             <th scope="col">Cancha</th>
             <th scope="col">Categoria</th>
             <th scope="col">Fecha</th>
@@ -22,7 +21,6 @@
     <tbody>
         @foreach ($turnos as $turno)
         <tr>
-            <td>{{$turno->id}}</td>
             <td>{{$turno->cancha->nombre}}</td>  
             <td>{{$turno->cancha->categoria->nombre}}</td>            
             <td>{{$turno->fecha_turno}}</td>
@@ -56,7 +54,7 @@
             ],
             columnDefs: [
             {
-                targets: 3,
+                targets: 2,
                 render: DataTable.render.date(),
             },
         ],
