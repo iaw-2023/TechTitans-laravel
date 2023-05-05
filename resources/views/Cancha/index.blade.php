@@ -7,6 +7,7 @@
 @section('contenido')
 <a href= "canchas/create" class="btn btn-primary">Crear</a>
 
+<div class="text-white">
 <table id =canchas class="table table-dark table-striped mt-4">
     <thead>
         <tr>
@@ -44,6 +45,7 @@
         @endforeach
     </tbody>
 </table>
+</div>
 @endsection
 
 @section('js')

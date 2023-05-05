@@ -7,6 +7,7 @@
 @section('contenido')
 <a style= "color:#ffffff;" href= "categorias/create" class="btn btn-primary">Crear</a>
 
+<div class="text-white">
 <table id = categorias class="table table-dark table-striped mt-4">
     <thead>
         <tr>
@@ -32,6 +33,7 @@
         @endforeach
     </tbody>
 </table>
+</div>
 @endsection
 
 @section('js')
