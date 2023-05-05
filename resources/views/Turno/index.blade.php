@@ -31,9 +31,9 @@
                      @csrf
                      @method('DELETE')
                  <button type="submit" class="btn btn-danger">Delete</button>
-                 <button type="button" class="btn btn-info">+Info</button>
+                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#infoModal">+Info</button>
                 </form>          
-               </td>  
+            </td>  
         </tr>
         @endforeach
     </tbody>

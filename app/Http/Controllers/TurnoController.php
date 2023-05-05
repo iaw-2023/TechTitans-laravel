@@ -9,13 +9,12 @@ use App\Models\Cancha;
 
 class TurnoController extends Controller
 {
-    protected $filtroCategoria;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $turnos = $categorias = Categoria::all();
+        $categorias = Categoria::all();
         $turnos = Turno::all();
         return view('turno.index')->with('turnos', $turnos)->with('categorias', $categorias);
     }    

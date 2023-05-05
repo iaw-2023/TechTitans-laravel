@@ -8,5 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Reserva extends Model
 {
     use HasFactory;
-
+    public function detalle_reserva()
+    {
+        return $this->belongsTo(DetalleReserva::class, 'id_reserva');
+    }
 }

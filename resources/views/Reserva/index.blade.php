@@ -23,7 +23,8 @@
                 <td>{{$reserva->hora_reserva}}</td>
                 <td>{{$reserva->email_cliente}}</td>
                 <td>
-                              
+                    <button type="button" class="btn btn-info">Ver detalle</button>
+
                 </td>  
             </tr>
             @endforeach

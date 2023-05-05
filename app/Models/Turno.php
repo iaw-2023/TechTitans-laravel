@@ -12,7 +12,4 @@ class Turno extends Model
     {
         return $this->belongsTo(Cancha::class, 'id_cancha');
     }
-
-    
-
 }
