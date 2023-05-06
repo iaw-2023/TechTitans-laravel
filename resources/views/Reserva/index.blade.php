@@ -5,7 +5,6 @@
 @endsection
 
 @section('contenido')
-
 <div class="text-white">
     <table id=reservas class="table table-dark table-hover mt-4">
         <thead>
@@ -13,7 +12,7 @@
                 <th scope="col">Fecha</th>
                 <th scope="col">Hora</th>
                 <th scope="col">Email del cliente</th>
-                <th scope="col">Accion</th>
+                <th scope="col">Detalle</th>
             </tr>
         </thead>
         <tbody>
@@ -24,15 +23,12 @@
                 <td>{{$reserva->email_cliente}}</td>
                 <td>
                     <button type="button" class="btn btn-info">Ver detalle</button>
-
                 </td>  
             </tr>
             @endforeach
         </tbody>
     </table>
 </div>    
-
-@endsection
 
 @section('js')
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -54,4 +50,5 @@
         });
     });
 </script>
+@endsection
 @endsection

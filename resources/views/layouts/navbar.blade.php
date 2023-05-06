@@ -7,7 +7,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/turnos">Turnos</a>
+              <a class="nav-link" aria-current="page" href="/turnos">Turnos</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/canchas">Canchas</a>

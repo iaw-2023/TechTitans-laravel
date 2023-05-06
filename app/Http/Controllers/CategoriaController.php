@@ -16,12 +16,6 @@ class CategoriaController extends Controller
         return view('categoria.index')->with('categorias', $categorias);
     }
 
-    public function indexApi()
-    {
-        $categorias = Categoria::all();
-        return response()->json($categorias);
-    }
-
     /**
      * Show the form for creating a new resource.
      */
