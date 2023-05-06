@@ -5,7 +5,7 @@
 @endsection
 
 @section('contenido')
-<a href= "canchas/create" class="btn btn-primary">Crear</a>
+<a href= "canchas/create" class="btn btn-primary">Crear cancha</a>
 
 <div class="text-white">
 <table id =canchas class="table table-dark table-striped mt-4">
