@@ -31,7 +31,7 @@
                      @csrf
                      @method('DELETE')
                  <button type="submit" class="btn btn-danger">Delete</button>
-                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#infoModal">+Info</button>
+                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#miModal">Info cancha</button>
                 </form>          
             </td>  
         </tr>
@@ -39,6 +39,7 @@
     </tbody>
 </table>
 </div>
+@include('Modal.modal')
 @endsection
 
 @section('js')
