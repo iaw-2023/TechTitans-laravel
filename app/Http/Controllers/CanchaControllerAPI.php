@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cancha;
+use App\Models\Categoria;
 
 class CanchaControllerAPI extends Controller
 {
@@ -20,7 +21,14 @@ class CanchaControllerAPI extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    {   
+        $cancha = Cancha::where('nombre', $request->input('nombre'))
+            ->where('id_categoria', $request->input('id_categoria'))
+            ->first();
+
+        if ($cancha) {
+            return response()->json(['error' => 'Ya existe una cancha con el nombre indicado en esta categoría'], 404);
+        }
         $cancha = new Cancha();
         $cancha->nombre = $request->input('nombre');
         $cancha->precio = $request->input('precio');
@@ -43,6 +51,15 @@ class CanchaControllerAPI extends Controller
             return response()->json(['error' => 'Cancha no encontrada'], 404);
         }
         return response()->json($cancha);  
+    }
+
+    public function buscarPorCategoria(string $id_categoria)
+    {
+        $canchas = Cancha::where('id_categoria', $id_categoria)->get();
+        if (!$canchas) {
+            return response()->json(['error' => 'No se encontraron canchas para la categoría indicada'], 404);
+        }
+        return response()->json($canchas);
     }
 
     /**
@@ -75,6 +92,6 @@ class CanchaControllerAPI extends Controller
             return response()->json(['error' => 'Cancha no encontrada'], 404);
         }
         $cancha->delete();
-        return response()->json('Cancha eliminada correctamente');
+        return response()->json(['message' => 'Cancha eliminada correctamente']);
     }
 }

@@ -21,6 +21,10 @@ class CategoriaControllerAPI extends Controller
      */
     public function store(Request $request)
     {
+        $categoria = Categoria::find($request->nombre);
+        if ($categoria) {
+            return response()->json(['error' => 'Ya se encuentra una categoria con este nombre'], 404);
+        }
         $categoria = new Categoria();
         $categoria->nombre = $request->nombre;
         $categoria->save();
