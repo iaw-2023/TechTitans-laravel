@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cancha;
+use App\Models\Categoria;
 
 class CanchaController extends Controller
 {
@@ -21,7 +22,8 @@ class CanchaController extends Controller
      */
     public function create()
     {
-        return view('cancha.create');
+        $categorias = Categoria::all();
+        return view('cancha.create')->with('categorias', $categorias);;
     }
 
     /**
@@ -54,8 +56,9 @@ class CanchaController extends Controller
      */
     public function edit(string $id)
     {
+        $categorias = Categoria::all();
         $cancha = Cancha::find($id);
-        return view('cancha.edit')->with('cancha', $cancha);
+        return view('cancha.edit')->with('cancha', $cancha)->with('categorias', $categorias);
     }
 
     /**

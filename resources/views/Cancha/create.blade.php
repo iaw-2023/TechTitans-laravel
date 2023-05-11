@@ -29,8 +29,12 @@
     <input id="superficie" name="superficie" type="text" class="form-control" tabindex="5">    
   </div>
   <div class="mb-3">
-    <label style= "color:#ffffff;" for="" class="form-label">ID Categoria</label>
-    <input id="id_categoria" name="id_categoria" type="text" class="form-control" tabindex="6">    
+    <label style="color:#ffffff" for="" class="form-label">Categoria</label>
+    <select id="id_categoria" name="id_categoria" class="form-select">
+      @foreach ($categorias as $categoria)
+        <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+      @endforeach
+    </select>   
   </div>
   <div class="mb-3">
     <label style= "color:#ffffff;" for="activo" class="form-label">Activo</label>
