@@ -31,11 +31,11 @@ class DetalleReservaSeeder extends Seeder
             ],
             ['precio' => 10000.00,
              'id_reserva' => 4,
-             'id_turno' => 11
+             'id_turno' => 7
             ],
             ['precio' => 1000.00,
              'id_reserva' => 4,
-             'id_turno' => 25
+             'id_turno' => 7
             ],
             ['precio' => 3000.00,
              'id_reserva' => 5,
@@ -43,27 +43,27 @@ class DetalleReservaSeeder extends Seeder
             ],
             ['precio' => 5000.00,
              'id_reserva' => 6,
-             'id_turno' => 42
+             'id_turno' => 10
             ],
             ['precio' => 5000.00,
              'id_reserva' => 7,
-             'id_turno' => 43
+             'id_turno' => 13
             ],
             ['precio' => 3000.00,
              'id_reserva' => 8,
-             'id_turno' => 30
+             'id_turno' => 13
             ],
             ['precio' => 600.00,
              'id_reserva' => 9,
-             'id_turno' => 23
+             'id_turno' => 14
             ],
             ['precio' => 600.00,
              'id_reserva' => 10,
-             'id_turno' => 24
+             'id_turno' => 15
             ],
             ['precio' => 5000.00,
              'id_reserva' => 10,
-             'id_turno' => 31
+             'id_turno' => 16
             ]
         ];
         DB::table('detalle_reservas')->insert($data);
