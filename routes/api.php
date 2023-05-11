@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\CanchaControllerAPI;
-use App\Http\Controllers\TurnoControllerAPI;
-use App\Http\Controllers\CategoriaControllerAPI;
+use App\Http\Controllers\API\CanchaControllerAPI;
+use App\Http\Controllers\API\TurnoControllerAPI;
+use App\Http\Controllers\API\CategoriaControllerAPI;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
