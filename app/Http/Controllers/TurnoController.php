@@ -14,9 +14,8 @@ class TurnoController extends Controller
      */
     public function index()
     {
-        $categorias = Categoria::all();
         $turnos = Turno::all();
-        return view('turno.index')->with('turnos', $turnos)->with('categorias', $categorias);
+        return view('turno.index')->with('turnos', $turnos);
     }    
     
     /**

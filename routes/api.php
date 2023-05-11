@@ -37,7 +37,7 @@ Route::put('/turnos/update/{id}', [TurnoControllerAPI::class, 'update']);
 Route::delete('/turnos/destroy/{id}', [TurnoControllerAPI::class, 'destroy']);
 Route::get('/turnos/cancha/{id_cancha}', [TurnoControllerAPI::class, 'buscarPorCancha']);
 Route::get('/turnos/fecha/{fecha_turno}', [TurnoControllerAPI::class, 'searchByDate']);
-Route::get('/turnos/fecha-y-categoria/{fecha_turno}/{id_categoria}', [TurnoControllerAPI::class, 'searchByDateAndCategory']);
+Route::get('/turnos/fecha/categoria/{fecha_turno}/{id_categoria}', [TurnoControllerAPI::class, 'searchByDateAndCategory']);
 
 
 
