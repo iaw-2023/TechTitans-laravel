@@ -2,7 +2,6 @@
 
 @section('contenido')
 <h2 style= "color:#ffffff;">EDITAR CANCHA</h2>
-
 <form action="/canchas/{{$cancha->id}}" method="POST">
     @csrf    
     @method('PUT')

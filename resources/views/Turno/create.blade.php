@@ -14,6 +14,7 @@
       @endforeach
     </select>    
   </div>
+  
   <div class="mb-3">
     <label style="color: #ffffff;" for="" class="form-label">Cancha</label>
     <select id="id_cancha" name="id_cancha" class="form-select"></select>
