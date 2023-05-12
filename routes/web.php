@@ -26,7 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('categorias', 'App\Http\Controllers\CategoriaController');
+    Route::resource('categorias', 'App\Http\Controllers\CategoriaController')->parameters([
+        'categorias' => 'categoria'
+    ]);    
     Route::resource('turnos', 'App\Http\Controllers\TurnoController');
     Route::resource('canchas', 'App\Http\Controllers\CanchaController');
     Route::resource('reservas', 'App\Http\Controllers\ReservaController');
