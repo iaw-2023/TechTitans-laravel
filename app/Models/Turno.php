@@ -12,4 +12,9 @@ class Turno extends Model
     {
         return $this->belongsTo(Cancha::class, 'id_cancha');
     }
+    
+    public function detalle_reserva()
+    {
+        return $this->hasOne(DetalleReserva::class, 'id_turno');
+    }
 }

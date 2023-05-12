@@ -16,8 +16,7 @@ class TurnoController extends Controller
     {
         $turnos = Turno::all();
         return view('Turno.index')->with('turnos', $turnos);
-    }    
-    
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -71,6 +70,11 @@ class TurnoController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'id_cancha' => 'required',
+            'hora_turno' => 'required',
+            'fecha_turno' => 'required|date',
+        ]);
         $turno = Turno::find($id);
         $turno->id_cancha = $request->get('id_cancha');
         $turno->hora_turno = $request->get('hora_turno');

@@ -9,6 +9,12 @@ class DetalleReserva extends Model
 {
     use HasFactory;
     protected $table = 'detalle_reservas';
+    
+    public function reserva()
+    {
+        return $this->hasOne(Reserva::class, 'id_reserva');
+    }
+
     public function turno()
     {
         return $this->belongsTo(Turno::class, 'id_turno');

@@ -10,6 +10,6 @@ class Reserva extends Model
     use HasFactory;
     public function detalle_reserva()
     {
-        return $this->belongsTo(DetalleReserva::class, 'id_reserva');
+        return $this->hasOne(DetalleReserva::class, 'id_reserva');
     }
 }
