@@ -61,7 +61,9 @@ class TurnoController extends Controller
     public function edit(string $id)
     {
         $turno = Turno::find($id);
-        return view('Turno.edit')->with('turno', $turno);
+        $categorias = Categoria::all();
+        $canchas = Cancha::all();
+        return view('Turno.edit')->with('turno', $turno)->with('categorias', $categorias)->with('canchas', $canchas);
     }
 
     /**
