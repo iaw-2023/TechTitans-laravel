@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\TurnoController;
+use App\Http\Controllers\CanchaController;
+use App\Http\Controllers\ReservaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,10 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('categorias', 'App\Http\Controllers\CategoriaController');
-    Route::resource('turnos', 'App\Http\Controllers\TurnoController');
-    Route::resource('canchas', 'App\Http\Controllers\CanchaController');
-    Route::resource('reservas', 'App\Http\Controllers\ReservaController');
+    Route::resource('categorias', CategoriaController::class);
+    Route::resource('turnos', TurnoController::class);
+    Route::resource('canchas', CanchaController::class);
+    Route::resource('reservas', ReservaController::class);
 });
 
 require __DIR__.'/auth.php';
