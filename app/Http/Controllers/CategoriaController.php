@@ -13,7 +13,7 @@ class CategoriaController extends Controller
     public function index()
     {
         $categorias = Categoria::all();
-        return view('categoria.index')->with('categorias', $categorias);
+        return view('Categoria.index')->with('categorias', $categorias);
     }
 
     /**
@@ -21,7 +21,7 @@ class CategoriaController extends Controller
      */
     public function create()
     {
-        return view('categoria.create');
+        return view('Categoria.create');
     }
 
     /**
@@ -49,7 +49,7 @@ class CategoriaController extends Controller
     public function edit($id)
     {
         $categoria = Categoria::find($id);
-        return view('categoria.edit')->with('categoria', $categoria);
+        return view('Categoria.edit')->with('categoria', $categoria);
     }
 
     /**

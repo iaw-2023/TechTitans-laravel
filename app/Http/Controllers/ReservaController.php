@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\DetalleReserva;
 use App\Models\Reserva;
-use Illuminate\Http\Request;
 
 
 class ReservaController extends Controller
@@ -16,6 +15,6 @@ class ReservaController extends Controller
     {
         $reservas = Reserva::all();
         $detalle_reservas = DetalleReserva::all();
-        return view('reserva.index')->with('reservas', $reservas)->with('detalle_reservas', $detalle_reservas);
+        return view('Reserva.index')->with('reservas', $reservas)->with('detalle_reservas', $detalle_reservas);
     }
 }

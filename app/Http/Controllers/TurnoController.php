@@ -15,7 +15,7 @@ class TurnoController extends Controller
     public function index()
     {
         $turnos = Turno::all();
-        return view('turno.index')->with('turnos', $turnos);
+        return view('Turno.index')->with('turnos', $turnos);
     }    
     
     /**
@@ -25,7 +25,7 @@ class TurnoController extends Controller
     {
         $categorias = Categoria::all();
         $canchas = Cancha::all();
-        return view('turno.create', ['categorias' => $categorias, 'canchas' => $canchas]);
+        return view('Turno.create', ['categorias' => $categorias, 'canchas' => $canchas]);
     }
 
     /**
@@ -61,7 +61,7 @@ class TurnoController extends Controller
     public function edit(string $id)
     {
         $turno = Turno::find($id);
-        return view('turno.edit')->with('turno', $turno);
+        return view('Turno.edit')->with('turno', $turno);
     }
 
     /**

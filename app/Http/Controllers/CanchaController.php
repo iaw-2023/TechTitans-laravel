@@ -14,7 +14,7 @@ class CanchaController extends Controller
     public function index()
     {
         $canchas = Cancha::all();
-        return view('cancha.index')->with('canchas', $canchas);
+        return view('Cancha.index')->with('canchas', $canchas);
     }
 
     /**
@@ -23,7 +23,7 @@ class CanchaController extends Controller
     public function create()
     {
         $categorias = Categoria::all();
-        return view('cancha.create')->with('categorias', $categorias);;
+        return view('Cancha.create')->with('categorias', $categorias);;
     }
 
     /**
@@ -58,7 +58,7 @@ class CanchaController extends Controller
     {
         $categorias = Categoria::all();
         $cancha = Cancha::find($id);
-        return view('cancha.edit')->with('cancha', $cancha)->with('categorias', $categorias);
+        return view('Cancha.edit')->with('cancha', $cancha)->with('categorias', $categorias);
     }
 
     /**
