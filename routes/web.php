@@ -30,12 +30,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/categorias', [CategoriaController::class, 'index'])->name('categorias.index');
-    Route::get('/categorias/create', [CategoriaController::class, 'create'])->name('categorias.create');
-    Route::post('/categorias', [CategoriaController::class, 'store'])->name('categorias.store');
-    Route::get('/categorias/{categoria}/edit', [CategoriaController::class, 'edit'])->name('categorias.edit');
-    Route::put('/categorias/{categoria}', [CategoriaController::class, 'update'])->name('categorias.update');
-    Route::delete('/categorias/{categoria}', [CategoriaController::class, 'destroy'])->name('categorias.destroy');
+
+    Route::get('/categorias', [CategoriaController::class, 'index'])->name('categoria.index');
+    Route::get('/categorias/create', [CategoriaController::class, 'create'])->name('categoria.create');
+    Route::post('/categorias', [CategoriaController::class, 'store'])->name('categoria.store');
+    Route::get('/categorias/{id}/edit', [CategoriaController::class, 'edit'])->name('categoria.edit');
+    Route::put('/categorias/{id}', [CategoriaController::class, 'update'])->name('categoria.update');
+    Route::delete('/categorias/{id}', [CategoriaController::class, 'destroy'])->name('categoria.destroy');
+
     Route::resource('turnos', 'App\Http\Controllers\TurnoController');
     Route::resource('canchas', 'App\Http\Controllers\CanchaController');
     Route::resource('reservas', 'App\Http\Controllers\ReservaController');
