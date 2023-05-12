@@ -23,7 +23,9 @@ class TurnoController extends Controller
      */
     public function create()
     {
-        return view('turno.create');
+        $categorias = Categoria::all();
+        $canchas = Cancha::all();
+        return view('turno.create', ['categorias' => $categorias, 'canchas' => $canchas]);
     }
 
     /**
@@ -31,13 +33,19 @@ class TurnoController extends Controller
      */
     public function store(Request $request)
     {
-        $turnos = new Turno();
-        $turnos->id_cancha = $request->get('id_cancha');
-        $turnos->hora_turno = $request->get('hora_turno');
-        $turnos->fecha_turno = $request->get('fecha_turno');
-        $turnos->save();
+        $request->validate([
+            'id_cancha' => 'required',
+            'hora_turno' => 'required',
+            'fecha_turno' => 'required|date',
+        ]);
+        $turno = new Turno();
+        $turno->id_cancha = $request->get('id_cancha');
+        $turno->hora_turno = $request->get('hora_turno');
+        $turno->fecha_turno = $request->get('fecha_turno');
+        $turno->save();
         return redirect('/turnos');
     }
+
 
     /**
      * Display the specified resource.
