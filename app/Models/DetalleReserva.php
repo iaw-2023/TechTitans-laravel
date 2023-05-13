@@ -12,11 +12,11 @@ class DetalleReserva extends Model
     
     public function reserva()
     {
-        return $this->belongsTo(Reserva::class);
+        return $this->belongsTo(Reserva::class, 'id_reserva', 'id');
     }
 
     public function turno()
     {
-        return $this->belongsTo(Turno::class);
+        return $this->belongsTo(Turno::class, 'id_turno', 'id');
     }
 }

@@ -11,11 +11,6 @@ class Cancha extends Model
 
     public function categoria()
     {
-        return $this->belongsTo(Categoria::class);
-    }
-
-    public function turno()
-    {
-        return $this->hasMany(Turno::class);
+        return $this->belongsTo(Categoria::class, 'id_categoria');
     }
 }

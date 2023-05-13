@@ -10,11 +10,11 @@ class Turno extends Model
     use HasFactory;
     public function cancha()
     {
-        return $this->belongsTo(Cancha::class);
+        return $this->belongsTo(Cancha::class, 'id_cancha');
     }
     
     public function detalle_reserva()
     {
-        return $this->hasOne(DetalleReserva::class);
+        return $this->hasOne(DetalleReserva::class, 'id_turno');
     }
 }
