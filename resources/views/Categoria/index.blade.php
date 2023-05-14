@@ -7,6 +7,13 @@
 @section('contenido')
 <a style= "color:#ffffff;" href= "categorias/create" class="btn btn-primary">Crear categoria</a>
 
+@if(session('success'))
+    <div id="alert" class="alert alert-success">{{ session('success') }}</div>
+@endif
+@if(session('error'))
+    <div id="alert" class="alert alert-danger">{{ session('error') }}</div>
+@endif
+
 <div class="text-white">
 <table id = categorias class="table table-dark table-striped mt-4">
     <thead>
@@ -49,5 +56,17 @@
             ]
         });
     });
+</script>
+<script>
+    setTimeout(function() {
+        var errorAlert = document.getElementById('alert');
+        if (errorAlert) {
+            errorAlert.style.transition = "opacity 1s";
+            errorAlert.style.opacity = "0";
+            setTimeout(function() {
+                errorAlert.style.display = "none";
+            }, 1000);
+        }
+    }, 4000); // Cambia el valor 4000 a la cantidad de milisegundos que deseas esperar antes de que la alerta desaparezca
 </script>
 @endsection
