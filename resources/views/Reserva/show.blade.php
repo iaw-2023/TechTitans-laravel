@@ -56,10 +56,11 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="mb-3">
-            <label style="color: #ffffff;" for="" class="form-label">Precio total: ${{ $detalles->first()->precio }}</label>
-          </div>
+        <h5 style= "color:#ffffff;">Precio total: ${{ $detalles->first()->precio }}</h5>
+        <div>
+            <a href="/reservas" class="btn btn-info">Volver</a>
+        </div>
     </div>
-    <a href="/reservas" class="btn btn-info">Volver</a>
+    
 
     @endsection
