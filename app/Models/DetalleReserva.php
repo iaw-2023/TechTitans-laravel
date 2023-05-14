@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DetalleReserva extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'id_turno';
     protected $table = 'detalle_reservas';
     
     public function reserva()
