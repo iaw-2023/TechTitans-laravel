@@ -88,8 +88,26 @@ class TurnoController extends Controller
      */
     public function destroy(string $id)
     {
-        $turno = Turno::find($id);
-        $turno->delete();
+
+        $turno = Turno::findOrFail($id);
+        if($this->tieneReservas($turno)){
+            session()->flash('error', 'No se puede eliminar este turno porque reservas realizadas.');
+            return redirect()->back();
+        }else{
+            $turno->forceDelete();
+        }
+        session()->flash('success', 'El turno se elimino correctamente.');
         return redirect('/turnos');
+    }
+
+    private function tieneReservas($turno) {
+        $detalleReservaAsociados = $turno->getDetalleReserva()->get();
+        //dd($detalleReservaAsociados);
+        foreach($detalleReservaAsociados as $detalle){
+            $primero = $detalle->turno()->first();
+            if($primero)
+                return true;
+        }
+        return false;
     }
 }

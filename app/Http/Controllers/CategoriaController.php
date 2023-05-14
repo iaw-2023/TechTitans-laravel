@@ -68,8 +68,26 @@ class CategoriaController extends Controller
      */
     public function destroy(string $id)
     {
-        $categoria = Categoria::find($id); 
-        $categoria->delete();
+        $categoria = Categoria::findOrFail($id);
+        if($this->tieneCanchas($categoria)){
+            session()->flash('error', 'No se puede eliminar esta categoria porque posee canchas vinculadas.');
+            return redirect()->back();
+        }else{
+            $categoria->forceDelete();
+        }
+        session()->flash('success', 'La categoria se elimino correctamente.');
         return redirect('/categorias');
     }
+
+    private function tieneCanchas($categoria) {
+        $canchasAsociadas = $categoria->getCancha()->get();
+        //dd($canchasAsociadas);
+        foreach($canchasAsociadas as $cancha){
+            $primero = $cancha->categoria()->first();
+            if($primero)
+                return true;
+        }
+        return false;
+    }
 }
+

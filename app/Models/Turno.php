@@ -17,4 +17,8 @@ class Turno extends Model
     {
         return $this->hasOne(DetalleReserva::class, 'id_turno');
     }
+
+    public function getDetalleReserva(){
+        return $this->hasMany(DetalleReserva::class,'id_turno','id');
+    }
 }
