@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('detalle_reservas', function (Blueprint $table) {
-            $table->id();
             $table->timestamps();
             $table->float('precio');
              //relacion con reservas
@@ -22,6 +21,8 @@ return new class extends Migration
              $table->integer('id_turno');
              $table->foreign('id_turno')->references('id')->on('turnos')->onUpdate('cascade')->onDelete('restrict');
             $table->boolean('cancelado')->default(false);
+
+            $table->primary('id_turno');
         });
     }
 

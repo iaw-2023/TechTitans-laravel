@@ -33,24 +33,12 @@ class DetalleReservaSeeder extends Seeder
              'id_reserva' => 4,
              'id_turno' => 7
             ],
-            ['precio' => 1000.00,
-             'id_reserva' => 4,
-             'id_turno' => 7
-            ],
-            ['precio' => 3000.00,
-             'id_reserva' => 5,
-             'id_turno' => 7
-            ],
             ['precio' => 5000.00,
              'id_reserva' => 6,
              'id_turno' => 10
             ],
             ['precio' => 5000.00,
              'id_reserva' => 7,
-             'id_turno' => 13
-            ],
-            ['precio' => 3000.00,
-             'id_reserva' => 8,
              'id_turno' => 13
             ],
             ['precio' => 600.00,
