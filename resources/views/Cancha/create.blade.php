@@ -16,8 +16,8 @@
   <div class="mb-3">
     <label style= "color:#ffffff;" for="techo" class="form-label">Techo</label>
     <select id="techo" name="techo" class="form-select" tabindex="3">
-        <option value="si">Si</option>
-        <option value="no">No</option>
+        <option value="1">Si</option>
+        <option value="0">No</option>
     </select>
   </div>
   <div class="mb-3">
@@ -39,8 +39,8 @@
   <div class="mb-3">
     <label style= "color:#ffffff;" for="activo" class="form-label">Activo</label>
     <select id="activo" name="activo" class="form-select" tabindex="7">
-        <option value="si">Si</option>
-        <option value="no">No</option>
+        <option value="1">Si</option>
+        <option value="0">No</option>
     </select>
   </div>
   <a href="/canchas" class="btn btn-secondary" tabindex="9">Cancelar</a>
