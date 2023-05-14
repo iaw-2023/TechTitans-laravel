@@ -6,7 +6,7 @@
 
 @section('contenido')
 <div class="text-white">
-    <table id=reservas class="table table-dark table-hover mt-4">
+    <table id="reservas" class="table table-dark table-hover mt-4">
         <thead>
             <tr>
                 <th scope="col">Fecha</th>
@@ -17,18 +17,20 @@
         </thead>
         <tbody>
             @foreach ($reservas as $reserva)
-            <tr>
-                <td>{{$reserva->fecha_reserva}}</td>
-                <td>{{$reserva->hora_reserva}}</td>
-                <td>{{$reserva->email_cliente}}</td>
-                <td>
-                    <button type="button" class="btn btn-info">Ver detalle</button>
-                </td>  
-            </tr>
+                <tr>
+                    <td>{{$reserva->fecha_reserva}}</td>
+                    <td>{{$reserva->hora_reserva}}</td>
+                    <td>{{$reserva->email_cliente}}</td>
+                    <td>
+                        <form method="GET">
+                            <a href="/reservas/show/{{$reserva->id}}" class="btn btn-info">Ver detalle</a>         
+                        </form>
+                    </td>
+                </tr>
             @endforeach
         </tbody>
     </table>
-</div>    
+</div>
 
 @section('js')
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -46,7 +48,7 @@
                 targets: 0,
                 render: DataTable.render.date(),
             },
-        ],
+            ],
         });
     });
 </script>
