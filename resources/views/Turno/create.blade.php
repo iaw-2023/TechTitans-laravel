@@ -20,7 +20,7 @@
   </div>
   <div class="mb-3">
     <label style="color: #ffffff;" for="" class="form-label">Hora</label>
-    <input id="hora_turno" name="hora_turno" type="text" class="form-control" tabindex="2">    
+    <input id="hora_turno" name="hora_turno" type="text" placeholder="Ingrese hora en formato HH:MM:SS" style="color: gray;" class="form-control" tabindex="2">    
   </div>
   <div class="mb-3">
     <label style="color: #ffffff;" for="fecha_turno" class="form-label">Fecha</label>
