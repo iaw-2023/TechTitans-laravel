@@ -47,9 +47,15 @@ class CanchaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $cancha = Cancha::with('categoria')->find($id);
+
+        if (!$cancha) {
+            return response()->json(['error' => 'Cancha no encontrada'], 404);
+        }
+
+        return response()->json(['cancha' => $cancha]);
     }
 
     /**

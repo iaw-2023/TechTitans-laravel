@@ -7,16 +7,12 @@
       </div>
       <div class="modal-body" style="color:#ffffff;">
         <div>
-          <h6>Nombre y ID:</h6>
-          <p id="nombreCancha"></p>
+          <h6>Nombre:</h6>
+          <p id="nombreCancha"></p></p>
         </div>
         <div>
           <h6>Esta activa:</h6>
           <p id="activaCancha"></p>
-        </div>
-        <div>
-          <h6>Reservada:</h6>
-          <p id="reservadaCancha"></p>
         </div>
         <div>
           <h6>Categoria:</h6>

@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('canchas', CanchaController::class);
     Route::get('/reservas', [ReservaController::class, 'index']);
     Route::get('/reservas/show/{id}', [ReservaController::class, 'show']);
+    Route::get('/canchas/{id}', [CanchaController::class, 'show']);
 });
 
 require __DIR__.'/auth.php';

@@ -91,7 +91,7 @@ class TurnoController extends Controller
 
         $turno = Turno::findOrFail($id);
         if($this->tieneReservas($turno)){
-            session()->flash('error', 'No se puede eliminar este turno porque reservas realizadas.');
+            session()->flash('error', 'No se puede eliminar este turno porque tiene reservas realizadas.');
             return redirect()->back();
         }else{
             $turno->forceDelete();

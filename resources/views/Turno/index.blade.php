@@ -82,4 +82,40 @@
       }
   }, 4000); // Cambia el valor 4000 a la cantidad de milisegundos que deseas esperar antes de que la alerta desaparezca
 </script>
+<script>
+  $(document).ready(function() {
+    $('#miModal').on('show.bs.modal', function(event) {
+      var button = $(event.relatedTarget); // Botón que acciona el modal
+      var canchaId = button.data('id'); // Obtener el ID de la cancha desde el botón
+
+      // Hacer una petición AJAX para obtener los detalles de la cancha
+      $.ajax({
+        url: '/canchas/' + canchaId, // Ruta para obtener los detalles de la cancha por su ID
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+          var cancha = response.cancha; // Datos de la cancha recibidos en la respuesta
+          
+          //convierto en texto los true y false
+          var tActivo = cancha.activo ? 'Si' : 'No';
+          var tTecho = cancha.techo ? 'Si' : 'No';
+          //var tReservada = cancha.activo ? 'Si' : 'No';
+
+          $('#nombreCancha').text(cancha.nombre); // Mostrar el nombre de la cancha en el modal
+          $('#id').text(cancha.id);
+          $('#activaCancha').text(tActivo);
+          $('#categoriaCancha').text(cancha.categoria.nombre);
+          $('#precioCancha').text(cancha.precio);
+          $('#cantJugadoresCancha').text(cancha.cant_jugadores);
+          $('#superficieCancha').text(cancha.superficie);
+          $('#techoCancha').text(tTecho);
+        },
+        error: function(xhr, status, error) {
+          console.log(error); // Manejo de errores en caso de que la petición falle
+        }
+      });
+    });
+  });
+</script>
+
 @endsection
