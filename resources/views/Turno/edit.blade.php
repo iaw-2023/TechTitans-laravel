@@ -29,15 +29,14 @@
           @endif
       @endforeach
   </select>
-  
   </div>
   <div class="mb-3">
     <label style="color: #ffffff;" for="" class="form-label">Hora</label>
     <input id="hora_turno" name="hora_turno" type="text" class="form-control" value="{{$turno->hora_turno}}">    
   </div>
   <div class="mb-3">
-    <label style="color: #ffffff;" for="" class="form-label">Fecha</label>
-    <input id="fecha_turno" name="fecha_turno" type="text" class="form-control" value="{{$turno->fecha_turno}}">    
+    <label style="color: #ffffff;" for="fecha_turno" class="form-label">Fecha</label>
+    <input id="fecha_turno" name="fecha_turno" type="text" class="form-control" value="{{$turno->fecha_turno}}">
   </div>
   <a href="/turnos" class="btn btn-secondary">Cancelar</a>
   <button type="submit" class="btn btn-primary">Guardar</button>
@@ -46,6 +45,10 @@
 @endsection
 
 @section('js');
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
 <script>
   var canchas = {!! json_encode($canchas) !!}; // Obtener las canchas directamente en el formato de JavaScript
   
@@ -67,4 +70,15 @@
     });
   }
 </script>
+<script>
+  $(document).ready(function() {
+    // Inicializar el datepicker en el campo de fecha_turno
+    $('#fecha_turno').datepicker({
+      dateFormat: 'yy-mm-dd', // Formato de la fecha (puedes ajustarlo según tus necesidades)
+      changeMonth: true,
+      changeYear: true
+    });
+  });
+</script>
+
 @endsection
