@@ -73,7 +73,11 @@
     setTimeout(function() {
         var errorAlert = document.getElementById('alert');
         if (errorAlert) {
-            errorAlert.style.display = 'none';
+            errorAlert.style.transition = "opacity 1s";
+            errorAlert.style.opacity = "0";
+            setTimeout(function() {
+                errorAlert.style.display = "none";
+            }, 1000);
         }
     }, 4000); // Cambia el valor 4000 a la cantidad de milisegundos que deseas esperar antes de que la alerta desaparezca
 </script>
