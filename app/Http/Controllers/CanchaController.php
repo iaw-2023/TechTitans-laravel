@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cancha;
 use App\Models\Categoria;
+use App\Models\DetalleReserva;
 
 class CanchaController extends Controller
 {
@@ -81,10 +82,57 @@ class CanchaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    
     public function destroy(string $id)
     {
+        /*
         $cancha = Cancha::find($id); 
         $cancha->delete();
         return redirect('/canchas');
+        */
+        $cancha = Cancha::findOrFail($id);
+        $turnosAsociados = $cancha->getTurnos()->get();
+        //dd($turnosAsociados); checkkkkkkkkk
+        if($this->tienenReservasAsociadas($turnosAsociados)){
+            session()->flash('error', 'No se puede eliminar esta cancha porque tiene turnos reservados.');
+            return redirect()->back();
+        } else{
+            foreach ($turnosAsociados as $turno) {
+                $turno->forceDelete();
+            }
+            $cancha->forceDelete();
+            session()->flash('success', 'La cancha se elimino correctamente.');
+            return redirect('/canchas');
+            }
+        }
+
+        private function tienenReservasAsociadas($turnosAsociados){
+            foreach ($turnosAsociados as $turno) {
+                $detalleReserva = DetalleReserva::find($turno->id);
+                if($detalleReserva){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+        
+
+
+        
+/*
+    private function estaEnPedidoEstado($cancha, $estado){
+        $detalles = $cancha->getDetallesPedido()->get();
+        foreach ($detalles as $detalle) {
+            $pedido = $detalle->getPedido()->first();
+            if ($pedido && $pedido->estado == $estado) {
+                return true;
+            }
+        }
+
+        return false;
+
     }
+    */
 }
