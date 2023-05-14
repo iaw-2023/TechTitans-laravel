@@ -33,7 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('categorias', CategoriaController::class);
     Route::resource('turnos', TurnoController::class);
     Route::resource('canchas', CanchaController::class);
-    Route::resource('reservas', ReservaController::class);
+    Route::get('/reservas', [ReservaController::class, 'index']);
+    Route::get('/reservas/show/{id}', [ReservaController::class, 'show']);
 });
 
 require __DIR__.'/auth.php';

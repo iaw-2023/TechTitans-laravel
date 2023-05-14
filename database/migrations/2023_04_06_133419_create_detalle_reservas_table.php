@@ -21,7 +21,6 @@ return new class extends Migration
              $table->integer('id_turno');
              $table->foreign('id_turno')->references('id')->on('turnos')->onUpdate('cascade')->onDelete('restrict');
             $table->boolean('cancelado')->default(false);
-
             $table->primary('id_turno');
         });
     }
