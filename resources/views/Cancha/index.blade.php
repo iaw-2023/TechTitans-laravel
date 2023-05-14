@@ -7,6 +7,13 @@
 @section('contenido')
 <a href= "canchas/create" class="btn btn-primary">Crear cancha</a>
 
+@if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
+@if(session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
+@endif
+
 <div class="text-white">
 <table id =canchas class="table table-dark table-striped mt-4">
     <thead>
