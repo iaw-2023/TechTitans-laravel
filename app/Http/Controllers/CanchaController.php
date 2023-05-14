@@ -85,11 +85,7 @@ class CanchaController extends Controller
     
     public function destroy(string $id)
     {
-        /*
-        $cancha = Cancha::find($id); 
-        $cancha->delete();
-        return redirect('/canchas');
-        */
+        
         $cancha = Cancha::findOrFail($id);
         $turnosAsociados = $cancha->getTurnos()->get();
         //dd($turnosAsociados); checkkkkkkkkk
@@ -115,24 +111,4 @@ class CanchaController extends Controller
             }
             return false;
         }
-
-
-        
-
-
-        
-/*
-    private function estaEnPedidoEstado($cancha, $estado){
-        $detalles = $cancha->getDetallesPedido()->get();
-        foreach ($detalles as $detalle) {
-            $pedido = $detalle->getPedido()->first();
-            if ($pedido && $pedido->estado == $estado) {
-                return true;
-            }
-        }
-
-        return false;
-
-    }
-    */
 }
