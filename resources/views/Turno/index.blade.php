@@ -8,37 +8,37 @@
 <a href= "turnos/create" class="btn btn-primary">Crear turno</a>
 
 <div class="text-white">
-<table id="turnos" class="table table-dark table-hover mt-4">
-    <thead>
+    <table id="turnos" class="table table-dark table-hover mt-4">
+      <thead>
         <tr>
-            <th scope="col">Cancha</th>
-            <th scope="col">Categoria</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">Hora</th>
-            <th scope="col">Acciones</th>
+          <th scope="col">Cancha</th>
+          <th scope="col">Categoria</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Hora</th>
+          <th scope="col">Acciones</th>
         </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
         @foreach ($turnos as $turno)
         <tr>
-            <td>{{$turno->cancha->nombre}}</td>  
-            <td>{{$turno->cancha->categoria->nombre}}</td>            
-            <td>{{$turno->fecha_turno}}</td>
-            <td>{{$turno->hora_turno}}</td>
-            <td>
-                <form action="{{ route('turnos.destroy',$turno->id) }}" method="POST">
-                 <a href="/turnos/{{$turno->id}}/edit" class="btn btn-info">Editar</a>         
-                     @csrf
-                     @method('DELETE')
-                 <button type="submit" class="btn btn-danger">Delete</button>
-                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#miModal">Info cancha</button>
-                </form>          
-            </td>  
+          <td>{{$turno->cancha->nombre}}</td>  
+          <td>{{$turno->cancha->categoria->nombre}}</td>            
+          <td>{{$turno->fecha_turno}}</td>
+          <td>{{$turno->hora_turno}}</td>
+          <td>
+            <form action="{{ route('turnos.destroy',$turno->id) }}" method="POST">
+              <a href="/turnos/{{$turno->id}}/edit" class="btn btn-info">Editar</a>         
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="btn btn-danger">Delete</button>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#miModal" data-id="{{$turno->cancha->id}}">Info cancha</button>
+            </form>          
+          </td>  
         </tr>
         @endforeach
-    </tbody>
-</table>
-</div>
+      </tbody>
+    </table>
+  </div>
 @include('Modal.modal')
 @endsection
 

@@ -8,38 +8,39 @@
       <div class="modal-body" style="color:#ffffff;">
         <div>
           <h6>Nombre y ID:</h6>
-          <p>{{ $turno->cancha->nombre}} ID:{{ $turno->id_cancha}}</p>
+          <p id="nombreCancha"></p>
         </div>
         <div>
           <h6>Esta activa:</h6>
-          <p>{{ $turno->cancha->activo  ? 'Si' : 'No' }}</p>
+          <p id="activaCancha"></p>
         </div>
         <div>
           <h6>Reservada:</h6>
-          <p>si o no</p>
+          <p id="reservadaCancha"></p>
         </div>
         <div>
           <h6>Categoria:</h6>
-          <p>{{ $turno->cancha->categoria->nombre}}</p>
+          <p id="categoriaCancha"></p>
         </div>
         <div>
           <h6>Precio:</h6>
-          <p>{{ $turno->cancha->precio}}</p>
+          <p id="precioCancha"></p>
         </div>
         <div>
           <h6>Cant. Jugadores:</h6>
-          <p>{{ $turno->cancha->cant_jugadores}}</p>
+          <p id="cantJugadoresCancha"></p>
         </div>
         <div>
           <h6>Superficie:</h6>
-          <p>{{ $turno->cancha->superficie}}</p>
+          <p id="superficieCancha"></p>
         </div>
         <div>
           <h6>Techo:</h6>
-          <p>{{ $turno->cancha->techo ? 'Si' : 'No' }}</p>
+          <p id="techoCancha"></p>
         </div>
+      </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
