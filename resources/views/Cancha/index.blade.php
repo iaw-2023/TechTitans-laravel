@@ -8,10 +8,10 @@
 <a href= "canchas/create" class="btn btn-primary">Crear cancha</a>
 
 @if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
+    <div id="alert" class="alert alert-success">{{ session('success') }}</div>
 @endif
 @if(session('error'))
-    <div class="alert alert-danger">{{ session('error') }}</div>
+    <div id="alert" class="alert alert-danger">{{ session('error') }}</div>
 @endif
 
 <div class="text-white">
@@ -68,5 +68,13 @@
             ]
         });
     });
+</script>
+<script>
+    setTimeout(function() {
+        var errorAlert = document.getElementById('alert');
+        if (errorAlert) {
+            errorAlert.style.display = 'none';
+        }
+    }, 4000); // Cambia el valor 4000 a la cantidad de milisegundos que deseas esperar antes de que la alerta desaparezca
 </script>
 @endsection
