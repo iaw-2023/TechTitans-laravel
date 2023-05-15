@@ -21,5 +21,21 @@ class UserSeeder extends Seeder
             'remember_token' => 'abcd',
 
         ]);
+        DB::table('users')->insert([
+            'name' => 'techtitaniaw',
+            'email' => 'techtitaniaw@gmail.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('admin123'),
+            'remember_token' => 'abcde',
+
+        ]);
+        DB::table('users')->insert([
+            'name' => 'danilo',
+            'email' => 'dalaco618@gmail.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('admin123'),
+            'remember_token' => 'abcdef',
+
+        ]);
     }
 }
