@@ -23,7 +23,7 @@
                     <td>{{$reserva->email_cliente}}</td>
                     <td>
                         <form method="GET">
-                            <a href="/reservas/show/{{$reserva->id}}" class="btn btn-info">Ver detalle</a>         
+                            <a href="/reservas/show/{{$reserva->id}}" class="btn btn-primary">Ver detalle</a>         
                         </form>
                     </td>
                 </tr>
