@@ -3,13 +3,28 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Categoria;
 
 class CategoriaControllerAPI extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/rest/categorias",
+     *     summary="Obtener lista de categorías",
+     *     description="Retorna una lista de todas las categorías existentes en el sistema.",
+     *     tags={"Categorías"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de categorías obtenida exitosamente",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 @OA\Property(property="id", type="integer", example="1"),
+     *                 @OA\Property(property="nombre", type="string", maxLength=50, nullable=true, example="Futbol")
+     *             )
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
@@ -18,22 +33,38 @@ class CategoriaControllerAPI extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $categoria = Categoria::find($request->nombre);
-        if ($categoria) {
-            return response()->json(['error' => 'Ya se encuentra una categoria con este nombre'], 404);
-        }
-        $categoria = new Categoria();
-        $categoria->nombre = $request->nombre;
-        $categoria->save();
-        return response()->json($categoria, 201);
-    }
-
-    /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/rest/categorias/show/{id}",
+     *     summary="Obtener detalles de una categoría",
+     *     description="Retorna los detalles de una categoría específica.",
+     *     tags={"Categorías"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID de la categoría a obtener.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Detalles de la categoría obtenidos exitosamente.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", example="1"),
+     *             @OA\Property(property="nombre", type="string", maxLength=50, nullable=true, example="Nombre de la categoría"),
+     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-05-18 12:34:56"),
+     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-05-18 12:34:56")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Categoría no encontrada.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string")
+     *         )
+     *     )
+     * )
      */
     public function show(string $id)
     {
@@ -42,32 +73,5 @@ class CategoriaControllerAPI extends Controller
             return response()->json(['error' => 'Categoría no encontrada'], 404);
         }
         return response()->json($categoria);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $categoria = Categoria::find($id);
-        if (!$categoria) {
-            return response()->json(['error' => 'Categoría no encontrada'], 404);
-        }
-        $categoria->nombre = $request->nombre;
-        $categoria->save();
-        return response()->json($categoria);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $categoria = Categoria::find($id);
-        if (!$categoria) {
-            return response()->json(['error' => 'Categoría no encontrada'], 404);
-        }
-        $categoria->delete();
-        return response()->json(['message' => 'Categoría eliminada correctamente']);
     }
 }
