@@ -25,8 +25,6 @@
                 </tr>
             </tbody>
         </table>
-
-        
         <h2 style= "color:#ffffff;">Turnos asociados</h2>
 
         <table class="table" style= "color:#ffffff;">
