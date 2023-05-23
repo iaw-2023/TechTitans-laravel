@@ -13,6 +13,9 @@
         {
             "src": "/(.*)",
             "dest": "/api/index.php"
+        },
+        {   "src": "/img/(.*)",
+            "dest": "/img/$1"
         }
     ],
     "env": {
