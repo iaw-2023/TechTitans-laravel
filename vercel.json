@@ -19,7 +19,7 @@
         }
     ],
     "env": {
-        "APP_NAME": "Vercel Laravel IAW",
+        "APP_NAME": "Gestion DB",
         "APP_ENV": "production",
         "APP_DEBUG": "true",
         "VERCEL_DEMO_MODE": "true",
