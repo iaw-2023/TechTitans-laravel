@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
  * @OA\Info(
  *      version="1.0.0",
  *      title="API Reserva de turnos",
- *      description="Esta es la documentacion de nsdnasdkasnd.",
+ *      description="La API se podra usar para el manejo de turnos de un predio, en el que tendra varias categorias y canchas asociadas a estas. Ademas, se podra ver las reservas de los turnos y el detalle de las mismas.",
  * )
  * 
  * 
