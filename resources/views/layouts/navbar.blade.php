@@ -2,7 +2,7 @@
     <div class="container-fluid">   
       <a class="navbar-brand" href="/home">
         
-        <img src="{{ asset('img/logo.png') }}" alt="Logo" style="max-width: 40px;">
+        <img src="{{ asset('images/logo.png') }}" alt="Logo" style="max-width: 40px;">
         Gestion de los datos
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
