@@ -1,0 +1,15 @@
+@extends('layouts.plantillabase');
+
+@section('contenido')
+<h2 style= "color:#ffffff;">CREAR CATEGORIA</h2>
+
+<form action="/categorias" method="POST">  
+  @csrf
+  <div class="mb-3">
+    <label style= "color:#ffffff;" for="" class="form-label">Nombre</label>
+    <input id="nombre" name="nombre" type="text" class="form-control" tabindex="1">    
+  </div>
+  <a href="/categorias" class="btn btn-secondary" tabindex="5">Cancelar</a>
+  <button type="submit" class="btn btn-primary" tabindex="4">Guardar</button>
+</form>
+@endsection

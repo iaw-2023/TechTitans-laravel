@@ -1,0 +1,664 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Reserva de turnos",
+        "description": "La API se podra usar para el manejo de turnos de un predio, en el que tendra varias categorias y canchas asociadas a estas. Ademas, se podra ver las reservas de los turnos y el detalle de las mismas.",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/rest/canchas": {
+            "get": {
+                "tags": [
+                    "Canchas"
+                ],
+                "summary": "Obtener lista de canchas",
+                "description": "Retorna una lista de todas las canchas existentes en el sistema.",
+                "operationId": "579004ad55b8adcf56b5e484c40e250d",
+                "responses": {
+                    "200": {
+                        "description": "Lista de canchas obtenida exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": "1"
+                                            },
+                                            "nombre": {
+                                                "type": "string",
+                                                "maxLength": 50,
+                                                "example": "Nombre de la cancha",
+                                                "nullable": true
+                                            },
+                                            "precio": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": "10.5",
+                                                "nullable": true
+                                            },
+                                            "techo": {
+                                                "type": "boolean",
+                                                "example": true
+                                            },
+                                            "cant_jugadores": {
+                                                "type": "integer",
+                                                "example": 5,
+                                                "nullable": true
+                                            },
+                                            "superficie": {
+                                                "type": "string",
+                                                "example": "Césped",
+                                                "nullable": true
+                                            },
+                                            "id_categoria": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "activo": {
+                                                "type": "boolean",
+                                                "example": true
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rest/canchas/{id}": {
+            "get": {
+                "tags": [
+                    "Canchas"
+                ],
+                "summary": "Obtener detalles de una cancha",
+                "description": "Retorna los detalles de una cancha específica.",
+                "operationId": "72765ba3b9b71a76d39a50dd93c4ecfe",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la cancha a obtener.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles de la cancha obtenidos exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "nombre": {
+                                            "type": "string",
+                                            "maxLength": 50,
+                                            "example": "Nombre de la cancha",
+                                            "nullable": true
+                                        },
+                                        "precio": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": "10.5",
+                                            "nullable": true
+                                        },
+                                        "techo": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "cant_jugadores": {
+                                            "type": "integer",
+                                            "example": 5,
+                                            "nullable": true
+                                        },
+                                        "superficie": {
+                                            "type": "string",
+                                            "example": "Césped",
+                                            "nullable": true
+                                        },
+                                        "id_categoria": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "activo": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cancha no encontrada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rest/canchas/categoria/{id_categoria}": {
+            "get": {
+                "tags": [
+                    "Canchas"
+                ],
+                "summary": "Buscar canchas por categoría",
+                "description": "Retorna una lista de canchas que pertenecen a una categoría específica.",
+                "operationId": "562d2ead5424321d0a06dde6c32797c6",
+                "parameters": [
+                    {
+                        "name": "id_categoria",
+                        "in": "path",
+                        "description": "ID de la categoría para buscar las canchas.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de canchas obtenida exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": "1"
+                                            },
+                                            "nombre": {
+                                                "type": "string",
+                                                "maxLength": 50,
+                                                "example": "Nombre de la cancha",
+                                                "nullable": true
+                                            },
+                                            "precio": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": "10.5",
+                                                "nullable": true
+                                            },
+                                            "techo": {
+                                                "type": "boolean",
+                                                "example": true
+                                            },
+                                            "cant_jugadores": {
+                                                "type": "integer",
+                                                "example": 5,
+                                                "nullable": true
+                                            },
+                                            "superficie": {
+                                                "type": "string",
+                                                "example": "Césped",
+                                                "nullable": true
+                                            },
+                                            "id_categoria": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "activo": {
+                                                "type": "boolean",
+                                                "example": true
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No se encontraron canchas para la categoría indicada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rest/categorias": {
+            "get": {
+                "tags": [
+                    "Categorías"
+                ],
+                "summary": "Obtener lista de categorías",
+                "description": "Retorna una lista de todas las categorías existentes en el sistema.",
+                "operationId": "a87c22bee5615e4dc6a6675ae9d65301",
+                "responses": {
+                    "200": {
+                        "description": "Lista de categorías obtenida exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": "1"
+                                            },
+                                            "nombre": {
+                                                "type": "string",
+                                                "maxLength": 50,
+                                                "example": "Futbol",
+                                                "nullable": true
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rest/categorias/{id}": {
+            "get": {
+                "tags": [
+                    "Categorías"
+                ],
+                "summary": "Obtener detalles de una categoría",
+                "description": "Retorna los detalles de una categoría específica.",
+                "operationId": "6a927ce50f91d1950b0fbaa957dd4557",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la categoría a obtener.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles de la categoría obtenidos exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "nombre": {
+                                            "type": "string",
+                                            "maxLength": 50,
+                                            "example": "Nombre de la categoría",
+                                            "nullable": true
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-05-18 12:34:56"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-05-18 12:34:56"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Categoría no encontrada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rest/turnos": {
+            "get": {
+                "tags": [
+                    "Turnos"
+                ],
+                "summary": "Obtener todos los turnos",
+                "description": "Retorna una lista de todos los turnos.",
+                "operationId": "61f2aa704a4cbbb10c6c4cfdd6cca604",
+                "responses": {
+                    "200": {
+                        "description": "Lista de turnos obtenida exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": "1"
+                                            },
+                                            "fecha_turno": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "example": "18/05/2023"
+                                            },
+                                            "hora_turno": {
+                                                "type": "string",
+                                                "format": "time",
+                                                "example": "18:00:00"
+                                            },
+                                            "id_cancha": {
+                                                "type": "integer",
+                                                "example": 1
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rest/turnos/{id}": {
+            "get": {
+                "tags": [
+                    "Turnos"
+                ],
+                "summary": "Obtener un turno por su ID",
+                "description": "Retorna los detalles de un turno específico.",
+                "operationId": "6d029c84080727215a4eb2bf0ed06a7d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del turno a obtener.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del turno obtenidos exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "fecha_turno": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "18/05/2023"
+                                        },
+                                        "hora_turno": {
+                                            "type": "string",
+                                            "format": "time",
+                                            "example": "18:00:00"
+                                        },
+                                        "id_cancha": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Turno no encontrado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rest/turnos/cancha/{id_cancha}": {
+            "get": {
+                "tags": [
+                    "Turnos"
+                ],
+                "summary": "Buscar turnos por cancha",
+                "description": "Retorna los turnos disponibles para una cancha específica.",
+                "operationId": "084be0319afd17e7b7ebb7b0f49405f9",
+                "parameters": [
+                    {
+                        "name": "idCancha",
+                        "in": "path",
+                        "description": "ID de la cancha para buscar los turnos.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de turnos para la cancha obtenida exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": "1"
+                                            },
+                                            "fecha_turno": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "example": "18/05/2023"
+                                            },
+                                            "hora_turno": {
+                                                "type": "string",
+                                                "format": "time",
+                                                "example": "18:00:00"
+                                            },
+                                            "id_cancha": {
+                                                "type": "integer",
+                                                "example": 1
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rest/turnos/fecha/{fecha_turno}": {
+            "post": {
+                "tags": [
+                    "Turnos"
+                ],
+                "summary": "Buscar turnos por fecha",
+                "description": "Retorna los turnos disponibles para una fecha específica.",
+                "operationId": "721996a2f226d281ea169a8be9cc6990",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "fecha": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "18/05/2023"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Lista de turnos para la fecha especificada obtenida exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": "1"
+                                            },
+                                            "fecha_turno": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "example": "18/05/2023"
+                                            },
+                                            "hora_turno": {
+                                                "type": "string",
+                                                "format": "time",
+                                                "example": "18:00:00"
+                                            },
+                                            "id_cancha": {
+                                                "type": "integer",
+                                                "example": 1
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validación. La fecha proporcionada no es válida."
+                    }
+                }
+            }
+        },
+        "/rest/turnos/fecha/categoria/{fecha_turno}/{id_categoria}": {
+            "post": {
+                "tags": [
+                    "Turnos"
+                ],
+                "summary": "Buscar turnos por fecha y categoría",
+                "description": "Retorna los turnos disponibles para una fecha específica y una categoría específica de cancha.",
+                "operationId": "6c0baca03ea091c9616ceae202af4c90",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "fecha": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "18/05/2023"
+                                    },
+                                    "id_categoria": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Lista de turnos para la fecha y categoría especificadas obtenida exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": "1"
+                                            },
+                                            "fecha_turno": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "example": "18/05/2023"
+                                            },
+                                            "hora_turno": {
+                                                "type": "string",
+                                                "format": "time",
+                                                "example": "18:00:00"
+                                            },
+                                            "id_cancha": {
+                                                "type": "integer",
+                                                "example": 1
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validación. La fecha o la categoría proporcionada no son válidas."
+                    }
+                }
+            }
+        }
+    }
+}
