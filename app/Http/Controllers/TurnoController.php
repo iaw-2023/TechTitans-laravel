@@ -45,7 +45,6 @@ class TurnoController extends Controller
         return redirect('/turnos');
     }
 
-
     /**
      * Display the specified resource.
      */

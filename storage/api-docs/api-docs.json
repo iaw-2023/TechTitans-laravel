@@ -71,7 +71,7 @@
                 }
             }
         },
-        "/rest/canchas/show/{id}": {
+        "/rest/canchas/{id}": {
             "get": {
                 "tags": [
                     "Canchas"
@@ -287,7 +287,7 @@
                 }
             }
         },
-        "/rest/categorias/show/{id}": {
+        "/rest/categorias/{id}": {
             "get": {
                 "tags": [
                     "Categorías"

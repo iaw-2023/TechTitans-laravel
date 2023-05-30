@@ -34,7 +34,7 @@ class CategoriaControllerAPI extends Controller
 
     /**
      * @OA\Get(
-     *     path="/rest/categorias/show/{id}",
+     *     path="/rest/categorias/{id}",
      *     summary="Obtener detalles de una categoría",
      *     description="Retorna los detalles de una categoría específica.",
      *     tags={"Categorías"},

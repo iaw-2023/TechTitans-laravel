@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             ReservaSeeder::class,
             DetalleReservaSeeder::class,
             UserSeeder::class,
+            ClientesSeeder::class,
         ]);
     }
 }

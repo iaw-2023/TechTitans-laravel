@@ -80,7 +80,7 @@ class TurnoControllerAPI extends Controller
 
     /**
      * @OA\Get(
-     *     path="/rest/turnos/buscarPorCancha/{idCancha}",
+     *     path="/rest/turnos/cancha/{id_cancha}",
      *     summary="Buscar turnos por cancha",
      *     description="Retorna los turnos disponibles para una cancha específica.",
      *     tags={"Turnos"},
@@ -116,7 +116,7 @@ class TurnoControllerAPI extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/turnos/searchByDate",
+     *     path="/rest/turnos/fecha/{fecha_turno}",
      *     summary="Buscar turnos por fecha",
      *     description="Retorna los turnos disponibles para una fecha específica.",
      *     tags={"Turnos"},
@@ -150,13 +150,13 @@ class TurnoControllerAPI extends Controller
         $request->validate([
             'fecha' => 'required|date',
         ]);
-        $turnos = Turno::where('fecha_turno', $request->input('fecha'))->get();
+        $turnos = Turno::where('fecha_turno', $request->input('fecha_turno'))->get();
         return response()->json($turnos);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/turnos/searchByDateAndCategory",
+     *     path="/rest/turnos/fecha/categoria/{fecha_turno}/{id_categoria}",
      *     summary="Buscar turnos por fecha y categoría",
      *     description="Retorna los turnos disponibles para una fecha específica y una categoría específica de cancha.",
      *     tags={"Turnos"},

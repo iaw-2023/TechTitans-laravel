@@ -41,7 +41,7 @@ class CanchaControllerAPI extends Controller
 
     /**
      * @OA\Get(
-     *     path="/rest/canchas/show/{id}",
+     *     path="/rest/canchas/{id}",
      *     summary="Obtener detalles de una cancha",
      *     description="Retorna los detalles de una cancha específica.",
      *     tags={"Canchas"},

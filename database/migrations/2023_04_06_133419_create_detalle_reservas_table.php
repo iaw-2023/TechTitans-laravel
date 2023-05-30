@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('detalle_reservas', function (Blueprint $table) {
             $table->timestamps();
             $table->float('precio');
-             //relacion con reservas
-             $table->integer('id_reserva');
-             $table->foreign('id_reserva')->references('id')->on('reservas')->onUpdate('cascade')->onDelete('cascade');
-             //relacion con turnos
-             $table->integer('id_turno');
-             $table->foreign('id_turno')->references('id')->on('turnos')->onUpdate('cascade')->onDelete('restrict');
+            //relacion con reservas
+            $table->integer('id_reserva');
+            $table->foreign('id_reserva')->references('id')->on('reservas')->onUpdate('cascade')->onDelete('cascade');
+            //relacion con turnos
+            $table->integer('id_turno');
+            $table->foreign('id_turno')->references('id')->on('turnos')->onUpdate('cascade')->onDelete('restrict');
             $table->boolean('cancelado')->default(false);
             $table->primary('id_turno');
         });
