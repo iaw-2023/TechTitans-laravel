@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "API Reserva de turnos",
-        "description": "Esta es la documentacion de nsdnasdkasnd.",
+        "description": "La API se podra usar para el manejo de turnos de un predio, en el que tendra varias categorias y canchas asociadas a estas. Ademas, se podra ver las reservas de los turnos y el detalle de las mismas.",
         "version": "1.0.0"
     },
     "paths": {
@@ -78,7 +78,7 @@
                 ],
                 "summary": "Obtener detalles de una cancha",
                 "description": "Retorna los detalles de una cancha específica.",
-                "operationId": "f1f405f9af7d962c3c5347da5b2b9d94",
+                "operationId": "72765ba3b9b71a76d39a50dd93c4ecfe",
                 "parameters": [
                     {
                         "name": "id",
@@ -294,7 +294,7 @@
                 ],
                 "summary": "Obtener detalles de una categoría",
                 "description": "Retorna los detalles de una categoría específica.",
-                "operationId": "1726d0a1f04922cf2e3842b2dad1f081",
+                "operationId": "6a927ce50f91d1950b0fbaa957dd4557",
                 "parameters": [
                     {
                         "name": "id",
@@ -470,14 +470,14 @@
                 }
             }
         },
-        "/rest/turnos/buscarPorCancha/{idCancha}": {
+        "/rest/turnos/cancha/{id_cancha}": {
             "get": {
                 "tags": [
                     "Turnos"
                 ],
                 "summary": "Buscar turnos por cancha",
                 "description": "Retorna los turnos disponibles para una cancha específica.",
-                "operationId": "97dd56812685c3db9901efdbf3b5fdf4",
+                "operationId": "084be0319afd17e7b7ebb7b0f49405f9",
                 "parameters": [
                     {
                         "name": "idCancha",
@@ -526,14 +526,14 @@
                 }
             }
         },
-        "/api/turnos/searchByDate": {
+        "/rest/turnos/fecha/{fecha_turno}": {
             "post": {
                 "tags": [
                     "Turnos"
                 ],
                 "summary": "Buscar turnos por fecha",
                 "description": "Retorna los turnos disponibles para una fecha específica.",
-                "operationId": "d64dd3f7812396200e85957bb227b423",
+                "operationId": "721996a2f226d281ea169a8be9cc6990",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -591,14 +591,14 @@
                 }
             }
         },
-        "/api/turnos/searchByDateAndCategory": {
+        "/rest/turnos/fecha/categoria/{fecha_turno}/{id_categoria}": {
             "post": {
                 "tags": [
                     "Turnos"
                 ],
                 "summary": "Buscar turnos por fecha y categoría",
                 "description": "Retorna los turnos disponibles para una fecha específica y una categoría específica de cancha.",
-                "operationId": "602a7e7f09d3ed1e27959157e5b0ad84",
+                "operationId": "6c0baca03ea091c9616ceae202af4c90",
                 "requestBody": {
                     "required": true,
                     "content": {
