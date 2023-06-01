@@ -115,7 +115,7 @@ class TurnoControllerAPI extends Controller
     }
 
     /**
-     * @OA\Post(
+     * @OA\Get(
      *     path="/rest/turnos/fecha/{fecha_turno}",
      *     summary="Buscar turnos por fecha",
      *     description="Retorna los turnos disponibles para una fecha específica.",
@@ -145,12 +145,9 @@ class TurnoControllerAPI extends Controller
      *     )
      * )
      */
-    public function searchByDate(Request $request)
+    public function searchByDate($fecha)
     {
-        $request->validate([
-            'fecha' => 'required|date',
-        ]);
-        $turnos = Turno::where('fecha_turno', $request->input('fecha_turno'))->get();
+        $turnos = Turno::where('fecha_turno', $fecha)->get();
         return response()->json($turnos);
     }
 
@@ -186,16 +183,11 @@ class TurnoControllerAPI extends Controller
      *     )
      * )
      */
-    public function searchByDateAndCategory(Request $request)
+    public function searchByDateAndCategory($fecha, $id_categoria)
     {
-        $request->validate([
-            'fecha' => 'required|date',
-            'id_categoria' => 'required|integer|exists:categorias,id',
-        ]);
-
-        $turnos = Turno::where('fecha_turno', $request->input('fecha'))
-            ->whereHas('cancha', function ($query) use ($request) {
-                $query->where('id_categoria', $request->input('id_categoria'));
+        $turnos = Turno::where('fecha_turno', $fecha)
+            ->whereHas('cancha', function ($query) use ($id_categoria) {
+                $query->where('id_categoria', $id_categoria);
             })
             ->get();
 

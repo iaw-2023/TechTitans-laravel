@@ -31,7 +31,7 @@ Route::get('/canchas/categoria/{id_categoria}', [CanchaControllerAPI::class, 'bu
 Route::get('/turnos', [TurnoControllerAPI::class, 'index']);
 Route::get('/turnos/{id}', [TurnoControllerAPI::class, 'show']);
 Route::get('/turnos/cancha/{id_cancha}', [TurnoControllerAPI::class, 'buscarPorCancha']);
-Route::post('/turnos/fecha/{fecha_turno}', [TurnoControllerAPI::class, 'searchByDate']);
-Route::post('/turnos/fecha/categoria/{fecha_turno}/{id_categoria}', [TurnoControllerAPI::class, 'searchByDateAndCategory']);
+Route::get('/turnos/searchByDate/{fecha}', [TurnoControllerAPI::class, 'searchByDate']);
+Route::get('/turnos/fecha/categoria/{fecha}/{id_categoria}', [TurnoControllerAPI::class, 'searchByDateAndCategory']);
 
 Route::post('/reservas/alta', [ReservaControllerAPI::class, 'altaReserva']);
