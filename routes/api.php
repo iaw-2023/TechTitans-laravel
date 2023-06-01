@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\CanchaControllerAPI;
 use App\Http\Controllers\API\TurnoControllerAPI;
 use App\Http\Controllers\API\CategoriaControllerAPI;
+use App\Http\Controllers\API\ReservaControllerAPI;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,3 +33,5 @@ Route::get('/turnos/{id}', [TurnoControllerAPI::class, 'show']);
 Route::get('/turnos/cancha/{id_cancha}', [TurnoControllerAPI::class, 'buscarPorCancha']);
 Route::post('/turnos/fecha/{fecha_turno}', [TurnoControllerAPI::class, 'searchByDate']);
 Route::post('/turnos/fecha/categoria/{fecha_turno}/{id_categoria}', [TurnoControllerAPI::class, 'searchByDateAndCategory']);
+
+Route::post('/reservas/alta', [ReservaControllerAPI::class, 'altaReserva']);

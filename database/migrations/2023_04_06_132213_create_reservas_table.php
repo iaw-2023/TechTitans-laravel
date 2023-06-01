@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->date('fecha_reserva');
             $table->time('hora_reserva');
-            $table->char('email_cliente',50);
+            $table->string('email_cliente');
             $table->timestamps();
-            
         });
     }
 

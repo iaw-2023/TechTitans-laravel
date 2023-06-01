@@ -357,6 +357,74 @@
                 }
             }
         },
+        "/rest/reservas/altaReserva": {
+            "post": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Crear una nueva reserva",
+                "description": "Crea una nueva reserva para un cliente, registrando los detalles de los turnos reservados.",
+                "operationId": "7be798578f24ebc6bfe31219d9daafb5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email_cliente": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "raul@gmail.com"
+                                    },
+                                    "turnos": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id_turno": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "precio": {
+                                                    "type": "number",
+                                                    "example": 600
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "precio_total": {
+                                        "type": "number",
+                                        "example": 2600
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Reserva creada exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Reserva creada con éxito"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validación. El correo electrónico del cliente, los turnos o el precio total no son válidos."
+                    }
+                }
+            }
+        },
         "/rest/turnos": {
             "get": {
                 "tags": [
