@@ -8,8 +8,10 @@ use App\Models\DetalleReserva;
 use App\Models\Turno;
 use App\Models\Cliente;
 use App\Models\Reserva;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Http\Response;
 
 class ReservaControllerAPI extends Controller
 {
@@ -45,28 +47,37 @@ class ReservaControllerAPI extends Controller
      *     )
      * )
      */
-    public function altaReserva(Request $request){
-        $mailCliente = $request->input('email_cliente');
-        $cliente = Cliente::where('mail', $mailCliente)->first();
+    function altaReserva(Request $request)
+    {
+        $jsonData = $request->json()->all();
+        $emailCliente = $jsonData['email_cliente'];
+        $turnos = $jsonData['turnos'];
+        $precioTotal = $jsonData['precio_total'];
+        $cliente = DB::table('cliente')->where('mail', $emailCliente)->first();
         if (!$cliente) {
-            $nombre_usuario = strstr($mailCliente, '@', true);
-            $cliente = Cliente::create([
-                'nombre_usuario' => $nombre_usuario,
-                'mail' => $mailCliente,
+            DB::table('cliente')->insert([
+                'mail' => $emailCliente,
+                'nombre_usuario' => strstr($emailCliente, '@', true),
             ]);
         }
-        $reserva = new Reserva();
-        $reserva->fecha_reserva = now()->toDateString();
-        $reserva->hora_reserva = now()->toTimeString();
-        $reserva->email_cliente = $mailCliente;
-        foreach ($request->input('turnos') as $turnoData) {
-            $detalleReserva = new DetalleReserva();
-            $detalleReserva->id_reserva = $reserva->id;
-            $detalleReserva->id_turno = $turnoData['id_turno'];
-            $detalleReserva->precio = $request->input('precio_total');
-            $detalleReserva->save();
-        }
-        $reserva->save();
+        $reservaId = DB::table('reservas')->insertGetId([
+            'fecha_reserva' => now()->format('Y-m-d'),
+            'hora_reserva' => now()->format('H:i:s'),
+            'email_cliente' => $emailCliente,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        foreach ($turnos as $turno) {
+            $idTurno = $turno['id_turno'];
+            DB::table('detalle_reservas')->insert([
+                'precio' => $precioTotal,
+                'id_reserva' => $reservaId,
+                'id_turno' => $idTurno,
+                'cancelado' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }        
         return response()->json(['message' => 'Reserva creada con éxito'], 201);
     }
 
