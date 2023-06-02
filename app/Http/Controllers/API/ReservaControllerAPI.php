@@ -9,6 +9,7 @@ use App\Models\Turno;
 use App\Models\Cliente;
 use App\Models\Reserva;
 use Carbon\Carbon;
+use DateTime;
 
 class ReservaControllerAPI extends Controller
 {
@@ -45,33 +46,60 @@ class ReservaControllerAPI extends Controller
      * )
      */
     public function altaReserva(Request $request){
-        $request->validate([
-            'email_cliente' => 'required|email',
-            'turnos' => 'required|array',
-            'turnos.*.id_turno' => 'required|exists:turnos,id',
-            'turnos.*.precio' => 'required|numeric',
-            'precio_total' => 'required|numeric',
-        ]);
         $mailCliente = $request->input('email_cliente');
-        $cliente = Cliente::where('mail', $mailCliente);
+        $cliente = Cliente::where('mail', $mailCliente)->first();
         if (!$cliente) {
             $nombre_usuario = strstr($mailCliente, '@', true);
-            $cliente = new Cliente();
-            $cliente->nombre_usuario = $nombre_usuario;
-            $cliente->email = $mailCliente;
-            $cliente->save();       
+            $cliente = Cliente::create([
+                'nombre_usuario' => $nombre_usuario,
+                'mail' => $mailCliente,
+            ]);
         }
         $reserva = new Reserva();
-        $reserva->fecha_reserva = Carbon::now()->format('Y-m-d');
-        $reserva->hora_reserva = Carbon::now()->format('H:i:s');
+        $reserva->fecha_reserva = now()->toDateString();
+        $reserva->hora_reserva = now()->toTimeString();
         $reserva->email_cliente = $mailCliente;
-        $reserva->save();
-        foreach ($request->turnos as $turnoData) {
+        foreach ($request->input('turnos') as $turnoData) {
             $detalleReserva = new DetalleReserva();
             $detalleReserva->id_reserva = $reserva->id;
             $detalleReserva->id_turno = $turnoData['id_turno'];
             $detalleReserva->precio = $request->input('precio_total');
+            $detalleReserva->save();
         }
+        $reserva->save();
         return response()->json(['message' => 'Reserva creada con éxito'], 201);
     }
+
+    public function misReservas($mailCliente)
+    {
+        $cliente = Cliente::where('mail', $mailCliente)->first();
+        if (!$cliente) {
+            return response()->json(['message' => 'El cliente no existe'], 404);
+        }
+
+        $reservas = Reserva::where('email_cliente', $mailCliente)->get();
+        if ($reservas->isEmpty()) {
+            return response()->json(['message' => 'El cliente no tiene reservas'], 404);
+        }
+
+        $reservasConDetalles = [];
+        foreach ($reservas as $reserva) {
+            $detalles = DetalleReserva::where('id_reserva', $reserva->id)->get();
+            $turnos = [];
+            foreach ($detalles as $detalle) {
+                $turno = Turno::find($detalle->id_turno);
+                if ($turno) {
+                    $turnos[] = $turno;
+                }
+            }
+            $reservasConDetalles[] = [
+                'reserva' => $reserva,
+                'detalles' => $detalles,
+                'turnos' => $turnos
+            ];
+        }
+        return response()->json($reservasConDetalles, 200);
+    }
+
+
 }

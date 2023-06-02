@@ -18,4 +18,8 @@ class Reserva extends Model
     {
         return $this->hasMany(DetalleReserva::class, 'id_reserva');
     }
+
+    public function cliente() {
+        return $this->belongsTo(Cliente::class);
+    }
 }

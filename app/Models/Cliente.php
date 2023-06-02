@@ -13,6 +13,7 @@ class Cliente extends Model
         'nombre_usuario',
         'mail',
     ];
+    protected $prymaryKey = 'mail';
 
     public function reservas()
     {

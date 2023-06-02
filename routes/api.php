@@ -35,3 +35,4 @@ Route::get('/turnos/searchByDate/{fecha}', [TurnoControllerAPI::class, 'searchBy
 Route::get('/turnos/fecha/categoria/{fecha}/{id_categoria}', [TurnoControllerAPI::class, 'searchByDateAndCategory']);
 
 Route::post('/reservas/alta', [ReservaControllerAPI::class, 'altaReserva']);
+Route::get('/reservas/misReservas/{mailCliente}', [ReservaControllerAPI::class, 'misReservas']);
