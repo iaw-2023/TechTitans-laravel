@@ -30,6 +30,7 @@ Route::get('/canchas/categoria/{id_categoria}', [CanchaControllerAPI::class, 'bu
 
 Route::get('/turnos', [TurnoControllerAPI::class, 'index']);
 Route::get('/turnos/{id}', [TurnoControllerAPI::class, 'show']);
+Route::get('/turnos/categoria/{nombreCategoria}', [TurnoControllerAPI::class, 'obtenerTurnosPorCategoria']);
 Route::get('/turnos/cancha/{id_cancha}', [TurnoControllerAPI::class, 'buscarPorCancha']);
 Route::get('/turnos/searchByDate/{fecha}', [TurnoControllerAPI::class, 'searchByDate']);
 Route::get('/turnos/fecha/categoria/{fecha}/{id_categoria}', [TurnoControllerAPI::class, 'searchByDateAndCategory']);

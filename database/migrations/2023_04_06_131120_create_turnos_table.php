@@ -17,6 +17,7 @@ return new class extends Migration
             $table->time('hora_turno');
             $table->timestamps();
             $table->integer('id_cancha');
+            $table->boolean('disponible')->default(true);
             //relacion con cancha
             $table->foreign('id_cancha')->references('id')->on('canchas')->onUpdate('cascade')->onDelete('restrict');
             // Restricción única en las columnas "fecha_turno", "hora_turno" y "id_cancha"

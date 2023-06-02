@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Turno;
+use App\Models\Cancha;
+use App\Models\Categoria;
 
 class TurnoControllerAPI extends Controller
 {
@@ -34,6 +35,30 @@ class TurnoControllerAPI extends Controller
         $turnos = Turno::all();
         return response()->json($turnos);
     }
+
+    public function obtenerTurnosPorCategoria($nombreCategoria)
+    {
+        // Buscar la categoría por nombre
+        $categoria = Categoria::where('nombre', $nombreCategoria)->first();
+
+        if (!$categoria) {
+            // Si la categoría no existe, puedes retornar un mensaje de error o un código de respuesta adecuado.
+            return response()->json(['error' => 'La categoría no fue encontrada'], 404);
+        }
+
+        // Obtener todas las canchas asociadas a la categoría
+        $canchas = Cancha::where('id_categoria', $categoria->id)->get();
+
+        // Obtener los IDs de las canchas
+        $canchasIds = $canchas->pluck('id')->toArray();
+
+        // Obtener todos los turnos asociados a las canchas de la categoría
+        $turnos = Turno::whereIn('id_cancha', $canchasIds)->get();
+
+        // Retornar los turnos en formato JSON
+        return response()->json($turnos);
+    }
+
 
     /**
      * @OA\Get(
