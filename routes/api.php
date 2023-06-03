@@ -28,12 +28,13 @@ Route::get('/canchas', [CanchaControllerAPI::class, 'index']);
 Route::get('/canchas/{id}', [CanchaControllerAPI::class, 'show']);
 Route::get('/canchas/categoria/{id_categoria}', [CanchaControllerAPI::class, 'buscarPorCategoria']);
 
+Route::get('turnos/disp', [TurnoControllerAPI::class, 'turnosDisponibles']);
+Route::get('turnos/dispCat/{categoriaId}', [TurnoControllerAPI::class, 'turnosDisponiblesCategoria']);
 Route::get('/turnos', [TurnoControllerAPI::class, 'index']);
 Route::get('/turnos/{id}', [TurnoControllerAPI::class, 'show']);
-Route::get('/turnos/categoria/{nombreCategoria}', [TurnoControllerAPI::class, 'obtenerTurnosPorCategoria']);
 Route::get('/turnos/cancha/{id_cancha}', [TurnoControllerAPI::class, 'buscarPorCancha']);
 Route::get('/turnos/searchByDate/{fecha}', [TurnoControllerAPI::class, 'searchByDate']);
-Route::get('/turnos/fecha/categoria/{fecha}/{id_categoria}', [TurnoControllerAPI::class, 'searchByDateAndCategory']);
+Route::get('/turnos/fecha/cat/{fecha}/{categoriaId}', [TurnoControllerAPI::class, 'searchByDateAndCategory']);
 
 Route::post('/reservas/alta', [ReservaControllerAPI::class, 'altaReserva']);
 Route::get('/reservas/misReservas/{mailCliente}', [ReservaControllerAPI::class, 'misReservas']);

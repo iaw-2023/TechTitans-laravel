@@ -357,14 +357,14 @@
                 }
             }
         },
-        "/rest/reservas/altaReserva": {
+        "/rest/reservas/alta": {
             "post": {
                 "tags": [
                     "Reservas"
                 ],
                 "summary": "Crear una nueva reserva",
                 "description": "Crea una nueva reserva para un cliente, registrando los detalles de los turnos reservados.",
-                "operationId": "7be798578f24ebc6bfe31219d9daafb5",
+                "operationId": "e4f1c5deca273f53fecf3e144910aac2",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -463,6 +463,112 @@
                                         },
                                         "type": "object"
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rest/turnos/dispCat/{categoriaId}": {
+            "get": {
+                "tags": [
+                    "Turnos"
+                ],
+                "summary": "Obtener los turnos disponibles por categoría",
+                "description": "Retorna una lista de los turnos disponibles para una categoría específica.",
+                "operationId": "bbd8cfc42b55ffba2149b302a391945d",
+                "parameters": [
+                    {
+                        "name": "categoriaId",
+                        "in": "path",
+                        "description": "ID de la categoría",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de turnos disponibles obtenida exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "fecha_turno": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "example": "2023-05-01"
+                                            },
+                                            "hora_turno": {
+                                                "type": "string",
+                                                "format": "time",
+                                                "example": "18:00:00"
+                                            },
+                                            "cancha": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "nombre": {
+                                                        "type": "string",
+                                                        "example": "Cancha 1"
+                                                    },
+                                                    "precio": {
+                                                        "type": "number",
+                                                        "example": 3000
+                                                    },
+                                                    "techo": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    },
+                                                    "cant_jugadores": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    },
+                                                    "superficie": {
+                                                        "type": "string",
+                                                        "example": "Cemento"
+                                                    },
+                                                    "id_categoria": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "activo": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "La categoría no existe",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "La categoría no existe"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -594,14 +700,14 @@
                 }
             }
         },
-        "/rest/turnos/fecha/{fecha_turno}": {
-            "post": {
+        "/rest/turnos/fecha/{fecha}": {
+            "get": {
                 "tags": [
                     "Turnos"
                 ],
                 "summary": "Buscar turnos por fecha",
                 "description": "Retorna los turnos disponibles para una fecha específica.",
-                "operationId": "721996a2f226d281ea169a8be9cc6990",
+                "operationId": "d0229951397acb965c6b19db55dc691b",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -659,38 +765,40 @@
                 }
             }
         },
-        "/rest/turnos/fecha/categoria/{fecha_turno}/{id_categoria}": {
-            "post": {
+        "/rest/turnos/fecha/cat/{fecha}/{categoriaId}": {
+            "get": {
                 "tags": [
                     "Turnos"
                 ],
-                "summary": "Buscar turnos por fecha y categoría",
-                "description": "Retorna los turnos disponibles para una fecha específica y una categoría específica de cancha.",
-                "operationId": "6c0baca03ea091c9616ceae202af4c90",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "fecha": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "18/05/2023"
-                                    },
-                                    "id_categoria": {
-                                        "type": "integer",
-                                        "example": 1
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "summary": "Buscar turnos disponibles por fecha y categoría",
+                "description": "Retorna una lista de los turnos disponibles para una fecha y categoría específicas.",
+                "operationId": "44081f6195bac689adbd7fe7404691f7",
+                "parameters": [
+                    {
+                        "name": "fecha",
+                        "in": "path",
+                        "description": "Fecha del turno (formato: yyyy-mm-dd)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2023-05-01"
+                        }
+                    },
+                    {
+                        "name": "categoriaId",
+                        "in": "path",
+                        "description": "ID de la categoría",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
-                        "description": "Lista de turnos para la fecha y categoría especificadas obtenida exitosamente.",
+                        "description": "Lista de turnos disponibles obtenida exitosamente.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -699,21 +807,54 @@
                                         "properties": {
                                             "id": {
                                                 "type": "integer",
-                                                "example": "1"
+                                                "example": 1
                                             },
                                             "fecha_turno": {
                                                 "type": "string",
                                                 "format": "date",
-                                                "example": "18/05/2023"
+                                                "example": "2023-05-01"
                                             },
                                             "hora_turno": {
                                                 "type": "string",
                                                 "format": "time",
                                                 "example": "18:00:00"
                                             },
-                                            "id_cancha": {
-                                                "type": "integer",
-                                                "example": 1
+                                            "cancha": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "nombre": {
+                                                        "type": "string",
+                                                        "example": "Cancha 1"
+                                                    },
+                                                    "precio": {
+                                                        "type": "number",
+                                                        "example": 3000
+                                                    },
+                                                    "techo": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    },
+                                                    "cant_jugadores": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    },
+                                                    "superficie": {
+                                                        "type": "string",
+                                                        "example": "Cemento"
+                                                    },
+                                                    "id_categoria": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "activo": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    }
+                                                },
+                                                "type": "object"
                                             }
                                         },
                                         "type": "object"
@@ -722,8 +863,21 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Error de validación. La fecha o la categoría proporcionada no son válidas."
+                    "404": {
+                        "description": "La categoría no existe",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "La categoría no existe"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
