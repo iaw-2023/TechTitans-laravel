@@ -8,6 +8,7 @@ use App\Models\DetalleReserva;
 use App\Models\Turno;
 use App\Models\Cliente;
 use App\Models\Reserva;
+use App\Models\Cancha;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use DateTime;
@@ -81,6 +82,80 @@ class ReservaControllerAPI extends Controller
         return response()->json(['message' => 'Reserva creada con éxito'], 201);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/rest/reservas/misReservas/{mailCliente}",
+     *     summary="Obtener las reservas de un cliente",
+     *     description="Obtiene las reservas realizadas por un cliente junto con los detalles de los turnos y las canchas correspondientes.",
+     *     tags={"Reservas"},
+     *     @OA\Parameter(
+     *         name="mailCliente",
+     *         in="query",
+     *         description="Correo electrónico del cliente",
+     *         required=true,
+     *         @OA\Schema(type="string", format="email", example="raul@gmail.com")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Operación exitosa",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 @OA\Property(
+     *                     property="reserva",
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="fecha_reserva", type="string", format="date", example="2023-05-18"),
+     *                     @OA\Property(property="hora_reserva", type="string", format="time", example="10:00:00"),
+     *                     @OA\Property(property="email_cliente", type="string", format="email", example="raul@gmail.com")
+     *                 ),
+     *                 @OA\Property(
+     *                     property="detalle",
+     *                     type="object",
+     *                     @OA\Property(property="precio", type="number", example=600),
+     *                     @OA\Property(property="id_reserva", type="integer", example=1),
+     *                     @OA\Property(property="id_turno", type="integer", example=1),
+     *                     @OA\Property(property="cancelado", type="boolean", example=false)
+     *                 ),
+     *                 @OA\Property(
+     *                     property="turnos",
+     *                     type="array",
+     *                     @OA\Items(
+     *                         type="object",
+     *                         @OA\Property(
+     *                             property="turno",
+     *                             type="object",
+     *                             @OA\Property(property="id", type="integer", example=1),
+     *                             @OA\Property(property="fecha_turno", type="string", format="date", example="2023-05-18"),
+     *                             @OA\Property(property="hora_turno", type="string", format="time", example="10:00:00"),
+     *                             @OA\Property(property="id_cancha", type="integer", example=1)
+     *                         ),
+     *                         @OA\Property(
+     *                             property="cancha",
+     *                             type="object",
+     *                             @OA\Property(property="id", type="integer", example=1),
+     *                             @OA\Property(property="nombre", type="string", example="Cancha A"),
+     *                             @OA\Property(property="precio", type="number", example=1000),
+     *                             @OA\Property(property="techo", type="boolean", example=true),
+     *                             @OA\Property(property="cant_jugadores", type="integer", example=6),
+     *                             @OA\Property(property="superficie", type="string", example="Césped"),
+     *                             @OA\Property(property="id_categoria", type="integer", example=1),
+     *                             @OA\Property(property="activo", type="boolean", example=true)
+     *                         )
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Cliente no encontrado o sin reservas",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="El cliente no existe o no tiene reservas")
+     *         )
+     *     )
+     * )
+     */
     public function misReservas($mailCliente)
     {
         $cliente = Cliente::where('mail', $mailCliente)->first();
@@ -96,21 +171,16 @@ class ReservaControllerAPI extends Controller
         $reservasConDetalles = [];
         foreach ($reservas as $reserva) {
             $detalles = DetalleReserva::where('id_reserva', $reserva->id)->get();
-            $turnos = [];
+            $detallesConTurnos = [];
             foreach ($detalles as $detalle) {
                 $turno = Turno::find($detalle->id_turno);
                 if ($turno) {
-                    $turnos[] = $turno;
+                    $cancha = Cancha::find($turno->id_cancha);
+                    $detallesConTurnos[] = [$turno, $cancha];
                 }
             }
-            $reservasConDetalles[] = [
-                'reserva' => $reserva,
-                'detalles' => $detalles,
-                'turnos' => $turnos
-            ];
+            $reservasConDetalles[] = [$reserva, $detalle, $detallesConTurnos];
         }
         return response()->json($reservasConDetalles, 200);
     }
-
-
 }

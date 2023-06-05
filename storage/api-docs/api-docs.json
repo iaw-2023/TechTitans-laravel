@@ -425,6 +425,175 @@
                 }
             }
         },
+        "/rest/reservas/misReservas/{mailCliente}": {
+            "get": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Obtener las reservas de un cliente",
+                "description": "Obtiene las reservas realizadas por un cliente junto con los detalles de los turnos y las canchas correspondientes.",
+                "operationId": "0cc3de65643c97d156de65ed30a118bd",
+                "parameters": [
+                    {
+                        "name": "mailCliente",
+                        "in": "query",
+                        "description": "Correo electrónico del cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "example": "raul@gmail.com"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "reserva": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "fecha_reserva": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2023-05-18"
+                                                    },
+                                                    "hora_reserva": {
+                                                        "type": "string",
+                                                        "format": "time",
+                                                        "example": "10:00:00"
+                                                    },
+                                                    "email_cliente": {
+                                                        "type": "string",
+                                                        "format": "email",
+                                                        "example": "raul@gmail.com"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "detalle": {
+                                                "properties": {
+                                                    "precio": {
+                                                        "type": "number",
+                                                        "example": 600
+                                                    },
+                                                    "id_reserva": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "id_turno": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "cancelado": {
+                                                        "type": "boolean",
+                                                        "example": false
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "turnos": {
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "turno": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                },
+                                                                "fecha_turno": {
+                                                                    "type": "string",
+                                                                    "format": "date",
+                                                                    "example": "2023-05-18"
+                                                                },
+                                                                "hora_turno": {
+                                                                    "type": "string",
+                                                                    "format": "time",
+                                                                    "example": "10:00:00"
+                                                                },
+                                                                "id_cancha": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "cancha": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                },
+                                                                "nombre": {
+                                                                    "type": "string",
+                                                                    "example": "Cancha A"
+                                                                },
+                                                                "precio": {
+                                                                    "type": "number",
+                                                                    "example": 1000
+                                                                },
+                                                                "techo": {
+                                                                    "type": "boolean",
+                                                                    "example": true
+                                                                },
+                                                                "cant_jugadores": {
+                                                                    "type": "integer",
+                                                                    "example": 6
+                                                                },
+                                                                "superficie": {
+                                                                    "type": "string",
+                                                                    "example": "Césped"
+                                                                },
+                                                                "id_categoria": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                },
+                                                                "activo": {
+                                                                    "type": "boolean",
+                                                                    "example": true
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cliente no encontrado o sin reservas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El cliente no existe o no tiene reservas"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/rest/turnos": {
             "get": {
                 "tags": [
