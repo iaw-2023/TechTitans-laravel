@@ -8,7 +8,6 @@ use App\Models\DetalleReserva;
 use App\Models\Turno;
 use App\Models\Cliente;
 use App\Models\Reserva;
-use App\Models\Cancha;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use DateTime;
@@ -81,4 +80,37 @@ class ReservaControllerAPI extends Controller
         }        
         return response()->json(['message' => 'Reserva creada con éxito'], 201);
     }
+
+    public function misReservas($mailCliente)
+    {
+        $cliente = Cliente::where('mail', $mailCliente)->first();
+        if (!$cliente) {
+            return response()->json(['message' => 'El cliente no existe'], 404);
+        }
+
+        $reservas = Reserva::where('email_cliente', $mailCliente)->get();
+        if ($reservas->isEmpty()) {
+            return response()->json(['message' => 'El cliente no tiene reservas'], 404);
+        }
+
+        $reservasConDetalles = [];
+        foreach ($reservas as $reserva) {
+            $detalles = DetalleReserva::where('id_reserva', $reserva->id)->get();
+            $turnos = [];
+            foreach ($detalles as $detalle) {
+                $turno = Turno::find($detalle->id_turno);
+                if ($turno) {
+                    $turnos[] = $turno;
+                }
+            }
+            $reservasConDetalles[] = [
+                'reserva' => $reserva,
+                'detalles' => $detalles,
+                'turnos' => $turnos
+            ];
+        }
+        return response()->json($reservasConDetalles, 200);
+    }
+
+
 }
