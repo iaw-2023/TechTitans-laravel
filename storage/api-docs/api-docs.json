@@ -813,62 +813,6 @@
                 }
             }
         },
-        "/rest/turnos/cancha/{id_cancha}": {
-            "get": {
-                "tags": [
-                    "Turnos"
-                ],
-                "summary": "Buscar turnos por cancha",
-                "description": "Retorna los turnos disponibles para una cancha específica.",
-                "operationId": "084be0319afd17e7b7ebb7b0f49405f9",
-                "parameters": [
-                    {
-                        "name": "idCancha",
-                        "in": "path",
-                        "description": "ID de la cancha para buscar los turnos.",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Lista de turnos para la cancha obtenida exitosamente.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": "1"
-                                            },
-                                            "fecha_turno": {
-                                                "type": "string",
-                                                "format": "date",
-                                                "example": "18/05/2023"
-                                            },
-                                            "hora_turno": {
-                                                "type": "string",
-                                                "format": "time",
-                                                "example": "18:00:00"
-                                            },
-                                            "id_cancha": {
-                                                "type": "integer",
-                                                "example": 1
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/rest/turnos/fecha/{fecha}": {
             "get": {
                 "tags": [

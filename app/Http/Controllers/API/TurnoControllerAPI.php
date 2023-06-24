@@ -148,41 +148,6 @@ class TurnoControllerAPI extends Controller
         return response()->json($turno);
     }
 
-    /**
-     * @OA\Get(
-     *     path="/rest/turnos/cancha/{id_cancha}",
-     *     summary="Buscar turnos por cancha",
-     *     description="Retorna los turnos disponibles para una cancha específica.",
-     *     tags={"Turnos"},
-     *     @OA\Parameter(
-     *         name="idCancha",
-     *         in="path",
-     *         description="ID de la cancha para buscar los turnos.",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Lista de turnos para la cancha obtenida exitosamente.",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(
-     *                 @OA\Property(property="id", type="integer", example="1"),
-     *                 @OA\Property(property="fecha_turno", type="string", format="date", example="18/05/2023"),
-     *                 @OA\Property(property="hora_turno", type="string", format="time", example="18:00:00"),
-     *                 @OA\Property(property="id_cancha", type="integer", example=1)
-     *             )
-     *         )
-     *     )
-     * )
-     */
-    public function buscarPorCancha(int $idCancha)
-    {
-        $turnos = Turno::where('id_cancha', $idCancha)->get();
-        return response()->json($turnos);
-    }
 
     /**
      * @OA\Get(
