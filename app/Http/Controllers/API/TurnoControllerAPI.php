@@ -149,17 +149,16 @@ class TurnoControllerAPI extends Controller
         return response()->json($turnosSinReservas);
     }
 
-
     /**
      * @OA\Get(
      *     path="/rest/turnos/{id}",
-     *     summary="Obtener un turno por su ID",
-     *     description="Retorna los detalles de un turno específico.",
+     *     summary="Obtener un turno por ID",
+     *     description="Retorna la información de un turno específico por su ID, incluyendo la información de la cancha asociada.",
      *     tags={"Turnos"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
-     *         description="ID del turno a obtener.",
+     *         description="ID del turno",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -167,32 +166,42 @@ class TurnoControllerAPI extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Detalles del turno obtenidos exitosamente.",
+     *         description="Turno encontrado y devuelto exitosamente.",
      *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example="1"),
-     *             @OA\Property(property="fecha_turno", type="string", format="date", example="18/05/2023"),
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="fecha_turno", type="string", format="date", example="2023-05-01"),
      *             @OA\Property(property="hora_turno", type="string", format="time", example="18:00:00"),
-     *             @OA\Property(property="id_cancha", type="integer", example=1)
+     *             @OA\Property(
+     *                 property="cancha",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="nombre", type="string", example="Cancha 1"),
+     *                 @OA\Property(property="precio", type="number", example=3000),
+     *                 @OA\Property(property="techo", type="boolean", example=true),
+     *                 @OA\Property(property="cant_jugadores", type="integer", example=4),
+     *                 @OA\Property(property="superficie", type="string", example="Cemento"),
+     *                 @OA\Property(property="id_categoria", type="integer", example=1),
+     *                 @OA\Property(property="activo", type="boolean", example=true)
+     *             )
      *         )
      *     ),
      *     @OA\Response(
      *         response=404,
      *         description="Turno no encontrado.",
      *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="string")
+     *             @OA\Property(property="error", type="string", example="Turno no encontrado")
      *         )
      *     )
      * )
      */
     public function show(string $id)
     {
-        $turno = Turno::find($id);
+        $turno = Turno::with('cancha')->find($id);
         if (!$turno) {
             return response()->json(['error' => 'Turno no encontrado'], 404);
         }
         return response()->json($turno);
     }
-
 
     /**
      * @OA\Get(

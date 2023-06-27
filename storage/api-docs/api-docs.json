@@ -828,14 +828,14 @@
                 "tags": [
                     "Turnos"
                 ],
-                "summary": "Obtener un turno por su ID",
-                "description": "Retorna los detalles de un turno específico.",
+                "summary": "Obtener un turno por ID",
+                "description": "Retorna la información de un turno específico por su ID, incluyendo la información de la cancha asociada.",
                 "operationId": "6d029c84080727215a4eb2bf0ed06a7d",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID del turno a obtener.",
+                        "description": "ID del turno",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -844,28 +844,61 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Detalles del turno obtenidos exitosamente.",
+                        "description": "Turno encontrado y devuelto exitosamente.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "id": {
                                             "type": "integer",
-                                            "example": "1"
+                                            "example": 1
                                         },
                                         "fecha_turno": {
                                             "type": "string",
                                             "format": "date",
-                                            "example": "18/05/2023"
+                                            "example": "2023-05-01"
                                         },
                                         "hora_turno": {
                                             "type": "string",
                                             "format": "time",
                                             "example": "18:00:00"
                                         },
-                                        "id_cancha": {
-                                            "type": "integer",
-                                            "example": 1
+                                        "cancha": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nombre": {
+                                                    "type": "string",
+                                                    "example": "Cancha 1"
+                                                },
+                                                "precio": {
+                                                    "type": "number",
+                                                    "example": 3000
+                                                },
+                                                "techo": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "cant_jugadores": {
+                                                    "type": "integer",
+                                                    "example": 4
+                                                },
+                                                "superficie": {
+                                                    "type": "string",
+                                                    "example": "Cemento"
+                                                },
+                                                "id_categoria": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "activo": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -880,7 +913,8 @@
                                 "schema": {
                                     "properties": {
                                         "error": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "Turno no encontrado"
                                         }
                                     },
                                     "type": "object"
