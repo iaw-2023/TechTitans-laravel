@@ -109,8 +109,7 @@ class ReservaControllerAPI extends Controller
         }
         $requestData = [
             'email' => $emailCliente,
-            'detalleReserva' => $detalle,
-            'order_price' => $detallesReserva->precio,
+            'detalleReserva' => $detalle
         ];
         $request = App::make('request');
         $request->merge($requestData);
