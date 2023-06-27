@@ -4,11 +4,14 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 use App\Models\DetalleReserva;
 use App\Models\Turno;
 use App\Models\Cliente;
 use App\Models\Reserva;
+use App\Models\Categoria;
 use App\Models\Cancha;
+use App\Http\Controllers\EmailController;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use DateTime;
@@ -71,7 +74,6 @@ class ReservaControllerAPI extends Controller
         foreach ($turnos as $turno) {
             $idTurno = $turno['id_turno'];
             $turnoExistente = DB::table('turnos')->where('id', $idTurno)->first();
-            
             DB::table('detalle_reservas')->insert([
                 'precio' => $precioTotal,
                 'id_reserva' => $reservaId,
@@ -80,8 +82,39 @@ class ReservaControllerAPI extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-        }        
+        }    
+        $this->enviarEmail($emailCliente, $reservaId);
         return response()->json(['message' => 'Reserva creada con éxito'], 201);
+    }
+
+    private function enviarEmail($emailCliente, $reservaId) {
+        $emailController = new EmailController();
+        $detallesReserva = DetalleReserva::select('id_turno', 'id_reserva', 'precio')->where('id_reserva', $reservaId)->get();
+        $detalle = [];
+        foreach ($detallesReserva as $detalleReserva) {
+            $turno = Turno::find($detalleReserva->id_turno);
+            $cancha = Cancha::find($turno->id_cancha);
+            $categoria = Categoria::find($cancha->id_categoria);
+            $detalle[] = [
+                'categoria' => $categoria->nombre,
+                'fecha' => $turno->fecha_turno,
+                'hora' => $turno->hora_turno,
+                'nombre_cancha' => $cancha->nombre,
+                'precio' => $cancha->precio,
+                'techo' => $cancha->techo,
+                'cant_jugadores' => $cancha->cant_jugadores,
+                'superficie' => $cancha->superficie,
+                'precio_total' => $detallesReserva->precio
+            ];
+        }
+        $requestData = [
+            'email' => $emailCliente,
+            'detalleReserva' => $detalle,
+            'order_price' => $detallesReserva->precio,
+        ];
+        $request = App::make('request');
+        $request->merge($requestData);
+        $emailController->sendEmail($request);
     }
 
     /**
