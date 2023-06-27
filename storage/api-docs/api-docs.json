@@ -745,6 +745,84 @@
                 }
             }
         },
+        "/rest/turnos/dispCat": {
+            "get": {
+                "tags": [
+                    "Turnos"
+                ],
+                "summary": "Obtener todos los turnos disponibles",
+                "description": "Retorna una lista de todos los turnos disponibles.",
+                "operationId": "2f464cbea9374e7029188f31b6cc69b6",
+                "responses": {
+                    "200": {
+                        "description": "Lista de turnos disponibles obtenida exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "fecha_turno": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "example": "2023-05-01"
+                                            },
+                                            "hora_turno": {
+                                                "type": "string",
+                                                "format": "time",
+                                                "example": "18:00:00"
+                                            },
+                                            "cancha": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "nombre": {
+                                                        "type": "string",
+                                                        "example": "Cancha 1"
+                                                    },
+                                                    "precio": {
+                                                        "type": "number",
+                                                        "example": 3000
+                                                    },
+                                                    "techo": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    },
+                                                    "cant_jugadores": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    },
+                                                    "superficie": {
+                                                        "type": "string",
+                                                        "example": "Cemento"
+                                                    },
+                                                    "id_categoria": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "activo": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/rest/turnos/{id}": {
             "get": {
                 "tags": [
