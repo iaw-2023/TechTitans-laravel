@@ -101,9 +101,54 @@ class TurnoControllerAPI extends Controller
             })
             ->with('cancha')
             ->get();
-
         return response()->json($turnosSinReservas);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/rest/turnos/dispCat",
+     *     summary="Obtener todos los turnos disponibles",
+     *     description="Retorna una lista de todos los turnos disponibles.",
+     *     tags={"Turnos"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de turnos disponibles obtenida exitosamente.",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="fecha_turno", type="string", format="date", example="2023-05-01"),
+     *                 @OA\Property(property="hora_turno", type="string", format="time", example="18:00:00"),
+     *                 @OA\Property(
+     *                     property="cancha",
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="nombre", type="string", example="Cancha 1"),
+     *                     @OA\Property(property="precio", type="number", example=3000),
+     *                     @OA\Property(property="techo", type="boolean", example=true),
+     *                     @OA\Property(property="cant_jugadores", type="integer", example=4),
+     *                     @OA\Property(property="superficie", type="string", example="Cemento"),
+     *                     @OA\Property(property="id_categoria", type="integer", example=1),
+     *                     @OA\Property(property="activo", type="boolean", example=true)
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function turnosDisponibles()
+    {
+        $canchasIds = Cancha::pluck('id')->toArray();
+        $turnosSinReservas = Turno::whereIn('id_cancha', $canchasIds)
+            ->whereNotIn('id', function ($query) {
+                $query->select('id_turno')
+                    ->from('detalle_reservas');
+            })
+            ->with('cancha')
+            ->get();
+        return response()->json($turnosSinReservas);
+    }
+
 
     /**
      * @OA\Get(
