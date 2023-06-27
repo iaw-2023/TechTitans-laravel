@@ -71,9 +71,7 @@ class ReservaControllerAPI extends Controller
         foreach ($turnos as $turno) {
             $idTurno = $turno['id_turno'];
             $turnoExistente = DB::table('turnos')->where('id', $idTurno)->first();
-            if ($turnoExistente) {
-                return response()->json(['message' => 'El turno ya existe'], 400);
-            }
+            
             DB::table('detalle_reservas')->insert([
                 'precio' => $precioTotal,
                 'id_reserva' => $reservaId,
