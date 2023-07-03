@@ -10,7 +10,12 @@ class DetalleReserva extends Model
     use HasFactory;
     protected $primaryKey = 'id_turno';
     protected $table = 'detalle_reservas';
-    
+    protected $fillable = [
+        'precio',
+        'id_reserva',
+        'id_turno',
+    ];
+
     public function reserva()
     {
         return $this->hasOne(Reserva::class, 'id_reserva');

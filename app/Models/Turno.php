@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Turno extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'id',
+    ];
+
     public function cancha()
     {
         return $this->belongsTo(Cancha::class, 'id_cancha');
