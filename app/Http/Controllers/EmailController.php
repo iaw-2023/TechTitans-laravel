@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendEmail;
-use App\Models\Turno;
 
 class EmailController extends Controller
 {
@@ -17,8 +15,8 @@ class EmailController extends Controller
             
         $data = [
             'email' => $request->input('email'),
-            'orderDetails' => $request->input('orderDetails'),
-            'order_price' => $request->input('order_price'),
+            'detalleReserva' => $request->input('detalleReserva'),
+            'precio_total' => $request->input('precio_total'),
         ];
 
         Mail::to($client_email)->send(new SendEmail($data));

@@ -91,6 +91,7 @@ class ReservaControllerAPI extends Controller
         $emailController = new EmailController();
         $detallesReserva = DetalleReserva::select('id_turno', 'id_reserva', 'precio')->where('id_reserva', $reservaId)->get();
         $detalle = [];
+        $precioTotal = 0;
         foreach ($detallesReserva as $detalleReserva) {
             $turno = Turno::find($detalleReserva->id_turno);
             $cancha = Cancha::find($turno->id_cancha);
@@ -104,18 +105,19 @@ class ReservaControllerAPI extends Controller
                 'techo' => $cancha->techo,
                 'cant_jugadores' => $cancha->cant_jugadores,
                 'superficie' => $cancha->superficie,
-                'precio_total' => $detallesReserva->precio
+                'precio_total' => $detalleReserva->precio
             ];
+            $precioTotal = $detalleReserva->precio;
         }
         $requestData = [
             'email' => $emailCliente,
-            'detalleReserva' => $detalle
+            'detalleReserva' => $detalle,
+            'precio_total' => $precioTotal
         ];
-        $request = App::make('request');
-        $request->merge($requestData);
+        $request = Request::create('', 'POST', $requestData);
         $emailController->sendEmail($request);
     }
-
+    
     /**
      * @OA\Get(
      *     path="/rest/reservas/misReservas/{mailCliente}",
