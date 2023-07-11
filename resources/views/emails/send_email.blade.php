@@ -4,7 +4,6 @@
     <title>¡Mira el detalle de la reserva realizada!</title>
 </head>
 <body>
-    <img src="{{ asset('/images/logo.png') }}" alt="Icono de correo electrónico">
     <h2>Detalle de la reserva:</h2>
     <ul>
         @foreach ($data['detalleReserva'] as $detalle)
@@ -20,7 +19,8 @@
             </li>
         @endforeach
     </ul>
-
     <strong><h3>Precio total: ${{ $data['precio_total'] }}</h3></strong>
+
+    No contestar este mail<br>
 </body>
 </html>
