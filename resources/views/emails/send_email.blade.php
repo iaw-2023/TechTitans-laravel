@@ -4,14 +4,12 @@
     <title>¡Mira el detalle de la reserva realizada!</title>
 </head>
 <body>
-    <img src="{{ asset('images/logo.png') }}" alt="Icono de correo electrónico">
-    
     <h2>Detalle de la reserva:</h2>
     <ul>
         @foreach ($data['detalleReserva'] as $detalle)
             <li>
                 <strong>Categoría:</strong> {{ $detalle['categoria'] }}<br>
-                <strong>Fecha:</strong> {{ $detalle['fecha']->format('d/m/Y') }}<br>
+                <strong>Fecha:</strong> {{ $detalle['fecha'] }}<br>
                 <strong>Hora:</strong> {{ $detalle['hora'] }}<br>
                 <strong>Nombre de la cancha:</strong> {{ $detalle['nombre_cancha'] }}<br>
                 <strong>Precio:</strong> {{ $detalle['precio'] }}<br>
