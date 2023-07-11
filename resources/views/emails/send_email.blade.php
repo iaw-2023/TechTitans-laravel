@@ -8,15 +8,14 @@
     <ul>
         @foreach ($data['detalleReserva'] as $detalle)
             <li>
-                <strong>Categoría:</strong> {{ $detalle['categoria'] }}<br>
                 <strong>Fecha:</strong> {{ $detalle['fecha'] }}<br>
                 <strong>Hora:</strong> {{ $detalle['hora'] }}<br>
-                <strong>Nombre de la cancha:</strong> {{ $detalle['nombre_cancha'] }}<br>
-                <strong>Precio:</strong> {{ $detalle['precio'] }}<br>
-                <strong>Techo:</strong> {{ $detalle['techo'] }}<br>
+                <strong>Categoría:</strong> {{ $detalle['categoria'] }}<br>
+                <strong> {{ $detalle['nombre_cancha'] }}<br></strong>
                 <strong>Cantidad de jugadores:</strong> {{ $detalle['cant_jugadores'] }}<br>
+                <strong>Techo:</strong> {{ $detalle['techo'] ? 'Si' : 'No'}}<br>
                 <strong>Superficie:</strong> {{ $detalle['superficie'] }}<br>
-                <strong>Precio total:</strong> {{ $detalle['precio_total'] }}
+                <strong>Precio:</strong> ${{ $detalle['precio'] }}<br>
             </li>
         @endforeach
     </ul>
