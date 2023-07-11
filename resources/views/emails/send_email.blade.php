@@ -4,6 +4,7 @@
     <title>¡Mira el detalle de la reserva realizada!</title>
 </head>
 <body>
+    <img src="{{ asset('/images/logo.png') }}" alt="Icono de correo electrónico">
     <h2>Detalle de la reserva:</h2>
     <ul>
         @foreach ($data['detalleReserva'] as $detalle)
@@ -20,6 +21,6 @@
         @endforeach
     </ul>
 
-    <p>Precio total: ${{ $data['precio_total'] }}</p>
+    <strong><h3>Precio total: ${{ $data['precio_total'] }}</h3></strong>
 </body>
 </html>
