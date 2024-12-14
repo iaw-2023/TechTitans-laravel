@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('fecha_reserva');
             $table->time('hora_reserva');
             $table->string('email_cliente');
+            $table->enum('estado', ['Pendiente', 'Aceptado', 'Rechazado'])->default('Pendiente');
             $table->timestamps();
         });
     }

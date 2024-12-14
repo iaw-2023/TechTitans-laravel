@@ -14,6 +14,7 @@
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Email del Cliente</th>
+                    <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,6 +23,7 @@
                     <td>{{ $reserva->fecha_reserva }}</td>
                     <td>{{ $reserva->hora_reserva }}</td>
                     <td>{{ $reserva->email_cliente }}</td>
+                    <td>{{ $reserva->estado }}</td>
                 </tr>
             </tbody>
         </table>

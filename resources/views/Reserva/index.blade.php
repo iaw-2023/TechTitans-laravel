@@ -12,6 +12,7 @@
                 <th scope="col">Fecha</th>
                 <th scope="col">Hora</th>
                 <th scope="col">Email del cliente</th>
+                <th scope="col">Estado</th>
                 <th scope="col">Detalle</th>
             </tr>
         </thead>
@@ -21,6 +22,7 @@
                     <td>{{$reserva->fecha_reserva}}</td>
                     <td>{{$reserva->hora_reserva}}</td>
                     <td>{{$reserva->email_cliente}}</td>
+                    <td>{{$reserva->estado}}</td>
                     <td>
                         <form method="GET">
                             <a href="/reservas/show/{{$reserva->id}}" class="btn btn-primary">Ver detalle</a>         

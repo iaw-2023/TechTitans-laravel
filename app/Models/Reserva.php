@@ -12,6 +12,7 @@ class Reserva extends Model
         'fecha_reserva',
         'hora_reserva',
         'email_cliente',
+        'estado',
     ];
 
     public function detalle_reserva()
