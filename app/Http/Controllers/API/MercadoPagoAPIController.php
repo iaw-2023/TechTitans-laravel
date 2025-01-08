@@ -31,37 +31,62 @@ class MercadoPagoAPIController extends Controller
                 return response()->json(['preference_id' => $reserva->preference_id], 200);
             }
 
-            $items = array();
+            $items = [];
             $detalles = $reserva->detalle_reserva()->get();
             Log::info('Detalles de la reserva: ', $detalles->toArray());
 
             foreach ($detalles as $detalle) {
-                $turno = Turno::find($detalle->id_turno); // Busca el turno correspondiente
-                $cancha = Cancha::find($turno->id_cancha); // Busca la cancha asociada
-            
+                $turno = Turno::find($detalle->id_turno);
+                $cancha = Cancha::find($turno->id_cancha);
+
+                $unit_price = max((float)$detalle->precio, 10.0); // Asegura un precio mínimo
+                Log::info('Procesando ítem: Turno ID ' . $detalle->id_turno . ', Precio: ' . $unit_price);
+
                 $item = new \MercadoPago\Item();
-                $item->title = "Reserva de Cancha - " . $cancha->nombre; // Nombre del item
-                $item->description = "Turno: " . $turno->hora_turno . " | Fecha: " . $turno->fecha_turno; // Detalle del turno
-                $item->quantity = 1; // Siempre es 1, ya que son turnos individuales
-                $item->unit_price = (float) $detalle->precio; // Asegúrate de usar el precio correcto
-                $item->currency_id = "ARS"; // Moneda
-            
+                $item->title = "Reserva de Cancha - " . $cancha->nombre;
+                $item->description = "Turno: " . $turno->hora_turno . " | Fecha: " . $turno->fecha_turno;
+                $item->quantity = 1;
+                $item->unit_price = $unit_price;
+                $item->currency_id = "ARS";
+
                 $items[] = $item;
             }
 
             $preference = new Preference();
             $preference->items = $items;
             $preference->back_urls = [
-                "success" => "http://localhost:3000/",
-                "pending" => "http://localhost:3000/pending",
-                "failure" => "http://localhost:3000/failure"
+                "success" => "https://www.youtube.com/",
+                "pending" => "https://www.youtube.com/",
+                "failure" => "https://www.youtube.com/"
             ];
             $preference->auto_return = "approved";
             $preference->external_reference = $reserva_id;
-            $preference->notification_url = "http://localhost:8000/api/mercadopago/notify?source_news=ipn";
+            $preference->notification_url = "https://www.youtube.com/";
+
+
+            Log::info('Datos enviados a MercadoPago: ', (array)$preference);
+
+            Log::info('Guardando preferencia en MercadoPago...');
             $preference->save();
 
-            Log::info('Preferencia creada: ', (array) $preference);
+            // Validar respuesta de MercadoPago
+            if (isset($preference->error)) {
+                Log::error('Error devuelto por MercadoPago: ', (array)$preference->error);
+                throw new \Exception('Error de MercadoPago: ' . json_encode($preference->error));
+            }
+
+            Log::info('Respuesta de MercadoPago tras guardar la preferencia: ', (array)$preference);
+
+            // Consultar detalles adicionales de la preferencia
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('MP_TOKEN'),
+            ])->get('https://api.mercadopago.com/checkout/preferences/' . $preference->id);
+
+            Log::info('Detalles de la preferencia consultada desde MercadoPago:', $response->json());
+
+            if (!isset($preference->id)) {
+                throw new \Exception('No se recibió un ID de preferencia de MercadoPago');
+            }
 
             $reserva->preference_id = $preference->id;
             $reserva->save();
@@ -71,6 +96,7 @@ class MercadoPagoAPIController extends Controller
             return response()->json(['preference_id' => $preference->id], 200);
         } catch (\Exception $e) {
             Log::error('Error al crear la preferencia: ' . $e->getMessage());
+            Log::error('Detalles del error: ', $e->getTrace());
             return response()->json(['message' => 'Excepción', 'error' => $e->getMessage()], 400);
         }
     }
@@ -124,18 +150,28 @@ class MercadoPagoAPIController extends Controller
 
     private function asignarEstado(Reserva $reserva, $nuevoEstado)
     {
-        $movimientos = $reserva->movimientosReserva()->get();
-        $asignar = true;
-        foreach ($movimientos as $movimiento) {
-            if ($movimiento->estado == $nuevoEstado) {
-                $asignar = false;
-                break;
-            }
-        }
-        if ($asignar) {
+        if ($reserva->estado !== $nuevoEstado) {
             $reserva->estado = $nuevoEstado;
+            $reserva->updated_at = now();
             $reserva->save();
-            Log::info('Estado asignado a la reserva: ' . $nuevoEstado);
+
+            Log::info('Estado actualizado para la reserva ID: ' . $reserva->id . ' - Nuevo estado: ' . $nuevoEstado);
+        } else {
+            Log::info('El estado de la reserva ID: ' . $reserva->id . ' ya es: ' . $nuevoEstado);
+        }
+        $this->actualizarDetallesReserva($reserva, $nuevoEstado);
+    }
+
+    private function actualizarDetallesReserva(Reserva $reserva, $nuevoEstado)
+    {
+        if ($nuevoEstado === 'Aceptado') {
+            $detalles = DetalleReserva::where('id_reserva', $reserva->id)->get();
+
+            foreach ($detalles as $detalle) {
+                $detalle->updated_at = now();
+                $detalle->save();
+                Log::info('Detalle de reserva actualizado - ID Detalle: ' . $detalle->id . ' | Confirmado: true');
+            }
         }
     }
 }
