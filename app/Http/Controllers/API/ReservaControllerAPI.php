@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\App;
 use App\Models\DetalleReserva;
 use App\Models\Turno;
 use App\Models\Cliente;
@@ -13,9 +12,7 @@ use App\Models\Categoria;
 use App\Models\Cancha;
 use App\Http\Controllers\EmailController;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-use DateTime;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class ReservaControllerAPI extends Controller
 {
@@ -73,18 +70,34 @@ class ReservaControllerAPI extends Controller
         ]);
         foreach ($turnos as $turno) {
             $idTurno = $turno['id_turno'];
+            $precio = $turno['precio'];
             $turnoExistente = DB::table('turnos')->where('id', $idTurno)->first();
             DB::table('detalle_reservas')->insert([
-                'precio' => $precioTotal,
+                'precio' => $precio,
                 'id_reserva' => $reservaId,
                 'id_turno' => $idTurno,
                 'cancelado' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-        }    
+        }
+        // Procedimiento de MercadoPago
+        $mercadoPagoController = new MercadoPagoAPIController();
+        $preferenceResponse = $mercadoPagoController->createPreference($request, $reservaId);
+
+        if ($preferenceResponse->getStatusCode() != 200) {
+            return response()->json(['message' => 'Error al crear la preferencia de MercadoPago'], 500);
+        }
+        $preferenceData = $preferenceResponse->getData();
+        Log::info('Respuesta de Mercado Pago:', (array) $preferenceResponse->getData());
+
+        // Envío de email    
         $this->enviarEmail($emailCliente, $reservaId);
-        return response()->json(['message' => 'Reserva creada con éxito'], 201);
+        
+        return response()->json([
+            'message' => 'Reserva creada con éxito',
+            'preference_id' => $preferenceData->preference_id,
+        ], 201);
     }
 
     private function enviarEmail($emailCliente, $reservaId) {
