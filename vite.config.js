@@ -9,7 +9,8 @@ export default defineConfig({
         }),
     ],
     build: {
-        outDir: 'public/build', // Directorio de salida para los archivos compilados
-        emptyOutDir: true, // Limpia el directorio antes de compilar
+        outDir: 'public/build',
+        emptyOutDir: true,
+        manifest: true,
     },
 });
