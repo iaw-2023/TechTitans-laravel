@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\View;
 class EmailController extends Controller
 {
     public function sendEmail(Request $request){
-        $apikey =  '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';
+        $apikey =  env('BREVO_API_KEY');
         
         $data = [
             'detalleReserva' => $request->input('detalleReserva'),
