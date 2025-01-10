@@ -2,21 +2,13 @@
     "version": 2,
     "functions": {
         "api/index.php": { 
-            "runtime": "vercel-php@0.6.0" 
+            "runtime": "vercel-php@0.7.3" 
         }
     },
     "routes": [
-        {   "src": "/images/(.*)",
-            "dest": "/images/$1"
-        },
-        {
-            "src": "/build/(.*)",
-            "dest": "/build/$1"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/api/index.php"
-        }
+        { "src": "/images/(.*)", "dest": "/images/$1" },
+        { "src": "/build/(.*)", "dest": "/build/$1" },
+        { "src": "/(.*)", "dest": "/api/index.php" }
     ],
     "env": {
         "APP_NAME": "Gestion DB",
@@ -29,7 +21,6 @@
         "APP_ROUTES_CACHE": "/tmp/routes.php",
         "APP_SERVICES_CACHE": "/tmp/services.php",
         "VIEW_COMPILED_PATH": "/tmp/views",
-
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie",
