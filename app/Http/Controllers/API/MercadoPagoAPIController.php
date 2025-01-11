@@ -55,13 +55,13 @@ class MercadoPagoAPIController extends Controller
             $preference = new Preference();
             $preference->items = $items;
             $preference->back_urls = [
-                "success" => "https://www.youtube.com/",
-                "pending" => "https://www.youtube.com/",
-                "failure" => "https://www.youtube.com/"
+                "success" => env('API_JS'),
+                "pending" => env('API_JS'),
+                "failure" => env('API_JS')
             ];
             $preference->auto_return = "approved";
             $preference->external_reference = $reserva_id;
-            $preference->notification_url = "https://www.youtube.com/";
+            $preference->notification_url = env('NOTIFY_MP');
 
 
             Log::info('Datos enviados a MercadoPago: ', (array)$preference);
