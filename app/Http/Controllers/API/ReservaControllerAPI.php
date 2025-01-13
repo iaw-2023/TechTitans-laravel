@@ -169,49 +169,52 @@ class ReservaControllerAPI extends Controller
  * )
  */
 
-    public function misReservas(Request $request)
-{
-    $emailCliente = $request->input('email_cliente');
-
-    if (!$emailCliente) {
-        return response()->json(['message' => 'El correo electrónico es obligatorio'], 400);
-    }
-
-    $cliente = Cliente::where('mail', $emailCliente)->first();
-
-    if (!$cliente) {
-        return response()->json(['message' => 'El cliente no existe'], 404);
-    }
-
-    $reservas = Reserva::where('email_cliente', $emailCliente)->get();
-
-    if ($reservas->isEmpty()) {
-        return response()->json(['message' => 'El cliente no tiene reservas'], 404);
-    }
-
-    $reservasConDetalles = [];
-    foreach ($reservas as $reserva) {
-        $detalles = DetalleReserva::where('id_reserva', $reserva->id)->get();
-        $detallesConTurnos = [];
-        foreach ($detalles as $detalle) {
-            $turno = Turno::find($detalle->id_turno);
-            if ($turno) {
-                $cancha = Cancha::find($turno->id_cancha);
-                $detallesConTurnos[] = [
-                    'turno' => $turno,
-                    'cancha' => $cancha,
-                ];
-            }
-        }
-        $reservasConDetalles[] = [
-            'reserva' => $reserva,
-            'detalle' => $detalles,
-            'turnos' => $detallesConTurnos,
-        ];
-    }
-
-    return response()->json($reservasConDetalles, 200);
-}
+ public function misReservas(Request $request)
+ {
+     $emailCliente = $request->input('email_cliente');
+ 
+     if (!$emailCliente) {
+         return response()->json(['message' => 'El correo electrónico es obligatorio'], 400);
+     }
+ 
+     $cliente = Cliente::where('mail', $emailCliente)->first();
+ 
+     if (!$cliente) {
+         return response()->json(['message' => 'El cliente no existe'], 404);
+     }
+ 
+     $reservas = Reserva::where('email_cliente', $emailCliente)->get();
+ 
+     if ($reservas->isEmpty()) {
+         return response()->json(['message' => 'El cliente no tiene reservas'], 404);
+     }
+ 
+     $reservasConDetalles = [];
+     foreach ($reservas as $reserva) {
+         $detalles = DetalleReserva::where('id_reserva', $reserva->id)->get();
+ 
+         $detallesConTurnos = $detalles->map(function ($detalle) {
+             $turno = Turno::find($detalle->id_turno);
+             if ($turno) {
+                 $cancha = Cancha::with('categoria')->find($turno->id_cancha); // Carga la relación de categoría
+                 return [
+                     'turno' => $turno,
+                     'cancha' => $cancha,
+                 ];
+             }
+             return null; // Excluye turnos inválidos
+         })->filter(); // Elimina los turnos nulos
+ 
+         $reservasConDetalles[] = [
+             'reserva' => $reserva,
+             'detalle' => $detalles,
+             'turnos' => $detallesConTurnos,
+         ];
+     }
+ 
+     return response()->json($reservasConDetalles, 200);
+ }
+ 
 
 /**
  * @OA\Patch(
