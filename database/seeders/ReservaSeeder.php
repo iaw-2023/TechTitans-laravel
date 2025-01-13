@@ -29,7 +29,7 @@ class ReservaSeeder extends Seeder
             ['fecha_reserva' => '2025/4/2',
              'hora_reserva' => '15:00:00',
              'email_cliente' => 'patricio@gmail.com',
-             'estado' => 'Rechazado',
+             'estado' => 'Cancelado',
              'preference_id' => 'null',
             ],
             ['fecha_reserva' => '2025/4/2',

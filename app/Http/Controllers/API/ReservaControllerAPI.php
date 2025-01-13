@@ -213,4 +213,76 @@ class ReservaControllerAPI extends Controller
     return response()->json($reservasConDetalles, 200);
 }
 
+/**
+ * @OA\Patch(
+ *     path="/rest/reservas/cancelar/{id_reserva}",
+ *     summary="Cancelar una reserva",
+ *     description="Marca una reserva como cancelada y actualiza sus detalles si aplica.",
+ *     tags={"Reservas"},
+ *     @OA\Parameter(
+ *         name="id_reserva",
+ *         in="path",
+ *         description="ID de la reserva a cancelar",
+ *         required=true,
+ *         @OA\Schema(type="integer", example=1)
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Reserva cancelada exitosamente.",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Reserva cancelada con éxito")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Reserva no encontrada"
+ *     )
+ * )
+ */
+public function cancelarReserva($id_reserva)
+{
+    try {
+        // Verificar si el ID de la reserva es válido
+        if (!$id_reserva) {
+            return response()->json([
+                'debug' => 'El ID de la reserva no fue proporcionado.',
+            ], 400);
+        }
+
+        // Buscar la reserva
+        $reserva = Reserva::find($id_reserva);
+
+        if (!$reserva) {
+            return response()->json([
+                'debug' => 'No se encontró la reserva',
+                'id_reserva' => $id_reserva,
+            ], 404);
+        }
+
+        // Verificar si ya está cancelada
+        if ($reserva->estado === 'Cancelado') {
+            return response()->json([
+                'debug' => 'La reserva ya está cancelada',
+                'reserva' => $reserva,
+            ], 200);
+        }
+
+        // Actualizar el estado
+        $reserva->estado = 'Cancelado';
+        $reserva->save();
+
+        return response()->json([
+            'debug' => 'Reserva cancelada correctamente',
+            'reserva' => $reserva,
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'debug' => 'Excepción encontrada',
+            'error_message' => $e->getMessage(),
+            'stack_trace' => $e->getTrace(),
+        ], 500);
+    }
+}
+
 }

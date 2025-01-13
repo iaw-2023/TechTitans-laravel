@@ -131,7 +131,7 @@ class MercadoPagoAPIController extends Controller
                         $nuevoEstado = 'Aceptado';
                         break;
                     case 'reverted':
-                        $nuevoEstado = 'Rechazado';
+                        $nuevoEstado = 'Cancelado';
                         break;
                     default:
                         Log::info('Estado de la orden no manejado: ' . $orderStatus);

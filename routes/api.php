@@ -39,5 +39,6 @@ Route::get('/turnos/fecha/cat/{fecha}/{categoriaId}', [TurnoControllerAPI::class
 
 Route::post('/reservas/alta', [ReservaControllerAPI::class, 'altaReserva']);
 Route::post('/reservas/misReservas', [ReservaControllerAPI::class, 'misReservas']);
+Route::patch('/reservas/cancelar/{id_reserva}', [ReservaControllerAPI::class, 'cancelarReserva']);
 
 Route::post('/mercadopago/notify', [MercadoPagoAPIController::class, 'notify']);

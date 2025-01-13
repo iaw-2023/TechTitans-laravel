@@ -14,6 +14,7 @@ class Reserva extends Model
         'email_cliente',
         'estado',
         'preference_id',
+        'id'
     ];
 
     public function detalle_reserva()
