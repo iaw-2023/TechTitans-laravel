@@ -6,6 +6,7 @@ use App\Http\Controllers\API\CategoriaControllerAPI;
 use App\Http\Controllers\API\ReservaControllerAPI;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\MercadoPagoAPIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +39,5 @@ Route::get('/turnos/fecha/cat/{fecha}/{categoriaId}', [TurnoControllerAPI::class
 
 Route::post('/reservas/alta', [ReservaControllerAPI::class, 'altaReserva']);
 Route::get('/reservas/misReservas/{mailCliente}', [ReservaControllerAPI::class, 'misReservas']);
+
+Route::post('/mercadopago/notify', [MercadoPagoAPIController::class, 'notify']);
