@@ -38,6 +38,6 @@ Route::get('/turnos/searchByDate/{fecha}', [TurnoControllerAPI::class, 'searchBy
 Route::get('/turnos/fecha/cat/{fecha}/{categoriaId}', [TurnoControllerAPI::class, 'searchByDateAndCategory']);
 
 Route::post('/reservas/alta', [ReservaControllerAPI::class, 'altaReserva']);
-Route::get('/reservas/misReservas/{mailCliente}', [ReservaControllerAPI::class, 'misReservas']);
+Route::post('/reservas/misReservas', [ReservaControllerAPI::class, 'misReservas']);
 
 Route::post('/mercadopago/notify', [MercadoPagoAPIController::class, 'notify']);
