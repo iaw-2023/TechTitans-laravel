@@ -127,6 +127,9 @@ class MercadoPagoAPIController extends Controller
                     case 'payment_required':
                         $nuevoEstado = 'Pendiente';
                         break;
+                    case 'payment_in_process':
+                        $nuevoEstado = 'Pendiente';
+                        break;
                     case 'paid':
                         $nuevoEstado = 'Aceptado';
                         break;
