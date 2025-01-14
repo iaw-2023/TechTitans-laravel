@@ -274,8 +274,18 @@ public function cancelarReserva($id_reserva)
         $reserva->estado = 'Cancelado';
         $reserva->save();
 
+        // Obtener los detalles de la reserva
+        $detalles = DetalleReserva::where('id_reserva', $id_reserva)->get();
+
+        foreach ($detalles as $detalle) {
+            // Marcar el detalle como cancelado
+            $detalle->cancelado = true;
+            $detalle->updated_at = now();
+            $detalle->save();
+        }
+        
         return response()->json([
-            'debug' => 'Reserva cancelada correctamente',
+            'debug' => 'Reserva cancelada y turnos liberados con éxito',
             'reserva' => $reserva,
         ], 200);
 
