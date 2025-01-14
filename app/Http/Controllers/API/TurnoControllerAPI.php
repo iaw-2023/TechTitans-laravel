@@ -97,7 +97,8 @@ class TurnoControllerAPI extends Controller
         $turnosSinReservas = Turno::whereIn('id_cancha', $canchasIds)
             ->whereNotIn('id', function ($query) {
                 $query->select('id_turno')
-                    ->from('detalle_reservas');
+                    ->from('detalle_reservas')
+                    ->where('cancelado', false);
             })
             ->with('cancha')
             ->get();
@@ -142,7 +143,8 @@ class TurnoControllerAPI extends Controller
         $turnosSinReservas = Turno::whereIn('id_cancha', $canchasIds)
             ->whereNotIn('id', function ($query) {
                 $query->select('id_turno')
-                    ->from('detalle_reservas');
+                    ->from('detalle_reservas')
+                    ->where('cancelado', false);
             })
             ->with('cancha')
             ->get();
@@ -314,7 +316,8 @@ class TurnoControllerAPI extends Controller
             ->where('fecha_turno', $fecha) // Agregar la condición de fecha
             ->whereNotIn('id', function ($query) {
                 $query->select('id_turno')
-                    ->from('detalle_reservas');
+                    ->from('detalle_reservas')
+                    ->where('cancelado', false);
             })
             ->with('cancha')
             ->get();
