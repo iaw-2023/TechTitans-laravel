@@ -15,7 +15,7 @@ class ChatbotControllerAPI extends Controller
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
         ])->post('https://api.openai.com/v1/chat/completions', [
-            'model' => 'gpt-4',
+            'model' => 'gpt-3.5-turbo', // Usa GPT-3.5-Turbo
             'messages' => [
                 ['role' => 'system', 'content' => 'Eres un asistente útil para un sitio de reservas de deportes.'],
                 ['role' => 'user', 'content' => $userMessage],
