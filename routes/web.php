@@ -6,6 +6,7 @@ use App\Http\Controllers\TurnoController;
 use App\Http\Controllers\CanchaController;
 use App\Http\Controllers\ReservaController;
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/timezone-check', function () {
         return response()->json([
             'timezone' => date_default_timezone_get(),
-            'datetime' => now(),
+            'datetime' => Carbon::now()->setTimezone(config('app.timezone'))->toDateTimeString(),
         ]);
     });
 });
