@@ -42,3 +42,10 @@ Route::post('/reservas/misReservas', [ReservaControllerAPI::class, 'misReservas'
 Route::patch('/reservas/cancelar/{id_reserva}', [ReservaControllerAPI::class, 'cancelarReserva']);
 
 Route::post('/mercadopago/notify', [MercadoPagoAPIController::class, 'notify']);
+
+Route::get('/timezone-check', function () {
+    return response()->json([
+        'timezone' => date_default_timezone_get(),
+        'datetime' => now(),
+    ]);
+});
