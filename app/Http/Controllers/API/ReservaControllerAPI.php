@@ -58,7 +58,7 @@ class ReservaControllerAPI extends Controller
         $cliente = DB::table('cliente')->where('mail', $emailCliente)->first();
 
         $fechaActual = Carbon::now()->toDateString(); // Formato 'Y-m-d'
-        $horaActual = Carbon::now()->toTimeString(); // Formato 'H:i:s'
+        $horaActual = Carbon::now()->setTimezone(config('app.timezone'))->toTimeString(); // Formato 'H:i:s'
 
         if (!$cliente) {
             DB::table('cliente')->insert([
@@ -70,8 +70,8 @@ class ReservaControllerAPI extends Controller
             'fecha_reserva' => $fechaActual,
             'hora_reserva' => $horaActual,
             'email_cliente' => $emailCliente,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'created_at' => Carbon::now()->setTimezone(config('app.timezone')),
+            'updated_at' => Carbon::now()->setTimezone(config('app.timezone')),
         ]);
         foreach ($turnos as $turno) {
             $idTurno = $turno['id_turno'];
@@ -82,8 +82,8 @@ class ReservaControllerAPI extends Controller
                 'id_reserva' => $reservaId,
                 'id_turno' => $idTurno,
                 'cancelado' => false,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'created_at' => Carbon::now()->setTimezone(config('app.timezone')),
+                'updated_at' => Carbon::now()->setTimezone(config('app.timezone')),
             ]);
         }
         // Procedimiento de MercadoPago
