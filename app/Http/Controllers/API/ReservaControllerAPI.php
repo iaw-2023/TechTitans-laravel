@@ -13,6 +13,7 @@ use App\Models\Cancha;
 use App\Http\Controllers\EmailController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class ReservaControllerAPI extends Controller
 {
@@ -55,6 +56,10 @@ class ReservaControllerAPI extends Controller
         $turnos = $jsonData['turnos'];
         $precioTotal = $jsonData['precio_total'];
         $cliente = DB::table('cliente')->where('mail', $emailCliente)->first();
+
+        $fechaActual = Carbon::now()->toDateString(); // Formato 'Y-m-d'
+        $horaActual = Carbon::now()->toTimeString(); // Formato 'H:i:s'
+
         if (!$cliente) {
             DB::table('cliente')->insert([
                 'mail' => $emailCliente,
@@ -62,11 +67,11 @@ class ReservaControllerAPI extends Controller
             ]);
         }
         $reservaId = DB::table('reservas')->insertGetId([
-            'fecha_reserva' => now()->format('Y-m-d'),
-            'hora_reserva' => now()->format('H:i:s'),
+            'fecha_reserva' => $fechaActual,
+            'hora_reserva' => $horaActual,
             'email_cliente' => $emailCliente,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
         foreach ($turnos as $turno) {
             $idTurno = $turno['id_turno'];
@@ -77,8 +82,8 @@ class ReservaControllerAPI extends Controller
                 'id_reserva' => $reservaId,
                 'id_turno' => $idTurno,
                 'cancelado' => false,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]);
         }
         // Procedimiento de MercadoPago
