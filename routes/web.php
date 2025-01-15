@@ -36,6 +36,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/reservas', [ReservaController::class, 'index']);
     Route::get('/reservas/show/{id}', [ReservaController::class, 'show']);
     Route::get('/canchas/{id}', [CanchaController::class, 'show']);
+
+    Route::get('/timezone-check', function () {
+        return response()->json([
+            'timezone' => date_default_timezone_get(),
+            'datetime' => now(),
+        ]);
+    });
 });
 
 require __DIR__.'/auth.php';
