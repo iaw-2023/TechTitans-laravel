@@ -7,6 +7,7 @@ use App\Http\Controllers\API\ReservaControllerAPI;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\MercadoPagoAPIController;
+use App\Http\Controllers\API\ChatbotControllerAPI;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,3 +43,6 @@ Route::post('/reservas/misReservas', [ReservaControllerAPI::class, 'misReservas'
 Route::patch('/reservas/cancelar/{id_reserva}', [ReservaControllerAPI::class, 'cancelarReserva']);
 
 Route::post('/mercadopago/notify', [MercadoPagoAPIController::class, 'notify']);
+
+Route::post('/chatbot', [ChatbotControllerAPI::class, 'handleChat']);
+
