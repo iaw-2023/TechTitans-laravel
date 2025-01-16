@@ -18,11 +18,14 @@ class ChatbotControllerAPI extends Controller
         ])->post('https://api.openai.com/v1/chat/completions', [
             'model' => 'gpt-3.5-turbo',
             'messages' => [
-                ['role' => 'system', 'content' => 'Eres un asistente útil para un sitio de reservas de canchas para practicar deportes.'],
+                ['role' => 'system', 'content' => 'Sos un asistente para un sitio de reservas de canchas. Responde preguntas sobre reservas, políticas, y disponibilidad de turnos de forma precisa y breve.
+                -La reserva se confirma cuando el pago es confirmado.
+                -Se aceptan tarjetas de debito y credito 12 cuotas s/interes y dinero en cuenta mediante MercadoPago.
+                -No reembolsos'],
                 ['role' => 'user', 'content' => $userMessage],
             ],
-            'max_tokens' => 200, // Ajusta según el tamaño de las respuestas
-            'temperature' => 0.7, // Controla la creatividad
+            'max_tokens' => 50, // Ajusta según el tamaño de las respuestas
+            'temperature' => 0.3, // Controla la creatividad
         ]);
         
         Log::info('esta es las respuestaaaaaaa ', $response->json());
