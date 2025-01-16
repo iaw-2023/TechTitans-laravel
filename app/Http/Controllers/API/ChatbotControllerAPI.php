@@ -16,12 +16,12 @@ class ChatbotControllerAPI extends Controller
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
         ])->post('https://api.openai.com/v1/chat/completions', [
-            'model' => 'gpt-4',
+            'model' => 'gpt-3.5-turbo',
             'messages' => [
                 ['role' => 'system', 'content' => 'Eres un asistente útil para un sitio de reservas de canchas para practicar deportes.'],
                 ['role' => 'user', 'content' => $userMessage],
             ],
-            'max_tokens' => 500, // Ajusta según el tamaño de las respuestas
+            'max_tokens' => 200, // Ajusta según el tamaño de las respuestas
             'temperature' => 0.7, // Controla la creatividad
         ]);
         
