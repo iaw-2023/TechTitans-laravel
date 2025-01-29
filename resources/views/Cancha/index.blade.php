@@ -5,8 +5,9 @@
 @endsection
 
 @section('contenido')
-<a href= "canchas/create" class="btn btn-primary">Crear cancha</a>
-
+@can('crear canchas')
+    <a href= "canchas/create" class="btn btn-primary">Crear cancha</a>
+@endcan
 @if(session('success'))
     <div id="alert" class="alert alert-success">{{ session('success') }}</div>
 @endif
@@ -26,7 +27,9 @@
             <th scope="col">Superficie</th>
             <th scope="col">Categoria</th>
             <th scope="col">Activo</th>
-            <th scope="col">Acciones</th>
+            @can('eliminar canchas')
+                <th scope="col">Acciones</th>
+            @endcan
         </tr>
     </thead>
     <tbody>
@@ -40,14 +43,16 @@
             <td>{{$cancha->superficie}}</td>
             <td>{{ $cancha->categoria->nombre }}</td>
             <td>{{$cancha->activo ? 'Si' : 'No' }}</td>
-            <td>
-                <form action="{{ route('canchas.destroy',$cancha->id) }}" method="POST">
-                 <a href="/canchas/{{$cancha->id}}/edit" class="btn btn-info">Editar</a>         
-                     @csrf
-                     @method('DELETE')
-                 <button type="submit" class="btn btn-danger">Delete</button>
-                </form>          
-               </td>  
+            @can('eliminar canchas')
+                <td>
+                    <form action="{{ route('canchas.destroy',$cancha->id) }}" method="POST">
+                    <a href="/canchas/{{$cancha->id}}/edit" class="btn btn-info">Editar</a>         
+                        @csrf
+                        @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>          
+                </td>  
+            @endcan
         </tr>
         @endforeach
     </tbody>

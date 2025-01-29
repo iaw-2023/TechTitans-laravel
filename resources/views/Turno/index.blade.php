@@ -5,7 +5,10 @@
 @endsection
 
 @section('contenido')
+
+@can('crear turnos')
 <a href= "turnos/create" class="btn btn-primary">Crear turno</a>
+@endcan
 
 @if(session('success'))
     <div id="alert" class="alert alert-success">{{ session('success') }}</div>
@@ -22,7 +25,9 @@
           <th scope="col">Categoria</th>
           <th scope="col">Fecha</th>
           <th scope="col">Hora</th>
-          <th scope="col">Acciones</th>
+          @can('eliminar turnos')
+            <th scope="col">Acciones</th>
+          @endcan  
         </tr>
       </thead>
       <tbody>
@@ -32,15 +37,17 @@
           <td>{{$turno->cancha->categoria->nombre}}</td>            
           <td>{{$turno->fecha_turno}}</td>
           <td>{{$turno->hora_turno}}</td>
-          <td>
-            <form action="{{ route('turnos.destroy',$turno->id) }}" method="POST">
-              <a href="/turnos/{{$turno->id}}/edit" class="btn btn-info">Editar</a>         
-              @csrf
-              @method('DELETE')
-              <button type="submit" class="btn btn-danger">Delete</button>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#miModal" data-id="{{$turno->cancha->id}}">Info cancha</button>
-            </form>          
-          </td>  
+          @can('eliminar turnos')
+            <td>
+              <form action="{{ route('turnos.destroy',$turno->id) }}" method="POST">
+                <a href="/turnos/{{$turno->id}}/edit" class="btn btn-info">Editar</a>         
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#miModal" data-id="{{$turno->cancha->id}}">Info cancha</button>
+              </form>          
+            </td>  
+          @endcan
         </tr>
         @endforeach
       </tbody>

@@ -25,7 +25,7 @@
         </ul>
         <li class="navbar-nav nav-item dropdown inline">
           <a class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{ Auth::user()->name }}
+              {{ Auth::user()->refresh()->name   }}
           </a>
           <ul class="dropdown-menu dropdown-menu-end px-1" aria-labelledby="bd-theme">
               <li>

@@ -9,6 +9,26 @@ use App\Models\DetalleReserva;
 
 class CanchaController extends Controller
 {
+
+    public function __construct()
+    {
+        // Usar el formato correcto para aplicar múltiples middleware en un solo array
+        $this->middleware([
+            'role:admin',
+            'permission:crear canchas',
+        ])->only(['create', 'store']); 
+     
+        $this->middleware([
+            'role:admin',
+            'permission:editar canchas',
+        ])->only(['edit', 'update']);
+     
+        $this->middleware([
+            'role:admin',
+            'permission:eliminar canchas',
+        ])->only(['destroy']);
+    }
+    
     /**
      * Display a listing of the resource.
      */

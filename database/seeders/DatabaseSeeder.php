@@ -24,8 +24,9 @@ class DatabaseSeeder extends Seeder
             TurnosSeeder::class,
             ReservaSeeder::class,
             DetalleReservaSeeder::class,
-            UserSeeder::class,
+            RolesAndPermissionsSeeder::class,
             ClientesSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

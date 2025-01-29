@@ -9,6 +9,25 @@ use App\Models\Cancha;
 
 class TurnoController extends Controller
 {
+    public function __construct()
+    {
+        // Usar el formato correcto para aplicar múltiples middleware en un solo array
+        $this->middleware([
+            'role:admin',
+            'permission:crear turnos',
+        ])->only(['create', 'store']); 
+     
+        $this->middleware([
+            'role:admin',
+            'permission:editar turnos',
+        ])->only(['edit', 'update']);
+     
+        $this->middleware([
+            'role:admin',
+            'permission:eliminar turnos',
+        ])->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */

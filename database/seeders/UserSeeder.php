@@ -13,29 +13,35 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
+        $roleAdminId = DB::table('roles')->where('name', 'admin')->value('id');
+        $roleEmpleadoId = DB::table('roles')->where('name', 'empleado')->value('id');
+
+        $adminId = DB::table('users')->insertGetId([
             'name' => 'adminiaw',
             'email' => 'admin@iaw.com',
             'email_verified_at' => now(),
             'password' => bcrypt('admin123'),
             'remember_token' => 'abcd',
-
         ]);
-        DB::table('users')->insert([
+        $empleadoTitanId = DB::table('users')->insertGetId([
             'name' => 'techtitaniaw',
             'email' => 'techtitaniaw@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('admin123'),
             'remember_token' => 'abcde',
-
         ]);
-        DB::table('users')->insert([
+        $adminDanielId = DB::table('users')->insertGetId([
             'name' => 'danilo',
             'email' => 'dalaco618@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('admin123'),
             'remember_token' => 'abcdef',
+        ]);
 
+        DB::table('model_has_roles')->insert([
+            ['role_id' => $roleAdminId, 'model_type' => 'App\Models\User', 'model_id' => $adminId], 
+            ['role_id' => $roleEmpleadoId, 'model_type' => 'App\Models\User', 'model_id' => $empleadoTitanId],
+            ['role_id' => $roleEmpleadoId, 'model_type' => 'App\Models\User', 'model_id' => $adminDanielId],
         ]);
     }
 }

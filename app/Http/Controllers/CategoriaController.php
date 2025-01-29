@@ -7,6 +7,27 @@ use App\Models\Categoria;
 
 class CategoriaController extends Controller
 {
+
+    public function __construct()
+    {
+        // Usar el formato correcto para aplicar múltiples middleware en un solo array
+        $this->middleware([
+            'role:admin',
+            'permission:crear categorias',
+        ])->only(['create', 'store']); 
+     
+        $this->middleware([
+            'role:admin',
+            'permission:editar categorias',
+        ])->only(['edit', 'update']);
+     
+        $this->middleware([
+            'role:admin',
+            'permission:eliminar categorias',
+        ])->only(['destroy']);
+    }
+
+
     /**
      * Display a listing of the resource.
      */

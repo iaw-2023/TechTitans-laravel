@@ -5,7 +5,10 @@
 @endsection
 
 @section('contenido')
+
+@can('crear categorias')
 <a style= "color:#ffffff;" href= "categorias/create" class="btn btn-primary">Crear categoria</a>
+@endcan
 
 @if(session('success'))
     <div id="alert" class="alert alert-success">{{ session('success') }}</div>
@@ -20,7 +23,9 @@
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Nombre</th>
-            <th scope="col">Acciones</th>
+            @can('eliminar categorias')
+                <th scope="col">Acciones</th>
+            @endcan
         </tr>
     </thead>
     <tbody>
@@ -28,14 +33,16 @@
         <tr>
             <td>{{$categoria->id}}</td>
             <td>{{$categoria->nombre}}</td>
-            <td>
-                <form action="{{ route('categorias.destroy',$categoria->id) }}" method="POST">
-                 <a href="/categorias/{{$categoria->id}}/edit" class="btn btn-info">Editar</a>         
-                     @csrf
-                     @method('DELETE')
-                 <button type="submit" class="btn btn-danger">Delete</button>
-                </form>          
-               </td>  
+            @can('eliminar categorias')
+                <td>
+                    <form action="{{ route('categorias.destroy',$categoria->id) }}" method="POST">
+                    <a href="/categorias/{{$categoria->id}}/edit" class="btn btn-info">Editar</a>         
+                        @csrf
+                        @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>          
+                </td>  
+            @endcan
         </tr>
         @endforeach
     </tbody>
