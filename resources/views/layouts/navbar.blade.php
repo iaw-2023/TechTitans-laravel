@@ -57,18 +57,14 @@
   </div>
 </nav>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  function updateWeatherWidget(position) {
+  function updateWeatherWidget() {
     $.ajax({
       url: '/get-weather',
       method: 'GET',
-      data: {
-        lat: position.coords.latitude,
-        lon: position.coords.longitude
-      },
       success: function(data) {
-        $('#weather-widget').html(`${data.weather.name}: ${data.weather.main.temp}°C | ${data.localTime}`);
+        // Aquí actualizamos el widget con los datos del clima
+        $('#weather-widget').html(`${data.weather[0].description}: ${data.main.temp}°C | ${data.localTime}`);
       },
       error: function() {
         $('#weather-widget').html('No se pudo obtener el clima');
@@ -76,11 +72,7 @@
     });
   }
 
-  if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(updateWeatherWidget, function() {
-      $('#weather-widget').html('No se pudo obtener la ubicación');
-    });
-  } else {
-    $('#weather-widget').html('Geolocalización no soportada');
-  }
+  // Llamamos a la función para actualizar el clima al cargar la página
+  updateWeatherWidget();
 </script>
+
