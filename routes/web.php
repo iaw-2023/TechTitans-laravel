@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\TurnoController;
 use App\Http\Controllers\CanchaController;
 use App\Http\Controllers\ReservaController;
+use App\Http\Controllers\WeatherController;
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
 
@@ -37,7 +38,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/reservas', [ReservaController::class, 'index']);
     Route::get('/reservas/show/{id}', [ReservaController::class, 'show']);
     Route::get('/canchas/{id}', [CanchaController::class, 'show']);
+    Route::get('/weather', [WeatherController::class, 'index']);
+    Route::get('/get-weather', [WeatherController::class, 'getWeather']);
 
+
+    
     Route::get('/timezone-check', function () {
         return response()->json([
             'timezone' => date_default_timezone_get(),
