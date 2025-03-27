@@ -176,25 +176,6 @@
                         </div>
 
                         <hr class="my-4">
-
-                        <!-- Consulta de otra ubicación -->
-                        <div class="mt-4">
-                            <h5>Consultar otra ubicación</h5>
-                            <form id="weatherForm" class="row g-3">
-                                <div class="col-md-5">
-                                    <label for="latitude" class="form-label">Latitud</label>
-                                    <input type="number" step="0.0001" class="form-control" id="latitude" name="latitude" value="-38.7196" required>
-                                </div>
-                                <div class="col-md-5">
-                                    <label for="longitude" class="form-label">Longitud</label>
-                                    <input type="number" step="0.0001" class="form-control" id="longitude" name="longitude" value="-62.2724" required>
-                                </div>
-                                <div class="col-md-2 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-primary w-100">Consultar</button>
-                                </div>
-                            </form>
-                            <div id="weatherResult" class="mt-3"></div>
-                        </div>
                     @endif
                 </div>
             </div>
