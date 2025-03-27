@@ -25,7 +25,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    return view('home');
+    return redirect()->route('weather.index');
 })->middleware(['auth', 'verified'])->name('home');
 
 Route::middleware('auth')->group(function () {
@@ -38,17 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/reservas', [ReservaController::class, 'index']);
     Route::get('/reservas/show/{id}', [ReservaController::class, 'show']);
     Route::get('/canchas/{id}', [CanchaController::class, 'show']);
-    Route::get('/weather', [WeatherController::class, 'index']);
-    Route::get('/get-weather', [WeatherController::class, 'getWeather']);
 
-
+    Route::get('/weather', [WeatherController::class, 'index'])->name('weather.index');
+    Route::post('/weather/location', [WeatherController::class, 'getWeatherForLocation'])->name('weather.location');
     
-    Route::get('/timezone-check', function () {
-        return response()->json([
-            'timezone' => date_default_timezone_get(),
-            'datetime' => Carbon::now()->setTimezone(config('app.timezone'))->toDateTimeString(),
-        ]);
-    });
 });
 
 require __DIR__.'/auth.php';

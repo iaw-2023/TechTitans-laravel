@@ -25,11 +25,6 @@
         </li>
       </ul>
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <span id="weather-widget" class="nav-link">
-            Cargando clima...
-          </span>
-        </li>
         <li class="nav-item dropdown">
           <a class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" 
              aria-expanded="false">
@@ -56,23 +51,3 @@
     </div>
   </div>
 </nav>
-
-<script>
-  function updateWeatherWidget() {
-    $.ajax({
-      url: '/get-weather',
-      method: 'GET',
-      success: function(data) {
-        // Aquí actualizamos el widget con los datos del clima
-        $('#weather-widget').html(`${data.weather[0].description}: ${data.main.temp}°C | ${data.localTime}`);
-      },
-      error: function() {
-        $('#weather-widget').html('No se pudo obtener el clima');
-      }
-    });
-  }
-
-  // Llamamos a la función para actualizar el clima al cargar la página
-  updateWeatherWidget();
-</script>
-
