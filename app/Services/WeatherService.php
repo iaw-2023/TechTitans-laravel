@@ -26,7 +26,8 @@ class WeatherService
                 'relative_humidity_2m',
                 'showers',
                 'precipitation_probability',
-                'precipitation'
+                'precipitation',
+                'wind_speed_10m'  // Añadimos velocidad del viento
             ];
         }
         
@@ -36,7 +37,7 @@ class WeatherService
         $cacheKey = "weather_data_{$latitude}_{$longitude}";
         
         return Cache::remember($cacheKey, 1800, function () use ($latitude, $longitude, $hourlyString) {
-            $response = Http::get($this->baseUrl, [
+            $response = Http::withoutVerifying()->get($this->baseUrl, [
                 'latitude' => $latitude,
                 'longitude' => $longitude,
                 'hourly' => $hourlyString,
@@ -72,8 +73,22 @@ class WeatherService
         $timeIndex = array_search($currentTime, $data['hourly']['time'] ?? []);
         
         if ($timeIndex === false) {
-            // Si no encontramos la hora exacta, usamos el primer elemento
-            $timeIndex = 0;
+            // Si no encontramos la hora exacta, buscar la hora más cercana
+            $now = now();
+            $closestDiff = PHP_INT_MAX;
+            $closestIndex = 0;
+            
+            foreach ($data['hourly']['time'] as $index => $timeStr) {
+                $time = \Carbon\Carbon::parse($timeStr);
+                $diff = abs($now->diffInSeconds($time));
+                
+                if ($diff < $closestDiff) {
+                    $closestDiff = $diff;
+                    $closestIndex = $index;
+                }
+            }
+            
+            $timeIndex = $closestIndex;
         }
         
         // Extraer los datos actuales
@@ -83,7 +98,9 @@ class WeatherService
             'precipitation_probability' => $data['hourly']['precipitation_probability'][$timeIndex] ?? null,
             'precipitation' => $data['hourly']['precipitation'][$timeIndex] ?? null,
             'showers' => $data['hourly']['showers'][$timeIndex] ?? null,
+            'wind_speed' => $data['hourly']['wind_speed_10m'][$timeIndex] ?? null,
             'time' => $data['hourly']['time'][$timeIndex] ?? now()->format('Y-m-d\TH:00'),
+            'current_index' => $timeIndex,  // Añadimos el índice actual
             'full_data' => $data,
         ];
     }
