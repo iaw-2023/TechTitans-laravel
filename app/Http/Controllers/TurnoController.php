@@ -33,7 +33,7 @@ class TurnoController extends Controller
      */
     public function index()
     {
-        $turnos = Turno::all();
+        $turnos = Turno::with(['cancha', 'cancha.categoria'])->get();
         return view('Turno.index')->with('turnos', $turnos);
     }
     /**
@@ -119,13 +119,7 @@ class TurnoController extends Controller
     }
 
     private function tieneReservas($turno) {
-        $detalleReservaAsociados = $turno->getDetalleReserva()->get();
-        //dd($detalleReservaAsociados);
-        foreach($detalleReservaAsociados as $detalle){
-            $primero = $detalle->turno()->first();
-            if($primero)
-                return true;
-        }
-        return false;
+        // Optimización: usar exists() en lugar de get() y luego iterar
+        return $turno->getDetalleReserva()->exists();
     }
 }

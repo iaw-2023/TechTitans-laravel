@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use App\Models\Cancha;
 use App\Models\Categoria;
 use App\Models\DetalleReserva;
@@ -67,9 +68,13 @@ class CanchaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
-    {
-        $cancha = Cancha::with('categoria')->find($id);
+    public function show($id){
+        // Usar caché para reducir consultas a la base de datos
+        // Usar caché para reducir consultas a la base de datos
+        $cacheKey = 'cancha_' . $id;
+        $cancha = Cache::remember($cacheKey, now()->addMinutes(30), function () use ($id) {
+            return Cancha::with('categoria')->find($id);
+        });
 
         if (!$cancha) {
             return response()->json(['error' => 'Cancha no encontrada'], 404);
