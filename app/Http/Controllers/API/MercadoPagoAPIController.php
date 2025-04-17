@@ -13,8 +13,51 @@ use MercadoPago\Preference;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
+
 class MercadoPagoAPIController extends Controller
 {
+    /**
+     * @OA\Post(
+     * path="/rest/reservas/{reserva_id}/preference",
+     * summary="Crea una preferencia de pago en MercadoPago para una reserva",
+     * description="Genera una preferencia de pago en MercadoPago para la reserva especificada.",
+     * tags={"MercadoPago"},
+     * @OA\Parameter(
+     * name="reserva_id",
+     * in="path",
+     * required=true,
+     * description="ID de la reserva para la cual se creará la preferencia",
+     * @OA\Schema(
+     * type="integer",
+     * format="int64"
+     * )
+     * ),
+     * @OA\Response(
+     * response="200",
+     * description="Preferencia de pago creada exitosamente",
+     * @OA\JsonContent(
+     * type="object",
+     * @OA\Property(property="preference_id", type="string", description="ID de la preferencia de MercadoPago")
+     * )
+     * ),
+     * @OA\Response(
+     * response="400",
+     * description="Error al crear la preferencia",
+     * @OA\JsonContent(
+     * type="object",
+     * @OA\Property(property="message", type="string", example="Excepción"),
+     * @OA\Property(property="error", type="string", example="Mensaje de error")
+     * )
+     * ),
+     * @OA\Response(
+     * response="404",
+     * description="Reserva no encontrada"
+     * ),
+     * security={
+     * {"bearerAuth": {}}
+     * }
+     * )
+     */
     public function createPreference(Request $request, $reserva_id)
     {
         try {
@@ -101,6 +144,41 @@ class MercadoPagoAPIController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     * path="/rest/mercadopago/notify",
+     * summary="Recibe notificaciones de pago de MercadoPago (Webhook)",
+     * description="Endpoint que recibe las notificaciones de eventos de pago de MercadoPago.",
+     * tags={"MercadoPago"},
+     * @OA\RequestBody(
+     * required=true,
+     * description="Cuerpo de la notificación de MercadoPago",
+     * @OA\JsonContent(
+     * type="object",
+     * @OA\Property(property="topic", type="string", example="payment"),
+     * @OA\Property(property="id", type="integer", example=123456789),
+     * additionalProperties=true
+     * )
+     * ),
+     * @OA\Response(
+     * response="200",
+     * description="Notificación recibida y procesada correctamente",
+     * @OA\JsonContent(
+     * type="object",
+     * @OA\Property(property="message", type="string", example="OK")
+     * )
+     * ),
+     * @OA\Response(
+     * response="400",
+     * description="Error en la solicitud de notificación",
+     * @OA\JsonContent(
+     * type="object",
+     * @OA\Property(property="message", type="string", example="Excepción"),
+     * @OA\Property(property="error", type="string", example="Mensaje de error")
+     * )
+     * )
+     * )
+     */
     public function notify(Request $request)
     {
         try {

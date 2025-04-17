@@ -357,6 +357,197 @@
                 }
             }
         },
+        "/rest/chatbot": {
+            "post": {
+                "tags": [
+                    "Chatbot"
+                ],
+                "summary": "Interacción con el chatbot",
+                "description": "Endpoint que recibe mensajes de usuarios y devuelve la respuesta del chatbot.",
+                "operationId": "c21b9cd38380d5e364723f95a336aae6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "message"
+                                ],
+                                "properties": {
+                                    "message": {
+                                        "description": "Mensaje enviado por el usuario",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta generada por el chatbot",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "reply": {
+                                            "description": "Respuesta generada por el chatbot",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en el mensaje recibido"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            }
+        },
+        "/rest/reservas/{reserva_id}/preference": {
+            "post": {
+                "tags": [
+                    "MercadoPago"
+                ],
+                "summary": "Crea una preferencia de pago en MercadoPago para una reserva",
+                "description": "Genera una preferencia de pago en MercadoPago para la reserva especificada.",
+                "operationId": "8f89db65047b3122285defc4b27d7b8c",
+                "parameters": [
+                    {
+                        "name": "reserva_id",
+                        "in": "path",
+                        "description": "ID de la reserva para la cual se creará la preferencia",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Preferencia de pago creada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "preference_id": {
+                                            "description": "ID de la preferencia de MercadoPago",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error al crear la preferencia",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Excepción"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Mensaje de error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Reserva no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/rest/mercadopago/notify": {
+            "post": {
+                "tags": [
+                    "MercadoPago"
+                ],
+                "summary": "Recibe notificaciones de pago de MercadoPago (Webhook)",
+                "description": "Endpoint que recibe las notificaciones de eventos de pago de MercadoPago.",
+                "operationId": "05793df61be73d58a83354694a8be8e3",
+                "requestBody": {
+                    "description": "Cuerpo de la notificación de MercadoPago",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "topic": {
+                                        "type": "string",
+                                        "example": "payment"
+                                    },
+                                    "id": {
+                                        "type": "integer",
+                                        "example": 123456789
+                                    }
+                                },
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Notificación recibida y procesada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "OK"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en la solicitud de notificación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Excepción"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Mensaje de error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/rest/reservas/alta": {
             "post": {
                 "tags": [
@@ -412,6 +603,11 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Reserva creada con éxito"
+                                        },
+                                        "preference_id": {
+                                            "description": "ID de la preferencia de MercadoPago",
+                                            "type": "string",
+                                            "nullable": true
                                         }
                                     },
                                     "type": "object"
@@ -421,31 +617,38 @@
                     },
                     "400": {
                         "description": "Error de validación. El correo electrónico del cliente, los turnos o el precio total no son válidos."
+                    },
+                    "500": {
+                        "description": "Error al crear la preferencia de MercadoPago."
                     }
                 }
             }
         },
-        "/rest/reservas/misReservas/{mailCliente}": {
-            "get": {
+        "/rest/reservas/misReservas": {
+            "post": {
                 "tags": [
                     "Reservas"
                 ],
                 "summary": "Obtener las reservas de un cliente",
                 "description": "Obtiene las reservas realizadas por un cliente junto con los detalles de los turnos y las canchas correspondientes.",
-                "operationId": "0cc3de65643c97d156de65ed30a118bd",
-                "parameters": [
-                    {
-                        "name": "mailCliente",
-                        "in": "query",
-                        "description": "Correo electrónico del cliente",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "email",
-                            "example": "raul@gmail.com"
+                "operationId": "7d1c079590e8f6be1eee9c9470e6bd9e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email_cliente": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "raul@gmail.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Operación exitosa",
@@ -456,90 +659,68 @@
                                     "items": {
                                         "properties": {
                                             "reserva": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "fecha_reserva": {
-                                                        "type": "string",
-                                                        "format": "date",
-                                                        "example": "2023-05-18"
-                                                    },
-                                                    "hora_reserva": {
-                                                        "type": "string",
-                                                        "format": "time",
-                                                        "example": "10:00:00"
-                                                    },
-                                                    "email_cliente": {
-                                                        "type": "string",
-                                                        "format": "email",
-                                                        "example": "raul@gmail.com"
-                                                    }
-                                                },
                                                 "type": "object"
                                             },
                                             "detalle": {
-                                                "properties": {
-                                                    "precio": {
-                                                        "type": "number",
-                                                        "example": 600
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "precio": {
+                                                            "type": "number",
+                                                            "example": 600
+                                                        },
+                                                        "id_reserva": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "id_turno": {
+                                                            "type": "integer",
+                                                            "example": 3
+                                                        },
+                                                        "cancelado": {
+                                                            "type": "boolean",
+                                                            "example": false
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "format": "date-time"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "format": "date-time"
+                                                        }
                                                     },
-                                                    "id_reserva": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "id_turno": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "cancelado": {
-                                                        "type": "boolean",
-                                                        "example": false
-                                                    }
-                                                },
-                                                "type": "object"
+                                                    "type": "object"
+                                                }
                                             },
                                             "turnos": {
                                                 "type": "array",
                                                 "items": {
                                                     "properties": {
                                                         "turno": {
-                                                            "properties": {
-                                                                "id": {
-                                                                    "type": "integer",
-                                                                    "example": 1
-                                                                },
-                                                                "fecha_turno": {
-                                                                    "type": "string",
-                                                                    "format": "date",
-                                                                    "example": "2023-05-18"
-                                                                },
-                                                                "hora_turno": {
-                                                                    "type": "string",
-                                                                    "format": "time",
-                                                                    "example": "10:00:00"
-                                                                },
-                                                                "id_cancha": {
-                                                                    "type": "integer",
-                                                                    "example": 1
-                                                                }
-                                                            },
                                                             "type": "object"
                                                         },
                                                         "cancha": {
                                                             "properties": {
                                                                 "id": {
                                                                     "type": "integer",
-                                                                    "example": 1
+                                                                    "example": 2
                                                                 },
                                                                 "nombre": {
                                                                     "type": "string",
-                                                                    "example": "Cancha A"
+                                                                    "example": "Cancha 2"
+                                                                },
+                                                                "id_categoria": {
+                                                                    "type": "integer",
+                                                                    "example": 1
                                                                 },
                                                                 "precio": {
                                                                     "type": "number",
-                                                                    "example": 1000
+                                                                    "example": 600
                                                                 },
                                                                 "techo": {
                                                                     "type": "boolean",
@@ -547,19 +728,44 @@
                                                                 },
                                                                 "cant_jugadores": {
                                                                     "type": "integer",
-                                                                    "example": 6
+                                                                    "example": 5
                                                                 },
                                                                 "superficie": {
                                                                     "type": "string",
-                                                                    "example": "Césped"
+                                                                    "example": "Cesped Sintetico"
                                                                 },
-                                                                "id_categoria": {
-                                                                    "type": "integer",
-                                                                    "example": 1
+                                                                "created_at": {
+                                                                    "type": "string",
+                                                                    "format": "date-time"
                                                                 },
-                                                                "activo": {
-                                                                    "type": "boolean",
-                                                                    "example": true
+                                                                "updated_at": {
+                                                                    "type": "string",
+                                                                    "format": "date-time"
+                                                                },
+                                                                "categoria": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer",
+                                                                            "example": 1
+                                                                        },
+                                                                        "nombre": {
+                                                                            "type": "string",
+                                                                            "example": "Futbol 5"
+                                                                        },
+                                                                        "descripcion": {
+                                                                            "type": "string",
+                                                                            "example": "Canchas de futbol para 5 jugadores"
+                                                                        },
+                                                                        "created_at": {
+                                                                            "type": "string",
+                                                                            "format": "date-time"
+                                                                        },
+                                                                        "updated_at": {
+                                                                            "type": "string",
+                                                                            "format": "date-time"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
                                                                 }
                                                             },
                                                             "type": "object"
@@ -575,21 +781,70 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "Error de validación. El correo electrónico es obligatorio."
+                    },
                     "404": {
-                        "description": "Cliente no encontrado o sin reservas",
+                        "description": "El cliente no existe o no tiene reservas.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "El cliente no existe o no tiene reservas"
+                                            "example": "El cliente no tiene reservas"
                                         }
                                     },
                                     "type": "object"
                                 }
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/rest/reservas/cancelar/{id_reserva}": {
+            "patch": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Cancelar una reserva",
+                "description": "Marca una reserva como cancelada y actualiza sus detalles si aplica.",
+                "operationId": "f0f334cf34cf98f7b60a3436440f8268",
+                "parameters": [
+                    {
+                        "name": "id_reserva",
+                        "in": "path",
+                        "description": "ID de la reserva a cancelar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reserva cancelada exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Reserva cancelada con éxito"
+                                        },
+                                        "reserva": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Reserva no encontrada"
                     }
                 }
             }
@@ -1107,5 +1362,31 @@
                 }
             }
         }
-    }
+    },
+    "tags": [
+        {
+            "name": "Chatbot",
+            "description": "Operaciones relacionadas con el Chatbot"
+        },
+        {
+            "name": "Canchas",
+            "description": "Canchas"
+        },
+        {
+            "name": "Categorías",
+            "description": "Categorías"
+        },
+        {
+            "name": "MercadoPago",
+            "description": "MercadoPago"
+        },
+        {
+            "name": "Reservas",
+            "description": "Reservas"
+        },
+        {
+            "name": "Turnos",
+            "description": "Turnos"
+        }
+    ]
 }
