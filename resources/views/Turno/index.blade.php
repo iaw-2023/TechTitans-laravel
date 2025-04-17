@@ -35,7 +35,7 @@
         <tr>
           <td>{{$turno->cancha->nombre}}</td>  
           <td>{{$turno->cancha->categoria->nombre}}</td>            
-          <td>{{$turno->fecha_turno}}</td>
+          <td>{{ \Carbon\Carbon::parse($turno->fecha_turno)->addDay()->format('Y-m-d') }}</td>
           <td>{{$turno->hora_turno}}</td>
           @can('eliminar turnos')
             <td>
