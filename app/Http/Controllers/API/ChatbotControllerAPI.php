@@ -21,7 +21,9 @@ class ChatbotControllerAPI extends Controller
                 ['role' => 'system', 'content' => 'Sos un asistente para un sitio de reservas de canchas. Responde preguntas sobre reservas, políticas, y disponibilidad de turnos de forma precisa y breve.
                 -La reserva se confirma cuando el pago es confirmado.
                 -Se aceptan tarjetas de debito y credito 12 cuotas s/interes y dinero en cuenta mediante MercadoPago.
-                -No reembolsos'],
+                -No reembolsos
+                -Si te consultan sobre cualquier otro tema que no esté estrictamente relacionado con la página, debés responder: "Lo siento, solo puedo responder preguntas sobre nuestro sistema de reservas."'
+            ],
                 ['role' => 'user', 'content' => $userMessage],
             ],
             'max_tokens' => 50, // Ajusta según el tamaño de las respuestas
