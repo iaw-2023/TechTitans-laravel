@@ -19,34 +19,42 @@ class ReservaControllerAPI extends Controller
 {
     /**
      * @OA\Post(
-     *     path="/rest/reservas/alta",
-     *     summary="Crear una nueva reserva",
-     *     description="Crea una nueva reserva para un cliente, registrando los detalles de los turnos reservados.",
-     *     tags={"Reservas"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="email_cliente", type="string", format="email", example="raul@gmail.com"),
-     *             @OA\Property(property="turnos", type="array",
-     *                 @OA\Items(
-     *                     @OA\Property(property="id_turno", type="integer", example=1),
-     *                     @OA\Property(property="precio", type="number", example=600)
-     *                 )
-     *             ),
-     *             @OA\Property(property="precio_total", type="number", example=2600)
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Reserva creada exitosamente.",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Reserva creada con éxito")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Error de validación. El correo electrónico del cliente, los turnos o el precio total no son válidos."
-     *     )
+     * path="/rest/reservas/alta",
+     * summary="Crear una nueva reserva",
+     * description="Crea una nueva reserva para un cliente, registrando los detalles de los turnos reservados.",
+     * tags={"Reservas"},
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(
+     * @OA\Property(property="email_cliente", type="string", format="email", example="raul@gmail.com"),
+     * @OA\Property(
+     * property="turnos",
+     * type="array",
+     * @OA\Items(
+     * type="object",
+     * @OA\Property(property="id_turno", type="integer", example=1),
+     * @OA\Property(property="precio", type="number", example=600)
+     * )
+     * ),
+     * @OA\Property(property="precio_total", type="number", example=2600)
+     * )
+     * ),
+     * @OA\Response(
+     * response=201,
+     * description="Reserva creada exitosamente.",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="Reserva creada con éxito"),
+     * @OA\Property(property="preference_id", type="string", nullable=true, description="ID de la preferencia de MercadoPago")
+     * )
+     * ),
+     * @OA\Response(
+     * response=400,
+     * description="Error de validación. El correo electrónico del cliente, los turnos o el precio total no son válidos."
+     * ),
+     * @OA\Response(
+     * response=500,
+     * description="Error al crear la preferencia de MercadoPago."
+     * )
      * )
      */
     function altaReserva(Request $request)
@@ -96,12 +104,12 @@ class ReservaControllerAPI extends Controller
         $preferenceData = $preferenceResponse->getData();
         Log::info('Respuesta de Mercado Pago:', (array) $preferenceResponse->getData());
 
-        // Envío de email    
+        // Envío de email
         $this->enviarEmail($emailCliente, $reservaId);
-        
+
         return response()->json([
             'message' => 'Reserva creada con éxito',
-            'preference_id' => $preferenceData->preference_id,
+            'preference_id' => $preferenceData->preference_id ?? null,
         ], 201);
     }
 
@@ -135,172 +143,214 @@ class ReservaControllerAPI extends Controller
         $request = Request::create('', 'POST', $requestData);
         $emailController->sendEmail($request);
     }
-    
+
     /**
- * @OA\Post(
- *     path="/rest/reservas/misReservas",
- *     summary="Obtener las reservas de un cliente",
- *     description="Obtiene las reservas realizadas por un cliente junto con los detalles de los turnos y las canchas correspondientes.",
- *     tags={"Reservas"},
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             @OA\Property(property="email_cliente", type="string", format="email", example="raul@gmail.com")
- *         )
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Operación exitosa",
- *         @OA\JsonContent(
- *             type="array",
- *             @OA\Items(
- *                 @OA\Property(property="reserva", type="object"),
- *                 @OA\Property(property="detalle", type="array"),
- *                 @OA\Property(property="turnos", type="array")
- *             )
- *         )
- *     ),
- *     @OA\Response(
- *         response=400,
- *         description="Error de validación. El correo electrónico es obligatorio."
- *     ),
- *     @OA\Response(
- *         response=404,
- *         description="El cliente no existe o no tiene reservas.",
- *         @OA\JsonContent(
- *             @OA\Property(property="message", type="string", example="El cliente no tiene reservas")
- *         )
- *     )
- * )
- */
+     * @OA\Post(
+     * path="/rest/reservas/misReservas",
+     * summary="Obtener las reservas de un cliente",
+     * description="Obtiene las reservas realizadas por un cliente junto con los detalles de los turnos y las canchas correspondientes.",
+     * tags={"Reservas"},
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(
+     * @OA\Property(property="email_cliente", type="string", format="email", example="raul@gmail.com")
+     * )
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Operación exitosa",
+     * @OA\JsonContent(
+     * type="array",
+     * @OA\Items(
+     * type="object",
+     * @OA\Property(property="reserva", type="object"),
+     * @OA\Property(
+     * property="detalle",
+     * type="array",
+     * @OA\Items(
+     * type="object",
+     * @OA\Property(property="id", type="integer", example=1),
+     * @OA\Property(property="precio", type="number", example=600),
+     * @OA\Property(property="id_reserva", type="integer", example=1),
+     * @OA\Property(property="id_turno", type="integer", example=3),
+     * @OA\Property(property="cancelado", type="boolean", example=false),
+     * @OA\Property(property="created_at", type="string", format="date-time"),
+     * @OA\Property(property="updated_at", type="string", format="date-time")
+     * )
+     * ),
+     * @OA\Property(
+     * property="turnos",
+     * type="array",
+     * @OA\Items(
+     * type="object",
+     * @OA\Property(property="turno", type="object"),
+     * @OA\Property(
+     * property="cancha",
+     * type="object",
+     * @OA\Property(property="id", type="integer", example=2),
+     * @OA\Property(property="nombre", type="string", example="Cancha 2"),
+     * @OA\Property(property="id_categoria", type="integer", example=1),
+     * @OA\Property(property="precio", type="number", example=600),
+     * @OA\Property(property="techo", type="boolean", example=true),
+     * @OA\Property(property="cant_jugadores", type="integer", example=5),
+     * @OA\Property(property="superficie", type="string", example="Cesped Sintetico"),
+     * @OA\Property(property="created_at", type="string", format="date-time"),
+     * @OA\Property(property="updated_at", type="string", format="date-time"),
+     * @OA\Property(
+     * property="categoria",
+     * type="object",
+     * @OA\Property(property="id", type="integer", example=1),
+     * @OA\Property(property="nombre", type="string", example="Futbol 5"),
+     * @OA\Property(property="descripcion", type="string", example="Canchas de futbol para 5 jugadores"),
+     * @OA\Property(property="created_at", type="string", format="date-time"),
+     * @OA\Property(property="updated_at", type="string", format="date-time")
+     * )
+     * )
+     * )
+     * )
+     * )
+     * )
+     * ),
+     * @OA\Response(
+     * response=400,
+     * description="Error de validación. El correo electrónico es obligatorio."
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="El cliente no existe o no tiene reservas.",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="El cliente no tiene reservas")
+     * )
+     * )
+     * )
+     */
+    public function misReservas(Request $request)
+    {
+        $emailCliente = $request->input('email_cliente');
 
- public function misReservas(Request $request)
- {
-     $emailCliente = $request->input('email_cliente');
- 
-     if (!$emailCliente) {
-         return response()->json(['message' => 'El correo electrónico es obligatorio'], 400);
-     }
- 
-     $cliente = Cliente::where('mail', $emailCliente)->first();
- 
-     if (!$cliente) {
-         return response()->json(['message' => 'El cliente no existe'], 404);
-     }
- 
-     $reservas = Reserva::where('email_cliente', $emailCliente)->get();
- 
-     if ($reservas->isEmpty()) {
-         return response()->json(['message' => 'El cliente no tiene reservas'], 404);
-     }
- 
-     $reservasConDetalles = [];
-     foreach ($reservas as $reserva) {
-         $detalles = DetalleReserva::where('id_reserva', $reserva->id)->get();
- 
-         $detallesConTurnos = $detalles->map(function ($detalle) {
-             $turno = Turno::find($detalle->id_turno);
-             if ($turno) {
-                 $cancha = Cancha::with('categoria')->find($turno->id_cancha); // Carga la relación de categoría
-                 return [
-                     'turno' => $turno,
-                     'cancha' => $cancha,
-                 ];
-             }
-             return null; // Excluye turnos inválidos
-         })->filter(); // Elimina los turnos nulos
- 
-         $reservasConDetalles[] = [
-             'reserva' => $reserva,
-             'detalle' => $detalles,
-             'turnos' => $detallesConTurnos,
-         ];
-     }
- 
-     return response()->json($reservasConDetalles, 200);
- }
- 
-
-/**
- * @OA\Patch(
- *     path="/rest/reservas/cancelar/{id_reserva}",
- *     summary="Cancelar una reserva",
- *     description="Marca una reserva como cancelada y actualiza sus detalles si aplica.",
- *     tags={"Reservas"},
- *     @OA\Parameter(
- *         name="id_reserva",
- *         in="path",
- *         description="ID de la reserva a cancelar",
- *         required=true,
- *         @OA\Schema(type="integer", example=1)
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Reserva cancelada exitosamente.",
- *         @OA\JsonContent(
- *             @OA\Property(property="message", type="string", example="Reserva cancelada con éxito")
- *         )
- *     ),
- *     @OA\Response(
- *         response=404,
- *         description="Reserva no encontrada"
- *     )
- * )
- */
-public function cancelarReserva($id_reserva)
-{
-    try {
-        // Verificar si el ID de la reserva es válido
-        if (!$id_reserva) {
-            return response()->json([
-                'debug' => 'El ID de la reserva no fue proporcionado.',
-            ], 400);
+        if (!$emailCliente) {
+            return response()->json(['message' => 'El correo electrónico es obligatorio'], 400);
         }
 
-        // Buscar la reserva
-        $reserva = Reserva::find($id_reserva);
+        $cliente = Cliente::where('mail', $emailCliente)->first();
 
-        if (!$reserva) {
-            return response()->json([
-                'debug' => 'No se encontró la reserva',
-                'id_reserva' => $id_reserva,
-            ], 404);
+        if (!$cliente) {
+            return response()->json(['message' => 'El cliente no existe'], 404);
         }
 
-        // Verificar si ya está cancelada
-        if ($reserva->estado === 'Cancelado') {
+        $reservas = Reserva::where('email_cliente', $emailCliente)->get();
+
+        if ($reservas->isEmpty()) {
+            return response()->json(['message' => 'El cliente no tiene reservas'], 404);
+        }
+
+        $reservasConDetalles = [];
+        foreach ($reservas as $reserva) {
+            $detalles = DetalleReserva::where('id_reserva', $reserva->id)->get();
+
+            $detallesConTurnos = $detalles->map(function ($detalle) {
+                $turno = Turno::find($detalle->id_turno);
+                if ($turno) {
+                    $cancha = Cancha::with('categoria')->find($turno->id_cancha); // Carga la relación de categoría
+                    return [
+                        'turno' => $turno,
+                        'cancha' => $cancha,
+                    ];
+                }
+                return null; // Excluye turnos inválidos
+            })->filter(); // Elimina los turnos nulos
+
+            $reservasConDetalles[] = [
+                'reserva' => $reserva,
+                'detalle' => $detalles->toArray(), // Asegúrate de serializar los detalles como array
+                'turnos' => $detallesConTurnos->toArray(), // Asegúrate de serializar los turnos como array
+            ];
+        }
+
+        return response()->json($reservasConDetalles, 200);
+    }
+
+
+    /**
+     * @OA\Patch(
+     * path="/rest/reservas/cancelar/{id_reserva}",
+     * summary="Cancelar una reserva",
+     * description="Marca una reserva como cancelada y actualiza sus detalles si aplica.",
+     * tags={"Reservas"},
+     * @OA\Parameter(
+     * name="id_reserva",
+     * in="path",
+     * description="ID de la reserva a cancelar",
+     * required=true,
+     * @OA\Schema(type="integer", example=1)
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Reserva cancelada exitosamente.",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="Reserva cancelada con éxito"),
+     * @OA\Property(property="reserva", type="object")
+     * )
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Reserva no encontrada"
+     * )
+     * )
+     */
+    public function cancelarReserva($id_reserva)
+    {
+        try {
+            // Verificar si el ID de la reserva es válido
+            if (!$id_reserva) {
+                return response()->json([
+                    'debug' => 'El ID de la reserva no fue proporcionado.',
+                ], 400);
+            }
+
+            // Buscar la reserva
+            $reserva = Reserva::find($id_reserva);
+
+            if (!$reserva) {
+                return response()->json([
+                    'debug' => 'No se encontró la reserva',
+                    'id_reserva' => $id_reserva,
+                ], 404);
+            }
+
+            // Verificar si ya está cancelada
+            if ($reserva->estado === 'Cancelado') {
+                return response()->json([
+                    'debug' => 'La reserva ya está cancelada',
+                    'reserva' => $reserva,
+                ], 200);
+            }
+
+            // Actualizar el estado
+            $reserva->estado = 'Cancelado';
+            $reserva->save();
+
+            // Obtener los detalles de la reserva
+            $detalles = DetalleReserva::where('id_reserva', $id_reserva)->get();
+
+            foreach ($detalles as $detalle) {
+                // Marcar el detalle como cancelado
+                $detalle->cancelado = true;
+                $detalle->updated_at = now();
+                $detalle->save();
+            }
+
             return response()->json([
-                'debug' => 'La reserva ya está cancelada',
+                'debug' => 'Reserva cancelada y turnos liberados con éxito',
                 'reserva' => $reserva,
             ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'debug' => 'Excepción encontrada',
+                'error_message' => $e->getMessage(),
+                'stack_trace' => $e->getTrace(),
+            ], 500);
         }
-
-        // Actualizar el estado
-        $reserva->estado = 'Cancelado';
-        $reserva->save();
-
-        // Obtener los detalles de la reserva
-        $detalles = DetalleReserva::where('id_reserva', $id_reserva)->get();
-
-        foreach ($detalles as $detalle) {
-            // Marcar el detalle como cancelado
-            $detalle->cancelado = true;
-            $detalle->updated_at = now();
-            $detalle->save();
-        }
-        
-        return response()->json([
-            'debug' => 'Reserva cancelada y turnos liberados con éxito',
-            'reserva' => $reserva,
-        ], 200);
-
-    } catch (\Exception $e) {
-        return response()->json([
-            'debug' => 'Excepción encontrada',
-            'error_message' => $e->getMessage(),
-            'stack_trace' => $e->getTrace(),
-        ], 500);
     }
-}
-
 }
