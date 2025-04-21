@@ -124,17 +124,11 @@ class MercadoPagoAPIController extends Controller
                 $nuevoEstado = null;
 
                 switch ($orderStatus) {
-                    case 'payment_required':
-                        $nuevoEstado = 'Pendiente';
-                        break;
-                    case 'payment_in_process':
-                        $nuevoEstado = 'Pendiente';
-                        break;
                     case 'paid':
                         $nuevoEstado = 'Aceptado';
                         break;
                     default:
-                        Log::info('Estado de la orden no manejado: ' . $orderStatus);
+                        Log::info('Estado de la orden no aceptado: ' . $orderStatus);
                         $nuevoEstado = 'Cancelado';
                         return response()->json(['message' => 'OK'], 200);
                 }
