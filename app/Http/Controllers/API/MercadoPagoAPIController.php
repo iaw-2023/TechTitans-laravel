@@ -180,46 +180,44 @@ class MercadoPagoAPIController extends Controller
      * )
      */
     public function notify(Request $request)
-    {
-        try {
-            Log::info('Notificación recibida: ', $request->all());
+{
+    try {
+        Log::info('Notificación recibida: ', $request->all());
 
-            if ($request->input('topic') == 'merchant_order') {
-                $merchantOrderId = $request->input('id');
-                Log::info('Merchant Order ID: ' . $merchantOrderId);
+        if ($request->input('topic') === 'merchant_order') {
+            $merchantOrderId = $request->input('id');
+            Log::info('Merchant Order ID: ' . $merchantOrderId);
 
-                $response = Http::withHeaders([
-                    'Content-Type' => 'application/json',
-                    'Authorization' => 'Bearer ' . env('MP_TOKEN'),
-                ])->get('https://api.mercadopago.com/merchant_orders/' . $merchantOrderId);
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . env('MP_TOKEN'),
+            ])->get('https://api.mercadopago.com/merchant_orders/' . $merchantOrderId);
 
-                $merchantOrder = $response->json();
-                Log::info('Merchant Order: ', $merchantOrder);
+            $merchantOrder = $response->json();
+            Log::info('Merchant Order completa: ', $merchantOrder);
 
-                $orderStatus = $merchantOrder['order_status'];
-                $reserva_id = $merchantOrder['external_reference'];
-                $reserva = Reserva::findOrFail($reserva_id);
-                $nuevoEstado = null;
+            $reserva_id = $merchantOrder['external_reference'];
+            $reserva = Reserva::findOrFail($reserva_id);
 
-                switch ($orderStatus) {
-                    case 'paid':
-                        $nuevoEstado = 'Aceptado';
-                        break;
-                    default:
-                        Log::info('Estado de la orden no aceptado: ' . $orderStatus);
-                        $nuevoEstado = 'Cancelado';
-                        return response()->json(['message' => 'OK'], 200);
+            $estado = 'Cancelado'; // Valor por defecto
+
+            foreach ($merchantOrder['payments'] as $payment) {
+                if ($payment['status'] === 'approved') {
+                    $estado = 'Aceptado';
                 }
-
-                $this->asignarEstado($reserva, $nuevoEstado);
-                Log::info('Estado de la reserva actualizado: ' . $nuevoEstado);
             }
-            return response()->json(['message' => 'OK'], 200);
-        } catch (\Exception $e) {
-            Log::error('Error en la notificación: ' . $e->getMessage());
-            return response()->json(['message' => 'Excepción', 'error' => $e->getMessage()], 400);
+
+            $this->asignarEstado($reserva, $estado);
+            Log::info("Estado de la reserva $reserva_id actualizado a: $estado");
         }
+
+        return response()->json(['message' => 'OK'], 200);
+
+    } catch (\Exception $e) {
+        Log::error('Error en la notificación: ' . $e->getMessage());
+        return response()->json(['message' => 'Excepción', 'error' => $e->getMessage()], 400);
     }
+}
 
     private function asignarEstado(Reserva $reserva, $nuevoEstado)
     {
@@ -244,6 +242,16 @@ class MercadoPagoAPIController extends Controller
                 $detalle->updated_at = now();
                 $detalle->save();
                 Log::info('Detalle de reserva actualizado - ID Detalle: ' . $detalle->id . ' | Confirmado: true');
+            }
+        }
+        if ($nuevoEstado === 'Cancelado') {
+            $detalles = DetalleReserva::where('id_reserva', $reserva->id)->get();
+
+            foreach ($detalles as $detalle) {
+                $detalle->cancelado = true;
+                $detalle->updated_at = now();
+                $detalle->save();
+                Log::info('Detalle de reserva actualizado - ID Detalle: ' . $detalle->id . ' | Cancelado: true');
             }
         }
     }
