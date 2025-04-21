@@ -191,7 +191,7 @@ class MercadoPagoAPIController extends Controller
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer ' . env('MP_TOKEN'),
-            ])->get('https://api.mercadopago.com/merchant_orders/' . $merchantOrderId);
+            ])->get("https://api.mercadopago.com/merchant_orders/$merchantOrderId");
 
             $merchantOrder = $response->json();
             Log::info('Merchant Order completa: ', $merchantOrder);
@@ -199,16 +199,18 @@ class MercadoPagoAPIController extends Controller
             $reserva_id = $merchantOrder['external_reference'];
             $reserva = Reserva::findOrFail($reserva_id);
 
-            $estado = 'Cancelado'; // Valor por defecto
-
+            // ✅ Este bloque revisa si hay al menos un pago aprobado
+            $pagado = false;
             foreach ($merchantOrder['payments'] as $payment) {
                 if ($payment['status'] === 'approved') {
-                    $estado = 'Aceptado';
+                    $pagado = true;
+                    break;
                 }
             }
 
-            $this->asignarEstado($reserva, $estado);
-            Log::info("Estado de la reserva $reserva_id actualizado a: $estado");
+            $estadoFinal = $pagado ? 'Aceptado' : 'Cancelado';
+            $this->asignarEstado($reserva, $estadoFinal);
+            Log::info("Estado de la reserva $reserva_id actualizado a: $estadoFinal");
         }
 
         return response()->json(['message' => 'OK'], 200);
@@ -218,6 +220,7 @@ class MercadoPagoAPIController extends Controller
         return response()->json(['message' => 'Excepción', 'error' => $e->getMessage()], 400);
     }
 }
+
 
     private function asignarEstado(Reserva $reserva, $nuevoEstado)
     {
