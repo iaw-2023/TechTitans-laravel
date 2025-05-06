@@ -15,8 +15,8 @@ class TurnosSeeder extends Seeder
     public function run(): void
     {
         // Definir las fechas de inicio y fin del rango de fechas
-        $fecha_inicio = Carbon::parse('2025-05-01');
-        $fecha_fin = Carbon::parse('2025-05-01');
+        $fecha_inicio = Carbon::parse('2025-06-01');
+        $fecha_fin = Carbon::parse('2025-06-01');
 
         // Generar los turnos para cada día en el rango de fechas
         for ($fecha = $fecha_inicio; $fecha <= $fecha_fin; $fecha->addDay()) {
