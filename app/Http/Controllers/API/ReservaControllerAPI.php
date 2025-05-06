@@ -234,9 +234,7 @@ class ReservaControllerAPI extends Controller
         if (!$cliente) {
             return response()->json(['message' => 'El cliente no existe'], 404);
         }
-        $reservas = Reserva::where('email_cliente', $emailCliente)
-                      ->whereIn('estado', ['Pendiente', 'Aceptado'])
-                      ->get();
+        $reservas = Reserva::where('email_cliente', $emailCliente)->get();
         if ($reservas->isEmpty()) {
             return response()->json(['message' => 'El cliente no tiene reservas'], 404);
         }
