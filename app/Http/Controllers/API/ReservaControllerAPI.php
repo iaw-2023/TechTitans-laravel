@@ -227,19 +227,16 @@ class ReservaControllerAPI extends Controller
     public function misReservas(Request $request)
     {
         $emailCliente = $request->input('email_cliente');
-
         if (!$emailCliente) {
             return response()->json(['message' => 'El correo electrónico es obligatorio'], 400);
         }
-
         $cliente = Cliente::where('mail', $emailCliente)->first();
-
         if (!$cliente) {
             return response()->json(['message' => 'El cliente no existe'], 404);
         }
-
-        $reservas = Reserva::where('email_cliente', $emailCliente)->get();
-
+        $reservas = Reserva::where('email_cliente', $emailCliente)
+                      ->whereIn('estado', ['Pendiente', 'Aceptado'])
+                      ->get();
         if ($reservas->isEmpty()) {
             return response()->json(['message' => 'El cliente no tiene reservas'], 404);
         }
