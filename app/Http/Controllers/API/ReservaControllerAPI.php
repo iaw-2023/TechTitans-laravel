@@ -63,54 +63,90 @@ class ReservaControllerAPI extends Controller
         $emailCliente = $jsonData['email_cliente'];
         $turnos = $jsonData['turnos'];
         $precioTotal = $jsonData['precio_total'];
-        $cliente = DB::table('cliente')->where('mail', $emailCliente)->first();
-
-        $fechaActual = Carbon::now()->toDateString(); // Formato 'Y-m-d'
-        $horaActual = Carbon::now()->setTimezone(config('app.timezone'))->toTimeString(); // Formato 'H:i:s'
-
-        if (!$cliente) {
-            DB::table('cliente')->insert([
-                'mail' => $emailCliente,
-                'nombre_usuario' => strstr($emailCliente, '@', true),
-            ]);
-        }
-        $reservaId = DB::table('reservas')->insertGetId([
-            'fecha_reserva' => $fechaActual,
-            'hora_reserva' => $horaActual,
-            'email_cliente' => $emailCliente,
-            'created_at' => Carbon::now()->setTimezone(config('app.timezone')),
-            'updated_at' => Carbon::now()->setTimezone(config('app.timezone')),
-        ]);
-        foreach ($turnos as $turno) {
-            $idTurno = $turno['id_turno'];
-            $precio = $turno['precio'];
-            $turnoExistente = DB::table('turnos')->where('id', $idTurno)->first();
-            DB::table('detalle_reservas')->insert([
-                'precio' => $precio,
-                'id_reserva' => $reservaId,
-                'id_turno' => $idTurno,
-                'cancelado' => false,
+    
+        $fechaActual = Carbon::now()->toDateString();
+        $horaActual = Carbon::now()->setTimezone(config('app.timezone'))->toTimeString();
+    
+        DB::beginTransaction();
+        try {
+            // Validar turnos
+            foreach ($turnos as $turno) {
+                $idTurno = $turno['id_turno'];
+    
+                $turnoExistente = DB::table('turnos')->where('id', $idTurno)->first();
+                if (!$turnoExistente) {
+                    DB::rollBack();
+                    return response()->json(['message' => "El turno con ID $idTurno no existe."], 400);
+                }
+    
+                // Validar disponibilidad
+                $yaReservado = DB::table('detalle_reservas')
+                    ->where('id_turno', $idTurno)
+                    ->where('cancelado', false)
+                    ->exists();
+    
+                if ($yaReservado) {
+                    DB::rollBack();
+                    return response()->json(['message' => "El turno con ID $idTurno ya está reservado."], 409);
+                }
+            }
+    
+            // Crear cliente si no existe
+            $cliente = DB::table('cliente')->where('mail', $emailCliente)->first();
+            if (!$cliente) {
+                DB::table('cliente')->insert([
+                    'mail' => $emailCliente,
+                    'nombre_usuario' => strstr($emailCliente, '@', true),
+                ]);
+            }
+    
+            // Crear reserva
+            $reservaId = DB::table('reservas')->insertGetId([
+                'fecha_reserva' => $fechaActual,
+                'hora_reserva' => $horaActual,
+                'email_cliente' => $emailCliente,
                 'created_at' => Carbon::now()->setTimezone(config('app.timezone')),
                 'updated_at' => Carbon::now()->setTimezone(config('app.timezone')),
             ]);
+    
+            // Insertar detalle_reservas
+            foreach ($turnos as $turno) {
+                DB::table('detalle_reservas')->insert([
+                    'precio' => $turno['precio'],
+                    'id_reserva' => $reservaId,
+                    'id_turno' => $turno['id_turno'],
+                    'cancelado' => false,
+                    'created_at' => Carbon::now()->setTimezone(config('app.timezone')),
+                    'updated_at' => Carbon::now()->setTimezone(config('app.timezone')),
+                ]);
+            }
+    
+            // MercadoPago
+            $mercadoPagoController = new MercadoPagoAPIController();
+            $preferenceResponse = $mercadoPagoController->createPreference($request, $reservaId);
+    
+            if ($preferenceResponse->getStatusCode() != 200) {
+                DB::rollBack();
+                return response()->json(['message' => 'Error al crear la preferencia de MercadoPago'], 500);
+            }
+    
+            DB::commit();
+    
+            $preferenceData = $preferenceResponse->getData();
+            Log::info('Respuesta de Mercado Pago:', (array) $preferenceResponse->getData());
+    
+            $this->enviarEmail($emailCliente, $reservaId);
+    
+            return response()->json([
+                'message' => 'Reserva creada con éxito',
+                'preference_id' => $preferenceData->preference_id ?? null,
+            ], 201);
+    
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error al crear la reserva: ' . $e->getMessage());
+            return response()->json(['message' => 'Ocurrió un error al crear la reserva.'], 500);
         }
-        // Procedimiento de MercadoPago
-        $mercadoPagoController = new MercadoPagoAPIController();
-        $preferenceResponse = $mercadoPagoController->createPreference($request, $reservaId);
-
-        if ($preferenceResponse->getStatusCode() != 200) {
-            return response()->json(['message' => 'Error al crear la preferencia de MercadoPago'], 500);
-        }
-        $preferenceData = $preferenceResponse->getData();
-        Log::info('Respuesta de Mercado Pago:', (array) $preferenceResponse->getData());
-
-        // Envío de email
-        $this->enviarEmail($emailCliente, $reservaId);
-
-        return response()->json([
-            'message' => 'Reserva creada con éxito',
-            'preference_id' => $preferenceData->preference_id ?? null,
-        ], 201);
     }
 
     private function enviarEmail($emailCliente, $reservaId) {
