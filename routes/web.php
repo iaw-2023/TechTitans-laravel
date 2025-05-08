@@ -28,6 +28,8 @@ Route::get('/home', function () {
     return redirect()->route('weather.index');
 })->middleware(['auth', 'verified'])->name('home');
 
+Route::get('/tareas/cancelar-pendientes', [ReservaController::class, 'cancelarPendientes']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -42,7 +44,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/weather', [WeatherController::class, 'index'])->name('weather.index');
     Route::post('/weather/location', [WeatherController::class, 'getWeatherForLocation'])->name('weather.location');
    
-    Route::get('/tareas/cancelar-pendientes', [ReservaController::class, 'cancelarPendientes']);
 });
 
 require __DIR__.'/auth.php';
