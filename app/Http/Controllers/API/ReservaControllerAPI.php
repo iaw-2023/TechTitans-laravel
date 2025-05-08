@@ -357,12 +357,15 @@ class ReservaControllerAPI extends Controller
                 ], 200);
             }
 
+            // Obtener los detalles de la reserva antes de cancelarla para enviar el email
+            $detalles = DetalleReserva::where('id_reserva', $id_reserva)->get();
+            
+            // Guardar el email del cliente para enviar la notificación
+            $emailCliente = $reserva->email_cliente;
+
             // Actualizar el estado
             $reserva->estado = 'Cancelado';
             $reserva->save();
-
-            // Obtener los detalles de la reserva
-            $detalles = DetalleReserva::where('id_reserva', $id_reserva)->get();
 
             foreach ($detalles as $detalle) {
                 // Marcar el detalle como cancelado
@@ -371,12 +374,16 @@ class ReservaControllerAPI extends Controller
                 $detalle->save();
             }
 
+            // Enviar email de cancelación
+            $this->enviarEmailCancelacion($emailCliente, $id_reserva, $detalles);
+
             return response()->json([
-                'debug' => 'Reserva cancelada y turnos liberados con éxito',
+                'debug' => 'Reserva cancelada y turnos liberados con éxito. Se ha enviado un email de confirmación.',
                 'reserva' => $reserva,
             ], 200);
 
         } catch (\Exception $e) {
+            Log::error('Error al cancelar la reserva: ' . $e->getMessage());
             return response()->json([
                 'debug' => 'Excepción encontrada',
                 'error_message' => $e->getMessage(),
@@ -384,4 +391,56 @@ class ReservaControllerAPI extends Controller
             ], 500);
         }
     }
+
+    private function enviarEmailCancelacion($emailCliente, $reservaId, $detallesReserva = null) {
+        try {
+            $emailController = new EmailController();
+            
+            // Si no se proporcionaron los detalles, obtenerlos
+            if (!$detallesReserva) {
+                $detallesReserva = DetalleReserva::where('id_reserva', $reservaId)->get();
+            }
+            
+            $detalle = [];
+            $precioTotal = 0;
+            
+            foreach ($detallesReserva as $detalleReserva) {
+                $turno = Turno::find($detalleReserva->id_turno);
+                if ($turno) {
+                    $cancha = Cancha::find($turno->id_cancha);
+                    if ($cancha) {
+                        $categoria = Categoria::find($cancha->id_categoria);
+                        $detalle[] = [
+                            'categoria' => $categoria ? $categoria->nombre : 'N/A',
+                            'fecha' => $turno->fecha_turno,
+                            'hora' => $turno->hora_turno,
+                            'nombre_cancha' => $cancha->nombre,
+                            'precio' => $cancha->precio,
+                            'techo' => $cancha->techo,
+                            'cant_jugadores' => $cancha->cant_jugadores,
+                            'superficie' => $cancha->superficie,
+                            'precio_total' => $detalleReserva->precio
+                        ];
+                        $precioTotal += $detalleReserva->precio;
+                    }
+                }
+            }
+            
+            // Crear la solicitud para el controlador de email
+            $requestData = [
+                'email' => $emailCliente,
+                'detalleReserva' => $detalle,
+                'precio_total' => $precioTotal,
+                'esCancelacion' => true // Indicar que es un email de cancelación
+            ];
+            
+            $request = Request::create('', 'POST', $requestData);
+            $emailController->sendEmail($request);
+            
+            Log::info('Email de cancelación enviado a: ' . $emailCliente);
+        } catch (\Exception $e) {
+            Log::error('Error al enviar email de cancelación: ' . $e->getMessage());
+        }
+    }
+
 }
