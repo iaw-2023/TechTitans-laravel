@@ -19,7 +19,7 @@
         <tbody>
             @foreach ($reservas as $reserva)
                 <tr>
-                    <td>{{$reserva->fecha_reserva}}</td>
+                    <td>{{ \Carbon\Carbon::parse($reserva->fecha_reserva)->addDay()->format('d/m/Y') }}</td>
                     <td>{{$reserva->hora_reserva}}</td>
                     <td>{{$reserva->email_cliente}}</td>
                     <td>{{$reserva->estado}}</td>
