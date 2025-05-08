@@ -174,7 +174,8 @@ class ReservaControllerAPI extends Controller
         $requestData = [
             'email' => $emailCliente,
             'detalleReserva' => $detalle,
-            'precio_total' => $precioTotal
+            'precio_total' => $precioTotal,
+            'esCancelacion' => false
         ];
         $request = Request::create('', 'POST', $requestData);
         $emailController->sendEmail($request);

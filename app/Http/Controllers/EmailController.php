@@ -16,7 +16,7 @@ class EmailController extends Controller
         $data = [
             'detalleReserva' => $request->input('detalleReserva'),
             'precio_total' => $request->input('precio_total'),
-            'esCancelacion' => $request->input('esCancelacion', false)
+            'esCancelacion' => $request->input('esCancelacion')
         ];
 
         // Determinar qué vista y asunto usar según el tipo de email

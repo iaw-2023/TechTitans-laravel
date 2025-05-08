@@ -70,6 +70,15 @@
             </tbody>
         </table>
         <p><strong>Precio Total: </strong>${{ $data['precio_total'] }}</p>
+        <p>Si tiene alguna pregunta o necesita asistencia adicional, no dude en contactarnos.</p>
+        
+        <p>Gracias por utilizar nuestro servicio.</p>
+        
+        <p>Atentamente,<br>
+        Equipo de Reserva Tu Cancha</p>
+    </div>
+    <div class="footer">
+        <p>Este es un correo electrónico automático, por favor no responda a este mensaje.</p>
     </div>
 </body>
 </html>
