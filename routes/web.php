@@ -41,7 +41,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/weather', [WeatherController::class, 'index'])->name('weather.index');
     Route::post('/weather/location', [WeatherController::class, 'getWeatherForLocation'])->name('weather.location');
-    
+   
+    Route::get('/tareas/cancelar-pendientes', [ReservaController::class, 'cancelarPendientes']);
 });
 
 require __DIR__.'/auth.php';

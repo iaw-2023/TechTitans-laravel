@@ -46,5 +46,4 @@ Route::post('/mercadopago/notify', [MercadoPagoAPIController::class, 'notify']);
 
 Route::post('/chatbot', [ChatbotControllerAPI::class, 'handleChat']);
 
-Route::get('/tareas/cancelar-pendientes', [ReservaController::class, 'cancelarPendientes']);
 
