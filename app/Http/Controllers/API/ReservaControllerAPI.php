@@ -293,8 +293,8 @@ class ReservaControllerAPI extends Controller
 
             $reservasConDetalles[] = [
                 'reserva' => $reserva,
-                'detalle' => $detalles->toArray(), // Asegúrate de serializar los detalles como array
-                'turnos' => $detallesConTurnos->toArray(), // Asegúrate de serializar los turnos como array
+                'detalle' => $detalles->toArray(), 
+                'turnos' => $detallesConTurnos->toArray(),
             ];
         }
 

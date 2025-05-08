@@ -13,57 +13,12 @@ use MercadoPago\Preference;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-
 class MercadoPagoAPIController extends Controller
 {
-    /**
-     * @OA\Post(
-     * path="/rest/reservas/{reserva_id}/preference",
-     * summary="Crea una preferencia de pago en MercadoPago para una reserva",
-     * description="Genera una preferencia de pago en MercadoPago para la reserva especificada.",
-     * tags={"MercadoPago"},
-     * @OA\Parameter(
-     * name="reserva_id",
-     * in="path",
-     * required=true,
-     * description="ID de la reserva para la cual se creará la preferencia",
-     * @OA\Schema(
-     * type="integer",
-     * format="int64"
-     * )
-     * ),
-     * @OA\Response(
-     * response="200",
-     * description="Preferencia de pago creada exitosamente",
-     * @OA\JsonContent(
-     * type="object",
-     * @OA\Property(property="preference_id", type="string", description="ID de la preferencia de MercadoPago")
-     * )
-     * ),
-     * @OA\Response(
-     * response="400",
-     * description="Error al crear la preferencia",
-     * @OA\JsonContent(
-     * type="object",
-     * @OA\Property(property="message", type="string", example="Excepción"),
-     * @OA\Property(property="error", type="string", example="Mensaje de error")
-     * )
-     * ),
-     * @OA\Response(
-     * response="404",
-     * description="Reserva no encontrada"
-     * ),
-     * security={
-     * {"bearerAuth": {}}
-     * }
-     * )
-     */
     public function createPreference(Request $request, $reserva_id)
     {
         try {
-            // Inicializar el SDK con el token de acceso
             SDK::setAccessToken(env('MP_TOKEN'));
-
             Log::info('Iniciando creación de preferencia para la reserva ID: ' . $reserva_id);
 
             $reserva = Reserva::findOrFail($reserva_id);
@@ -81,17 +36,14 @@ class MercadoPagoAPIController extends Controller
             foreach ($detalles as $detalle) {
                 $turno = Turno::find($detalle->id_turno);
                 $cancha = Cancha::find($turno->id_cancha);
+                $unit_price = max((float)$detalle->precio, 10.0);
 
-                $unit_price = max((float)$detalle->precio, 10.0); // Asegura un precio mínimo
-                Log::info('Procesando ítem: Turno ID ' . $detalle->id_turno . ', Precio: ' . $unit_price);
-
-                $item = new \MercadoPago\Item();
+                $item = new Item();
                 $item->title = "Reserva de Cancha - " . $cancha->nombre;
                 $item->description = "Turno: " . $turno->hora_turno . " | Fecha: " . $turno->fecha_turno;
                 $item->quantity = 1;
                 $item->unit_price = $unit_price;
                 $item->currency_id = "ARS";
-
                 $items[] = $item;
             }
 
@@ -106,34 +58,15 @@ class MercadoPagoAPIController extends Controller
             $preference->external_reference = $reserva_id;
             $preference->notification_url = env('NOTIFY_MP');
 
-
             Log::info('Datos enviados a MercadoPago: ', (array)$preference);
-
-            Log::info('Guardando preferencia en MercadoPago...');
             $preference->save();
 
-            // Validar respuesta de MercadoPago
             if (isset($preference->error)) {
-                Log::error('Error devuelto por MercadoPago: ', (array)$preference->error);
                 throw new \Exception('Error de MercadoPago: ' . json_encode($preference->error));
-            }
-
-            Log::info('Respuesta de MercadoPago tras guardar la preferencia: ', (array)$preference);
-
-            // Consultar detalles adicionales de la preferencia
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . env('MP_TOKEN'),
-            ])->get('https://api.mercadopago.com/checkout/preferences/' . $preference->id);
-
-            Log::info('Detalles de la preferencia consultada desde MercadoPago:', $response->json());
-
-            if (!isset($preference->id)) {
-                throw new \Exception('No se recibió un ID de preferencia de MercadoPago');
             }
 
             $reserva->preference_id = $preference->id;
             $reserva->save();
-
             Log::info('Preferencia guardada en la reserva: ' . $reserva->preference_id);
 
             return response()->json(['preference_id' => $preference->id], 200);
@@ -144,83 +77,76 @@ class MercadoPagoAPIController extends Controller
         }
     }
 
-    /**
-     * @OA\Post(
-     * path="/rest/mercadopago/notify",
-     * summary="Recibe notificaciones de pago de MercadoPago (Webhook)",
-     * description="Endpoint que recibe las notificaciones de eventos de pago de MercadoPago.",
-     * tags={"MercadoPago"},
-     * @OA\RequestBody(
-     * required=true,
-     * description="Cuerpo de la notificación de MercadoPago",
-     * @OA\JsonContent(
-     * type="object",
-     * @OA\Property(property="topic", type="string", example="payment"),
-     * @OA\Property(property="id", type="integer", example=123456789),
-     * additionalProperties=true
-     * )
-     * ),
-     * @OA\Response(
-     * response="200",
-     * description="Notificación recibida y procesada correctamente",
-     * @OA\JsonContent(
-     * type="object",
-     * @OA\Property(property="message", type="string", example="OK")
-     * )
-     * ),
-     * @OA\Response(
-     * response="400",
-     * description="Error en la solicitud de notificación",
-     * @OA\JsonContent(
-     * type="object",
-     * @OA\Property(property="message", type="string", example="Excepción"),
-     * @OA\Property(property="error", type="string", example="Mensaje de error")
-     * )
-     * )
-     * )
-     */
     public function notify(Request $request)
-{
-    try {
-        Log::info('Notificación recibida: ', $request->all());
+    {
+        try {
+            Log::info('Notificación recibida: ', $request->all());
 
-        if ($request->input('topic') === 'merchant_order') {
-            $merchantOrderId = $request->input('id');
-            Log::info('Merchant Order ID: ' . $merchantOrderId);
+            if ($request->input('topic') === 'merchant_order') {
+                $merchantOrderId = $request->input('id');
+                Log::info('Merchant Order ID: ' . $merchantOrderId);
 
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer ' . env('MP_TOKEN'),
-            ])->get("https://api.mercadopago.com/merchant_orders/$merchantOrderId");
+                $response = Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . env('MP_TOKEN'),
+                ])->get("https://api.mercadopago.com/merchant_orders/$merchantOrderId");
 
-            $merchantOrder = $response->json();
-            Log::info('Merchant Order completa: ', $merchantOrder);
+                $merchantOrder = $response->json();
+                Log::info('Merchant Order completa: ', $merchantOrder);
 
-            $reserva_id = $merchantOrder['external_reference'];
-            $reserva = Reserva::findOrFail($reserva_id);
+                $reserva_id = $merchantOrder['external_reference'];
+                $reserva = Reserva::findOrFail($reserva_id);
 
-            // ✅ Este bloque revisa si hay al menos un pago aprobado
-            $pagado = false;
-            foreach ($merchantOrder['payments'] as $payment) {
-                if ($payment['status'] === 'approved') {
-                    $pagado = true;
-                    break;
+                $pagado = false;
+                foreach ($merchantOrder['payments'] as $payment) {
+                    if ($payment['status'] === 'approved') {
+                        $pagado = true;
+                        break;
+                    }
+                }
+
+                $estadoFinal = $pagado ? 'Aceptado' : 'Cancelado';
+                $this->asignarEstado($reserva, $estadoFinal);
+                Log::info("Estado de la reserva $reserva_id actualizado a: $estadoFinal");
+            }
+
+            if ($request->input('topic') === 'payment') {
+                $paymentId = $request->input('id');
+                Log::info('Payment ID: ' . $paymentId);
+
+                $response = Http::withHeaders([
+                    'Authorization' => 'Bearer ' . env('MP_TOKEN'),
+                ])->get("https://api.mercadopago.com/v1/payments/$paymentId");
+
+                $paymentData = $response->json();
+                Log::info('Datos del pago: ', $paymentData);
+
+                $reserva_id = $paymentData['external_reference'] ?? null;
+                $status = $paymentData['status'] ?? 'unknown';
+
+                if ($reserva_id) {
+                    $reserva = Reserva::findOrFail($reserva_id);
+
+                    $estadoFinal = match ($status) {
+                        'approved' => 'Aceptado',
+                        'pending', 'in_process' => 'Pendiente',
+                        'rejected', 'cancelled', 'expired' => 'Cancelado',
+                        default => 'Cancelado',
+                    };
+
+                    $this->asignarEstado($reserva, $estadoFinal);
+                    Log::info("Estado de la reserva $reserva_id actualizado por payment a: $estadoFinal");
+                } else {
+                    Log::warning("No se encontró external_reference en el pago ID $paymentId");
                 }
             }
 
-            $estadoFinal = $pagado ? 'Aceptado' : 'Cancelado';
-            $this->asignarEstado($reserva, $estadoFinal);
-            Log::info("Estado de la reserva $reserva_id actualizado a: $estadoFinal");
+            return response()->json(['message' => 'OK'], 200);
+        } catch (\Exception $e) {
+            Log::error('Error en la notificación: ' . $e->getMessage());
+            return response()->json(['message' => 'Excepción', 'error' => $e->getMessage()], 400);
         }
-
-        return response()->json(['message' => 'OK'], 200);
-
-    } catch (\Exception $e) {
-        Log::error('Error en la notificación: ' . $e->getMessage());
-        return response()->json(['message' => 'Excepción', 'error' => $e->getMessage()], 400);
     }
-}
-
 
     private function asignarEstado(Reserva $reserva, $nuevoEstado)
     {
@@ -238,19 +164,14 @@ class MercadoPagoAPIController extends Controller
 
     private function actualizarDetallesReserva(Reserva $reserva, $nuevoEstado)
     {
-        if ($nuevoEstado === 'Aceptado') {
-            $detalles = DetalleReserva::where('id_reserva', $reserva->id)->get();
+        $detalles = DetalleReserva::where('id_reserva', $reserva->id)->get();
 
-            foreach ($detalles as $detalle) {
+        foreach ($detalles as $detalle) {
+            if ($nuevoEstado === 'Aceptado') {
                 $detalle->updated_at = now();
                 $detalle->save();
                 Log::info('Detalle de reserva actualizado - ID Detalle: ' . $detalle->id . ' | Confirmado: true');
-            }
-        }
-        if ($nuevoEstado === 'Cancelado') {
-            $detalles = DetalleReserva::where('id_reserva', $reserva->id)->get();
-
-            foreach ($detalles as $detalle) {
+            } elseif ($nuevoEstado === 'Cancelado') {
                 $detalle->cancelado = true;
                 $detalle->updated_at = now();
                 $detalle->save();
