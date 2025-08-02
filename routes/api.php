@@ -42,6 +42,7 @@ Route::post('/reservas/alta', [ReservaControllerAPI::class, 'altaReserva']);
 Route::post('/reservas/misReservas', [ReservaControllerAPI::class, 'misReservas']);
 Route::patch('/reservas/cancelar/{id_reserva}', [ReservaControllerAPI::class, 'cancelarReserva']);
 
+Route::post('/mercadopago/preference/{reserva_id}', [MercadoPagoAPIController::class, 'createPreference']);
 Route::post('/mercadopago/notify', [MercadoPagoAPIController::class, 'notify']);
 
 Route::post('/chatbot', [ChatbotControllerAPI::class, 'handleChat']);
