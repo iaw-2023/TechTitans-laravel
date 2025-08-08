@@ -80,7 +80,7 @@
         </table>
         
         <div class="total">
-            <p>Monto total reembolsado: ${{ $data['precio_total'] }}</p>
+            <p>Monto total sin reembolso: ${{ $data['precio_total'] }}</p>
         </div>
         
         <p>Si tiene alguna pregunta o necesita asistencia adicional, no dude en contactarnos.</p>

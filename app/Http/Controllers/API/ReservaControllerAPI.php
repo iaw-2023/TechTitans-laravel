@@ -169,7 +169,7 @@ class ReservaControllerAPI extends Controller
                 'superficie' => $cancha->superficie,
                 'precio_total' => $detalleReserva->precio
             ];
-            $precioTotal = $detalleReserva->precio;
+            $precioTotal += $detalleReserva->precio;
         }
         $requestData = [
             'email' => $emailCliente,
