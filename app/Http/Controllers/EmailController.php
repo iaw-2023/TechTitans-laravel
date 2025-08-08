@@ -31,7 +31,7 @@ class EmailController extends Controller
                 'Content-Type' => 'application/json',
             ])->withOptions([
                 'verify' => false, // Deshabilitar la verificación SSL    
-            ])->post('https://api.brevo.com/v3/smtp/email', [
+            ])->post('https://api.brevo.com/v3/smtp/emailCampaigns', [
                 'sender' => [
                     'name' => 'Reserva Tu Cancha',
                     'email' => 'techtitaniaw@gmail.com',
