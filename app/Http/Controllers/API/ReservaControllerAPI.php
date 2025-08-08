@@ -283,7 +283,7 @@ class ReservaControllerAPI extends Controller
             $detallesConTurnos = $detalles->map(function ($detalle) {
                 $turno = Turno::find($detalle->id_turno);
                 if ($turno) {
-                    $cancha = Cancha::with('categoria')->find($turno->id_cancha); // Carga la relación de categoría
+                    $cancha = Cancha::with('categoria')->find($turno->id_cancha);
                     return [
                         'turno' => $turno,
                         'cancha' => $cancha,
