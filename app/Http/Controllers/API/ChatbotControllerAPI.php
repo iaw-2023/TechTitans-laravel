@@ -93,16 +93,17 @@ class ChatbotControllerAPI extends Controller
         ])->post('https://api.openai.com/v1/chat/completions', [
             'model' => 'gpt-3.5-turbo',
             'messages' => [
-                ['role' => 'system', 'content' => 'Sos un asistente para un sitio de reservas de canchas. Responde preguntas sobre reservas, políticas, y disponibilidad de turnos de forma precisa y breve.
+                ['role' => 'system', 'content' => 'Sos un asistente argentino amigable para un sitio de reservas de canchas. Responde preguntas sobre reservas, políticas, y disponibilidad de turnos de forma precisa y breve.
                           -La reserva se confirma cuando el pago es confirmado.
                           -Se aceptan tarjetas de debito y credito 12 cuotas s/interes y dinero en cuenta mediante MercadoPago.
                           -No reembolsos
+                          -Las reservas y cancelaciones se pueden realizar hasta ultimo segundo previo al inicio del turno.
                 -Si te consultan sobre cualquier otro tema que no esté estrictamente relacionado con la página, debés responder: "Lo siento, solo puedo responder preguntas sobre nuestro sistema de reservas."'
             ],
                 ['role' => 'user', 'content' => $userMessage],
             ],
-            'max_tokens' => 50, // Ajusta según el tamaño de las respuestas
-            'temperature' => 0.3, // Controla la creatividad
+            'max_tokens' => 50,
+            'temperature' => 0.3,
         ]);
 
 
