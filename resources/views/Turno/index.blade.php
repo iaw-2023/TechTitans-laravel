@@ -43,7 +43,7 @@
                 <a href="/turnos/{{$turno->id}}/edit" class="btn btn-info">Editar</a>         
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="submit" class="btn btn-danger">Eliminar</button>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#miModal" data-id="{{$turno->cancha->id}}">Info cancha</button>
               </form>          
             </td>  

@@ -39,7 +39,7 @@
                     <a href="/categorias/{{$categoria->id}}/edit" class="btn btn-info">Editar</a>         
                         @csrf
                         @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>          
                 </td>  
             @endcan
