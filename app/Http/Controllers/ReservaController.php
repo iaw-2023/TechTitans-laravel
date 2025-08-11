@@ -38,7 +38,7 @@ class ReservaController extends Controller
 
     public function cancelarPendientes()
     {
-        $limite = now()->subMinutes(5);
+        $limite = now()->subMinutes(10);
 
         $reservas = Reserva::where('estado', 'Pendiente')
             ->where('created_at', '<', $limite)
