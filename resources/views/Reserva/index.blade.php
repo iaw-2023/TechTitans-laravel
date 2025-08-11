@@ -39,10 +39,10 @@
                         <a href="/reservas/show/{{$reserva->id}}" class="btn btn-primary btn-sm">Ver detalle</a>
                         @if (in_array($reserva->estado, ['Pendiente', 'Aceptado']))
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-id="{{ $reserva->id }}">
-                                Eliminar
+                                Cancelar 
                             </button>
                         @else
-                            <button class="btn btn-danger btn-sm" disabled>Eliminar</button>
+                            <button class="btn btn-danger btn-sm" disabled>Cancelar</button>
                         @endif
  
                     </td>
@@ -57,11 +57,11 @@
     <div class="modal-dialog">
         <div class="modal-content bg-dark text-white">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar cancelación</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ¿Estás seguro de que deseas eliminar esta reserva? Esta acción no se puede deshacer.
+                ¿Estás seguro de que deseas cancelar esta reserva? Esta acción no se puede deshacer.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
