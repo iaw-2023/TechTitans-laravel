@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\EmailController;
 use App\Models\DetalleReserva;
 use App\Models\Reserva;
 use App\Models\Turno;
