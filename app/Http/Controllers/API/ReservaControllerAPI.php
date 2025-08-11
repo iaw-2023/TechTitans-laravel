@@ -333,14 +333,14 @@ class ReservaControllerAPI extends Controller
     public function cancelarReserva($id_reserva)
     {
         try {
-            // Verificar si el ID de la reserva es válido
+            
             if (!$id_reserva) {
                 return response()->json([
                     'debug' => 'El ID de la reserva no fue proporcionado.',
                 ], 400);
             }
 
-            // Buscar la reserva
+            
             $reserva = Reserva::find($id_reserva);
 
             if (!$reserva) {
@@ -350,7 +350,7 @@ class ReservaControllerAPI extends Controller
                 ], 404);
             }
 
-            // Verificar si ya está cancelada
+            
             if ($reserva->estado === 'Cancelado') {
                 return response()->json([
                     'debug' => 'La reserva ya está cancelada',
@@ -358,13 +358,13 @@ class ReservaControllerAPI extends Controller
                 ], 200);
             }
 
-            // Obtener los detalles de la reserva antes de cancelarla para enviar el email
+            
             $detalles = DetalleReserva::where('id_reserva', $id_reserva)->get();
             
-            // Guardar el email del cliente para enviar la notificación
+            
             $emailCliente = $reserva->email_cliente;
 
-            // Actualizar el estado
+            
             $reserva->estado = 'Cancelado';
             $reserva->save();
 

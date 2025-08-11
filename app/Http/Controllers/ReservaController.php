@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\EmailController;
 use App\Models\DetalleReserva;
 use App\Models\Reserva;
 use App\Models\Turno;
@@ -201,6 +202,15 @@ class ReservaController extends Controller
             }
 
             Log::info("Reserva ID {$reserva->id} cancelada. Tiempo de espera agotado. (EasyCron) ");
+             
+            $emailCliente = $reserva->email_cliente; 
+
+            if ($emailCliente) {
+
+                $this->enviarEmailCancelacion($emailCliente, $reserva->id, $reserva->detalle_reserva);
+            } else {
+                Log::warning("No se pudo enviar email de cancelación. Reserva ID {$reserva->id} sin email_cliente.");
+            }
         }
 
         return response()->json([

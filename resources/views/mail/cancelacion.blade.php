@@ -54,7 +54,7 @@
     <div class="content">
         <p>Estimado cliente,</p>
         
-        <p>Le confirmamos que su reserva ha sido cancelada exitosamente. A continuación, encontrará el detalle de los turnos que fueron cancelados:</p>
+        <p>Le confirmamos que su reserva ha sido cancelada. A continuación, encontrará el detalle de los turnos que fueron cancelados:</p>
         
         <table>
             <thead>
@@ -80,8 +80,10 @@
         </table>
         
         <div class="total">
-            <p>Monto total sin reembolso: ${{ $data['precio_total'] }}</p>
+            <p>Monto total: ${{ $data['precio_total'] }}</p>
         </div>
+        
+        <p>Recuerde que las reservas canceladas por los clientes que ya fueron pagadas no tienen reembolso</p>
         
         <p>Si tiene alguna pregunta o necesita asistencia adicional, no dude en contactarnos.</p>
         
