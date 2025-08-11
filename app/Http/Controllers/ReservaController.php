@@ -94,12 +94,12 @@ class ReservaController extends Controller
             // Enviar email de cancelación al cliente
             $this->enviarEmailCancelacion($emailCliente, $id, $detallesReserva);
 
-            session()->flash('success', 'Reserva eliminada correctamente.');
+            session()->flash('success', 'Reserva cancelada correctamente.');
             return redirect('/reservas');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error("Error deleting reservation ID {$id}: " . $e->getMessage());
-            session()->flash('error', 'Hubo un error al eliminar la reserva. Por favor, inténtelo de nuevo.');
+            session()->flash('error', 'Hubo un error al cancelar la reserva. Por favor, inténtelo de nuevo.');
             return redirect()->back();
         }
     }

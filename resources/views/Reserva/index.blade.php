@@ -68,7 +68,7 @@
                 <form id="deleteForm" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <button type="submit" class="btn btn-danger">Confirmar cancelación</button>
                 </form>
             </div>
         </div>
