@@ -25,6 +25,9 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'crear categorias']);
         Permission::create(['name' => 'eliminar categorias']);
         Permission::create(['name' => 'editar categorias']);        
+
+        Permission::create(['name' => 'crear reservas']);
+        Permission::create(['name' => 'eliminar reservas']);
          
         //crear roles
         $roleAdmin = Role::create(['name'=>'admin']);
@@ -32,6 +35,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $roleAdmin->givePermissionTo(Permission::all());
 
-        $roleEmpleado->givePermissionTo('crear turnos', 'eliminar turnos', 'editar turnos');                                
+        $roleEmpleado->givePermissionTo('crear turnos', 'eliminar turnos', 'editar turnos');   
+        $roleEmpleado->givePermissionTo('crear reservas', 'eliminar reservas');                             
     }
 }

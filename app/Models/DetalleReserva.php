@@ -16,11 +16,17 @@ class DetalleReserva extends Model
         'id_turno',
     ];
 
+    /**
+     * Get the reservation that owns the detail.
+     */
     public function reserva()
     {
-        return $this->hasOne(Reserva::class, 'id_reserva');
+        return $this->belongsTo(Reserva::class, 'id_reserva');
     }
 
+    /**
+     * Get the turno associated with the detail.
+     */
     public function turno()
     {
         return $this->belongsTo(Turno::class, 'id_turno');

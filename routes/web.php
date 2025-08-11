@@ -34,11 +34,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
     Route::resource('categorias', CategoriaController::class);
     Route::resource('turnos', TurnoController::class);
     Route::resource('canchas', CanchaController::class);
-    Route::get('/reservas', [ReservaController::class, 'index']);
-    Route::get('/reservas/show/{id}', [ReservaController::class, 'show']);
+    
+    Route::get('/reservas', [ReservaController::class, 'index'])->name('reservas.index');
+    Route::get('/reservas/show/{id}', [ReservaController::class, 'show'])->name('reservas.show');
+    Route::get('/reservas/create', [ReservaController::class, 'create'])->name('reservas.create');
+    Route::post('/reservas', [ReservaController::class, 'store'])->name('reservas.store');
+    Route::delete('/reservas/{id}', [ReservaController::class, 'destroy'])->name('reservas.destroy');
+    
     Route::get('/canchas/{id}', [CanchaController::class, 'show']);
 
     Route::get('/weather', [WeatherController::class, 'index'])->name('weather.index');
