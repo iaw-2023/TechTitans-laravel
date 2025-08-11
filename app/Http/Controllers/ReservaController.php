@@ -61,11 +61,13 @@ class ReservaController extends Controller
 
             Log::info("Reserva ID {$reserva->id} cancelada. Tiempo de espera agotado. (EasyCron) ");
              
-            $emailCliente = $reserva->email ?? null;
+            $emailCliente = $reserva->email_cliente; 
+
             if ($emailCliente) {
+
                 $this->enviarEmailCancelacion($emailCliente, $reserva->id, $reserva->detalle_reserva);
             } else {
-                Log::warning("No se pudo enviar email de cancelación. Reserva ID {$reserva->id} sin email.");
+                Log::warning("No se pudo enviar email de cancelación. Reserva ID {$reserva->id} sin email_cliente.");
             }
         }
 
@@ -75,8 +77,7 @@ class ReservaController extends Controller
         ]);
     }
 
-    private function enviarEmailCancelacion($emailCliente, $reservaId, $detallesReserva = null)
-    {
+    private function enviarEmailCancelacion($emailCliente, $reservaId, $detallesReserva = null) {
         try {
             $emailController = new EmailController();
 
@@ -94,15 +95,15 @@ class ReservaController extends Controller
                     if ($cancha) {
                         $categoria = Categoria::find($cancha->id_categoria);
                         $detalle[] = [
-                            'categoria'       => $categoria ? $categoria->nombre : 'N/A',
-                            'fecha'           => $turno->fecha_turno,
-                            'hora'            => $turno->hora_turno,
-                            'nombre_cancha'   => $cancha->nombre,
-                            'precio'          => $cancha->precio,
-                            'techo'           => $cancha->techo,
-                            'cant_jugadores'  => $cancha->cant_jugadores,
-                            'superficie'      => $cancha->superficie,
-                            'precio_total'    => $detalleReserva->precio,
+                            'categoria'      => $categoria ? $categoria->nombre : 'N/A',
+                            'fecha'          => $turno->fecha_turno,
+                            'hora'           => $turno->hora_turno,
+                            'nombre_cancha'  => $cancha->nombre,
+                            'precio'         => $cancha->precio,
+                            'techo'          => $cancha->techo,
+                            'cant_jugadores' => $cancha->cant_jugadores,
+                            'superficie'     => $cancha->superficie,
+                            'precio_total'   => $detalleReserva->precio
                         ];
                         $precioTotal += $detalleReserva->precio;
                     }
@@ -113,15 +114,15 @@ class ReservaController extends Controller
                 'email'          => $emailCliente,
                 'detalleReserva' => $detalle,
                 'precio_total'   => $precioTotal,
-                'esCancelacion'  => true, 
+                'esCancelacion'  => true
             ];
 
-            $request = new Request($requestData);
+            $request = new Request($requestData); 
             $emailController->sendEmail($request);
 
-            Log::info('Email de cancelación enviado a: ' . $emailCliente . ' para la reserva ID ' . $reservaId);
+            Log::info('Email de cancelación enviado a: ' . $emailCliente . ' (reserva ' . $reservaId . ')');
         } catch (\Exception $e) {
-            Log::error('Error al enviar email de cancelación (Reserva ID ' . $reservaId . '): ' . $e->getMessage());
+            Log::error('Error al enviar email de cancelación (reserva ' . $reservaId . '): ' . $e->getMessage());
         }
     }
 }
