@@ -14,6 +14,23 @@ class TurnosSeeder extends Seeder
      */
     public function run(): void
     {
+
+        $fecha_inicio = Carbon::parse('2025-08-11');
+        $fecha_fin = Carbon::parse('2025-08-11');
+
+        // Generar los turnos para cada día en el rango de fechas
+        for ($fecha = $fecha_inicio; $fecha <= $fecha_fin; $fecha->addDay()) {
+            // Generar los turnos para cada hora
+            for ($hora = Carbon::parse('18:00:00'); $hora <= Carbon::parse('19:00:00'); $hora->addHours(1)) {
+                for ($cancha = 1; $cancha <= 11; $cancha++) {
+                    DB::table('turnos')->insert([
+                      'fecha_turno' => $fecha,
+                      'hora_turno' => $hora,
+                      'id_cancha' => $cancha
+                    ]);
+                }
+            }
+        }    
         // Definir las fechas de inicio y fin del rango de fechas
         $fecha_inicio = Carbon::parse('2025-09-1');
         $fecha_fin = Carbon::parse('2025-09-01');
@@ -31,5 +48,6 @@ class TurnosSeeder extends Seeder
                 }
             }
         }     
+
     }
 }
